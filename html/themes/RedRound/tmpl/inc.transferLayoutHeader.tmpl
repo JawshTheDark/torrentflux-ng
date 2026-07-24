@@ -4,7 +4,7 @@
 	<tmpl_if name="transferStatsType" value="ajax">
 <head>
 	<!-- IF TRANSFER WINDOW AJAX UPDATE IS ENABLED, THIS HEADER IS USED FOR STATS-->
-	<title><tmpl_var name="_DOWNLOADDETAILS"></title>
+	<title><tmpl_var name="titleBar_title"></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<tmpl_var name="_CHARSET">" />
 	<meta http-equiv="expires" content="Mon, 10 Dec 2000 00:00:00 GMT" />
 	<meta http-equiv="Pragma" content="no-cache" />
@@ -22,7 +22,7 @@
 	<tmpl_else>
 <head>
 	<!-- IF TRANSFER WINDOW STANDARD UPDATE IS ENABLED, THIS HEADER IS USED FOR ALL PAGES -->
-	<title><tmpl_var name="_DOWNLOADDETAILS"></title>
+	<title><tmpl_var name="titleBar_title"></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<tmpl_var name="_CHARSET">" />
 	<meta http-equiv="expires" content="Mon, 10 Dec 2000 00:00:00 GMT" />
 	<meta http-equiv="Pragma" content="no-cache" />
@@ -35,7 +35,7 @@
 <tmpl_else>
 <head>
 <!-- THIS IS SHOWN FOR ALL OTHERS -->
-	<title><tmpl_var name="_DOWNLOADDETAILS"></title>
+	<title><tmpl_var name="titleBar_title"></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<tmpl_var name="_CHARSET">" />
 	<meta http-equiv="expires" content="Mon, 10 Dec 2000 00:00:00 GMT" />
 	<meta http-equiv="Pragma" content="no-cache" />
