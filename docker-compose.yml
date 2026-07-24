@@ -1,0 +1,64 @@
+version: "3.8"
+
+# TorrentFlux-NG modern stack:
+#   web        - TorrentFlux-NG (PHP 8 / Apache)
+#   qbittorrent - download engine, controlled via its Web API
+#   prowlarr   - indexer aggregation for the built-in search
+#
+# First run:
+#   1. docker compose up -d
+#   2. open http://localhost:8000/setup.php
+#      - database: SQLite, file /var/www/db/torrentflux.db
+#      - user download path: /downloads/
+#   3. log in (first login creates the superadmin), then in
+#      Admin > Transfer Settings set the qBittorrent URL to
+#      http://qbittorrent:8081 and the password shown by
+#      `docker compose logs qbittorrent` (temporary password on first run).
+#   4. in Admin > Search Settings set the Prowlarr URL to
+#      http://prowlarr:9696 and the API key from Prowlarr > Settings > General.
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:80"
+    volumes:
+      - downloads:/downloads
+      - db:/var/www/db
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    environment:
+      - PUID=33            # www-data in the web container, so file perms line up
+      - PGID=33
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8081
+    volumes:
+      - qbt-config:/config
+      - downloads:/downloads
+    ports:
+      - "8081:8081"        # Web UI (optional, for direct access)
+      - "6881:6881"
+      - "6881:6881/udp"
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    environment:
+      - PUID=33
+      - PGID=33
+      - TZ=Etc/UTC
+    volumes:
+      - prowlarr-config:/config
+    ports:
+      - "9696:9696"        # Web UI (needed once to configure indexers/API key)
+    restart: unless-stopped
+
+volumes:
+  downloads:
+  db:
+  qbt-config:
+  prowlarr-config:

@@ -1,0 +1,9 @@
+.git
+db/
+downloads/
+vendor/
+clients/
+doc/
+addons/
+misc/
+upgrade/

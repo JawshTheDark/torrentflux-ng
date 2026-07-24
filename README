@@ -1,4 +1,38 @@
 =======================================================================
+TorrentFlux-NG — 2026 modernization
+=======================================================================
+
+    This fork has been brought up to date with modern times:
+
+    * Runs on PHP 8.1+ (tested on PHP 8.5) — all removed-API usage
+      (ereg/split, magic quotes, PHP4 constructors, curly string
+      offsets, preg /e, each()) has been fixed.
+    * Database layer uses the maintained ADOdb via Composer
+      (mysql -> mysqli, sqlite -> sqlite3 automatically).
+    * qBittorrent is the recommended download engine: a new
+      ClientHandler speaks the qBittorrent Web API v2 (v4 and v5),
+      including magnet links (adopted automatically once metadata
+      arrives). Configure under Admin > Transfer Settings.
+    * Torrent search is powered by Prowlarr (the 15 scraper engines
+      for long-dead sites were removed). Configure the Prowlarr URL
+      and API key under Admin > Search Settings.
+    * The top navigation is always visible, and a dark theme is
+      built in (menu toggle, follows the OS preference by default).
+    * Dead bundled libraries (Swift Mailer, reCAPTCHA v1, vlib mail)
+      were removed.
+
+    Quick start (Docker):
+
+        docker compose up -d
+        open http://localhost:8000/setup.php
+
+    then follow the notes at the top of docker-compose.yml.
+
+    Classic install: needs PHP 8.1+ and `composer install` in the
+    repository root; serve the html/ directory.
+
+
+=======================================================================
 $Id$
 vim: set comments=fb\:o,fb\:#,fb\:-,fb\:*,fb\:A.,fb\:Q. et tw=72 sw=4:
 =======================================================================
