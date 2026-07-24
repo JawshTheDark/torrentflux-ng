@@ -60,112 +60,64 @@
 	</tr>
 </table>
 <h2>Binary Paths</h2>
-<p class="NormalText">Specify the path to various applications on your system</p>
+<p class="NormalText">Paths to the command-line tools TorrentFlux-NG shells out to. In the Docker image these are already installed on the default <code>PATH</code>, so you normally do not need to change them &ndash; only edit a path if the tool lives somewhere unusual on your host. A green tick means the binary was found and is executable.</p>
 <table id="adminServerSettings">
-	<tr>
-		<th>transmissioncli<br /><span>(/usr/local/bin/transmissioncli)</span></th>
-		<td>
-			<input name="btclient_transmission_bin" id="btclient_transmission_bin" type="Text" maxlength="254" value="<tmpl_var name="btclient_transmission_bin">">
-			<tmpl_var name="validate_transmission_bin">
-		</td>	
-	</tr>
 		<tr>
-			<th class="alt">wget<br /><span>(/usr/bin/wget)</span></th>
+			<th class="alt">wget<br /><span>Fetches plain HTTP/FTP downloads (the non-torrent transfer type).</span></th>
 			<td class="alt">
 				<input name="bin_wget" id="bin_wget" type="Text" maxlength="254" value="<tmpl_var name="bin_wget">">
 				<tmpl_var name="validate_wget">
 			</td>
 		</tr>
 		<tr>
-			<th>uudeview<br /><span>(/usr/bin/uudeview)</span></th>
+			<th>php (cli)<br /><span>Command-line PHP binary used by scheduled/cron maintenance tasks (<code>fluxcli.php</code>). Must be the CLI build, not CGI.</span></th>
 			<td>
-				<input name="bin_uudeview" id="bin_uudeview" type="Text" maxlength="254" value="<tmpl_var name="bin_uudeview">">
-				<tmpl_var name="validate_uudeview">
-			</td>
-		</tr>
-		<tr>
-			<th class="alt">php (cli)<br /><span>Note: This must be the cli version of the PHP binary, NOT cgi or otherwise.</span></th>
-			<td class="alt">
 			<input name="bin_php" id="bin_php" type="Text" maxlength="254" value="<tmpl_var name="bin_php">">
 			<tmpl_var name="validate_php">
 			</td>
 		</tr>
 		<tr>
-			<th>python<br /><span>(/usr/bin/python)</span></th>
-			<td>
-				<input name="pythonCmd" id="pythonCmd" type="Text" maxlength="254" value="<tmpl_var name="pythonCmd">">
-				<tmpl_var name="validate_python">
-			</td>
-		</tr>
-		<tr>
-			<th class="alt">perl<br /><span>(/usr/bin/perl)</span></th>
+			<th class="alt">du<br /><span>Reports directory sizes for the file manager and disk-usage statistics.</span></th>
 			<td class="alt">
-				<input name="perlCmd" id="perlCmd" type="Text" maxlength="254" value="<tmpl_var name="perlCmd">">
-				<tmpl_var name="validate_perl">
-			</td>
-		</tr>
-		<tr>
-			<th>grep</th>
-			<td>
-				<input name="bin_grep" id="bin_grep" type="Text" maxlength="254" value="<tmpl_var name="bin_grep">">
-				<tmpl_var name="validate_grep">
-			</td>
-		</tr>
-		<tr>
-			<th class="alt">awk<br /><span>(/usr/bin/awk)</span></th>
-			<td class="alt">
-				<input name="bin_awk" id="bin_awk" type="Text" maxlength="254" value="<tmpl_var name="bin_awk">">
-				<tmpl_var name="validate_awk">
-			</td>
-		</tr>
-		<tr>
-			<th>du<br /><span>(/usr/bin/du)</span></th>
-			<td>
 				<input name="bin_du" id="bin_du" type="Text" maxlength="254" value="<tmpl_var name="bin_du">">
 				<tmpl_var name="validate_du">
 			</td>
 		</tr>
 		<tr>
-			<th class="alt">unzip<br /><span>(/usr/bin/unzip)</span></th>
-			<td class="alt">
+			<th>unzip<br /><span>Extracts <code>.zip</code> archives from the file manager (and builds zip downloads).</span></th>
+			<td>
 				<input name="bin_unzip" id="bin_unzip" type="Text" maxlength="254" value="<tmpl_var name="bin_unzip">">
 				<tmpl_var name="validate_unzip">
 			</td>
 		</tr>
 		<tr>
-			<th>unrar<br /><span>(/usr/bin/unrar)</span></th>
-			<td>
+			<th class="alt">unrar<br /><span>Extracts <code>.rar</code> archives from the file manager. Requires the Unrar option on the Directory Settings page.</span></th>
+			<td class="alt">
 				<input name="bin_unrar" id="bin_unrar" type="Text" maxlength="254" value="<tmpl_var name="bin_unrar">">
 				<tmpl_var name="validate_unrar">
 			</td>
-		</tr>		
+		</tr>
 		<tr>
-			<th>cksfv<br /><span>(/usr/bin/cksfv)</span></th>
+			<th>cksfv<br /><span>Verifies file integrity against <code>.sfv</code> checksum files. Requires the SFV option on the Directory Settings page.</span></th>
 			<td>
 				<input name="bin_cksfv" id="bin_cksfv" type="Text" maxlength="254" value="<tmpl_var name="bin_cksfv">">
 				<tmpl_var name="validate_cksfv">
 			</td>
 		</tr>
-		<tr>
-			<th class="alt">vlc<br /><span>(/usr/bin/vlc)</span></th>
-			<td class="alt">
-				<input name="bin_vlc" id="bin_vlc" type="Text" maxlength="254" value="<tmpl_var name="bin_vlc">">
-				<tmpl_var name="validate_vlc">
-			</td>
-		</tr>
 </table>
-<h2>OS Specific Binary Paths <em>(<tmpl_var name="php_uname1"> <tmpl_var name="php_uname2">)</em></h2>
+<h2>Server Monitoring Paths <em>(<tmpl_var name="php_uname1"> <tmpl_var name="php_uname2">)</em></h2>
+<p class="NormalText">Sources used to display server load and network-connection counts. On Linux these are standard; leave them at the defaults unless your system differs.</p>
 <table id="adminServerSettings">
 	<tmpl_if name="_OS" value="1">
 		<tr>
-			<th>loadavg<br /><span>(/proc/loadavg)</span></th>
+			<th>loadavg<br /><span>Kernel load-average file, read for the 1/5/15-minute server load shown on the index and stats pages (default <code>/proc/loadavg</code>).</span></th>
 			<td>
 				<input name="loadavg_path" id="loadavg_path" type="Text" maxlength="254" value="<tmpl_var name="loadavg_path">">
 				<tmpl_var name="validate_loadavg">
 			</td>
 		</tr>
 		<tr>
-			<th class="alt">netstat<br /><span>(/bin/netstat)</span></th>
+			<th class="alt">netstat<br /><span>Used to count active network connections for the server statistics. May be absent on minimal systems, in which case the connection count is simply hidden.</span></th>
 			<td class="alt">
 				<input name="bin_netstat" id="bin_netstat" type="Text" maxlength="254" value="<tmpl_var name="bin_netstat">">
 				<tmpl_var name="validate_netstat">

@@ -95,7 +95,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>Width of the index page</th>
+			<th>Width of the index page<br /><span>Preferred width of the transfer list area, in pixels. The modern theme uses a fluid, full-browser-width layout, so this has little effect unless you customise the CSS.</span></th>
 			<td>
 				<input name="ui_dim_main_w" id="ui_dim_main_w" type="Text" maxlength="5" value="<tmpl_var name="ui_dim_main_w">" size="5"> pixels
 			</td>
@@ -120,7 +120,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th class="alt">Torrent Search<span>Enable/disable torrent searches from the home page via third party torrent sites.</span></th>
+			<th class="alt">Torrent Search<br /><span>Enable/disable the torrent search box on the home page. Searches are run through Prowlarr, which aggregates your configured trackers and indexers.</span></th>
 			<td class="alt">
 				<select name="enable_search" id="enable_search">
 					<option value="1">True</option>
@@ -133,7 +133,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>Default Torrent Search Engine<br /><span>Default search engine to use for torrent searches</span></th>
+			<th>Default Torrent Search Engine<br /><span>Search source pre-selected in the home-page search box. Prowlarr is the built-in engine; individual Prowlarr indexers can also be chosen at search time.</span></th>
 			<td>
 				<select name="searchEngine" id="searchEngine" <tmpl_if name="autoSubmit">onchange="this.form.submit();"</tmpl_if> STYLE="width: 125px">
 				<tmpl_loop name="Engine_List">
@@ -143,7 +143,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th class="alt">Display Links List<br /><span>Enable/disable display of admin configublue list of links on the index page</span></th>
+			<th class="alt">Display Links List<br /><span>Enable/disable the admin-configured list of links shown on the index page.</span></th>
 			<td class="alt">
 				<select name="ui_displaylinks" id="ui_displaylinks">
 					<option value="1">True</option>
@@ -156,7 +156,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>Display Users List<br /><span>Enable/disable display of torrentflux-b4rt users and their online status.</th>
+			<th>Display Users List<br /><span>Enable/disable the list of TorrentFlux-NG users and their online status on the index page.</span></th>
 			<td>
 				<select name="ui_displayusers" id="ui_displayusers">
 					<option value="1">True</option>

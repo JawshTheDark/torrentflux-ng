@@ -1,10 +1,11 @@
 <tmpl_include name="inc.adminLayoutHeader.tmpl">
 <form name="theForm" action="admin.php?op=updateControlSettings" method="post" onsubmit="return validateSettings('control')">
 <h1>control settings</h1>
+<p class="NormalText">Controls how much control regular (non-admin) users have over their own transfers &ndash; whether they can override the default speed/seeding limits, use saved transfer profiles, and choose a save location.</p>
 <p><input type="Submit" value="Update Settings"></p>
 <table id="adminControlSettings">
 	<tr>
-		<th>Customize Transfer Settings<br /><span>Define who can customize transfer settings</span></th>
+		<th>Customize Transfer Settings<br /><span>Who may override the default rate limits, seeding behaviour and file priorities on a per-transfer basis (defaults are set on the Transfer Settings page).</span></th>
 		<td>
 			<select name="transfer_customize_settings" id="transfer_customize_settings">
 				<option value="2">All Users</option>
@@ -22,7 +23,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th class="alt">Transfer Profiles<br /><span>Define who can use transfer profiles</span></th>
+		<th class="alt">Transfer Profiles<br /><span>Who may use saved transfer profiles (named presets of rate/seeding limits). "Only Predefined" lets users pick admin-defined profiles but not create their own.</span></th>
 		<td class="alt">
 			<select name="transfer_profiles" id="transfer_profiles">
 				<option value="3">All Users</option>
@@ -45,19 +46,6 @@
 		</td>
 	</tr>
 	<tr>
-		<th>Enable Client Chooser<br /><span>When enabled, allow users to choose which transfer client to use</span></th>
-		<td>
-			<select name="enable_btclient_chooser" id="enable_btclient_chooser">
-				<option value="1">True</option>
-				<option value="0"
-			<tmpl_if name="enable_btclient_chooser" value="0">
-				selected
-			</tmpl_if>
-				>False</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
 			<th class="alt">
 				Enable Save Path Chooser<br /><span>When enabled, displays a directory tree to allow users to save 
 				downloaded transfers to any existing folder under their home directory</span>

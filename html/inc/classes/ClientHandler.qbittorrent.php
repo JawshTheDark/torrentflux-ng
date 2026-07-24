@@ -134,8 +134,9 @@ class ClientHandlerQbittorrent extends ClientHandler
 
 		$res = 0;
 		if (!empty($hash)) {
-			if ($this->sharekill > 100) {
-				// legacy percent notation: 250 means ratio 2.5
+			// sharekill is stored as a percentage of the share ratio (100 = 1:1);
+			// qBittorrent's seedRatioLimit wants a ratio, so convert.
+			if ($this->sharekill > 0) {
 				$this->sharekill = round((float)$this->sharekill / 100.0, 2);
 			}
 			$params = array(
@@ -332,7 +333,8 @@ class ClientHandlerQbittorrent extends ClientHandler
 	function setSharekill($transfer, $sharekill, $autosend = false) {
 		global $cfg;
 		$this->sharekill = $sharekill;
-		if ($this->sharekill > 100)
+		// sharekill is a percentage of the share ratio (100 = 1:1); qBittorrent wants a ratio.
+		if ($this->sharekill > 0)
 			$this->sharekill = round((float)$this->sharekill / 100.0, 2);
 		$result = true;
 		if ($autosend) {

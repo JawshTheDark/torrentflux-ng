@@ -62,11 +62,10 @@
 </p>
 <h3>Enforce XFER limits</h3>
 <p class="NormalText">
-	To enforce xfer limits, the fluxcli.php script must be run via a scheduled job (ie cron) in 'xfer' mode - ie 'fluxcli.php xfer [period]', 
-	where [period] is one of day/week/month.  This will check if the associated xfer limit has already been met 
-	for the period and if true, stop all currently running transfers.
+	Setting a limit here only records and displays usage. To actually stop transfers when a limit is reached, run the maintenance script on a schedule (cron):
+	<code>php fluxcli.php xfer [period]</code>, where <em>[period]</em> is <code>day</code>, <code>week</code> or <code>month</code>. When run, it checks whether the limit for that period has been met and, if so, stops all running transfers via qBittorrent. In the Docker deployment, add this to the host's crontab (or a sidecar) using <code>docker exec</code>.
 </p>
-<h3>Guide: 1Gb = 1024, 1Tb = 1048576</h3>
+<h3>Units: 1 GB = 1024 MB, 1 TB = 1048576 MB</h3>
 <table id="adminXferSettings">
 	<tr>
 		<th>Xfer Limit - Total<br /><span>Specify total xfer limit in megabytes - the data transfer limit for all periods</span></th>
@@ -74,7 +73,7 @@
 	</tr>
 	<tr>
 		<th class="alt">Xfer Limit - Month<br /><span>Specify monthly xfer limit in megabytes - the monthly data transfer limit</span></th>
-		<td class="alt"><input name="xfer_month" "xfer_month" type="Text" maxlength="20" value="<tmpl_var name="xfer_month">" size="20"></td>
+		<td class="alt"><input name="xfer_month" id="xfer_month" type="Text" maxlength="20" value="<tmpl_var name="xfer_month">" size="20"></td>
 	</tr>
 	<tr>
 		<th>Xfer Limit - Week<br /><span>Specify weekly xfer limit in megabytes - the weekly data transfer limit</span></th>

@@ -118,12 +118,10 @@
 </table>
 
 <h2>Torrent Maker</h2>
-<p class="NormalText">Enable/disable make torrent functionality for users - when enabled, 
-users will be allowed to create torrent files from the contents in the directory manager. 
-Also set which client to use to create torrent files with</p>
+<p class="NormalText">When enabled, users can create a <code>.torrent</code> file from any file or folder in the directory manager. Torrents are built with the <code>mktorrent</code> tool bundled in the Docker image.</p>
 <table id="adminDirSettings">
 	<tr>
-		<th>Enable Disable Make Torrent</th>
+		<th>Enable Torrent Maker<br /><span>Allow users to generate <code>.torrent</code> files from items in the directory manager.</span></th>
 	<td>
 		<select name="enable_maketorrent" id="enable_maketorrent">
 			<option value="1">True</option>
@@ -134,19 +132,6 @@ Also set which client to use to create torrent files with</p>
 			>False</option>
 		</select>
 	</td>
-	</tr>
-	<tr>
-		<th class="alt">Default Make Torrent Client</th>
-		<td class="alt">
-			<select name="dir_maketorrent_default" id="dir_maketorrent_default">
-				<option value="tornado">tornado</option>
-				<option value="mainline"
-			<tmpl_if name="dir_maketorrent_default" value="mainline">
-				selected
-			</tmpl_if>
-				>mainline</option>
-			</select>
-		</td>
 	</tr>
 </table>
 <h2>Various Functions</h2>
@@ -208,25 +193,17 @@ Also set which client to use to create torrent files with</p>
 	</tr>
 	<tr>
 </table>
-<h2>VLC Streaming</h2>
-<p class="NormalText">Enable/disable access to VLC file streaming functionality - when enabled, users will be able to stream media directly from the webserver using VLC</p>
+<h2>In-Browser Media Player</h2>
+<p class="NormalText">When enabled, a play icon appears next to media files in the directory manager. It opens the built-in HTML5 player, which streams the file directly in the browser using HTTP range requests (with seeking). Browser-native formats such as MP4/H.264, WebM, MP3 and FLAC play inline; formats browsers cannot decode (e.g. MKV) show a download link instead &ndash; use a dedicated media server like Jellyfin or Emby for those.</p>
 <table id="adminDirSettings">
 	<tr>
-		<th>Enable/disable VLC Streaming</th>
+		<th>Enable Media Player<br /><span>Show the play icon and allow in-browser streaming of media files.</span></th>
 		<td>
 			<select name="enable_vlc" id="enable_vlc">
-				<option value="1">True</option>
-				<option value="0"
-			<tmpl_if name="enable_vlc" value="0">
-					selected
-			</tmpl_if>
-					>False</option>
+				<option value="1" <tmpl_if name="enable_vlc" value="1">selected</tmpl_if>>Enabled</option>
+				<option value="0" <tmpl_if name="enable_vlc" value="0">selected</tmpl_if>>Disabled</option>
 			</select>
 		</td>
-	</tr>
-	<tr>
-		<th class="alt">VLC Port<br /><span>Specify the port to use for VLC streaming.</span></th>
-		<td class="alt"><input name="vlc_port" id="vlc_port" type="Text" maxlength="5" value="<tmpl_var name="vlc_port">" size="5"></td>
 	</tr>
 </table>
 <h2>File And Folder Moving</h2>
