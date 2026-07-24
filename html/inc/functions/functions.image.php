@@ -171,6 +171,14 @@ function image_pieTransferPeers() {
 		Image::paintNoOp();
 	}
 
+	// ensure peer-data exists even when a client branch above didn't set it
+	if (!isset($peerData) || !is_array($peerData)) {
+		$peerData = array(
+			'seeds' => 0, 'peers' => 0,
+			'seedsLabel' => 0, 'peersLabel' => 0,
+		);
+	}
+
 	switch ($client) {
 		case "tornado":
 			if ($seeds != "") {
@@ -201,15 +209,19 @@ function image_pieTransferPeers() {
 			$peerData['peers'] = $peers;
 			break;
 		case "qbittorrent":
-			$peers = sizeof($qbtTransfer['peers']);
-			$seeds = 0;
-			foreach ( $qbtTransfer['trackerStats'] as $tracker ) {
-				$seeds += ($tracker['seederCount'] == -1 ? 0:$tracker['seederCount']);
+			if (is_array($qbtTransfer)) {
+				$peers = isset($qbtTransfer['peers']) ? sizeof($qbtTransfer['peers']) : 0;
+				$seeds = 0;
+				if (isset($qbtTransfer['trackerStats'])) {
+					foreach ( $qbtTransfer['trackerStats'] as $tracker ) {
+						$seeds += ($tracker['seederCount'] == -1 ? 0:$tracker['seederCount']);
+					}
+				}
+				$peerData['seedsLabel'] = $seeds;
+				$peerData['seeds'] = $seeds;
+				$peerData['peersLabel'] = $peers;
+				$peerData['peers'] = $peers;
 			}
-			$peerData['seedsLabel'] = $seeds;
-			$peerData['seeds'] = $seeds;
-			$peerData['peersLabel'] = $peers;
-			$peerData['peers'] = $peers;
 			break;
 		case "vuzerpc":
 			if (empty($seeds) || empty($peers)) {
