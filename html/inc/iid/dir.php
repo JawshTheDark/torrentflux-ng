@@ -62,6 +62,7 @@ if (isset($cfg['_LC_CTYPE'])) {
 $chmod = UrlHTMLSlashesDecode(tfb_getRequestVar('chmod'));
 $del = UrlHTMLSlashesDecode(tfb_getRequestVar('del'));
 $down = UrlHTMLSlashesDecode(tfb_getRequestVar('down'));
+$stream = UrlHTMLSlashesDecode(tfb_getRequestVar('stream'));
 $tar = UrlHTMLSlashesDecode(tfb_getRequestVar('tar'));
 $multidel = UrlHTMLSlashesDecode(tfb_getRequestVar('multidel'));
 $dir = UrlHTMLSlashesDecode(tfb_getRequestVar('dir'));
@@ -239,6 +240,24 @@ if ($del != "") {
 	}
 	@header("Location: index.php?iid=dir&dir=".UrlHTMLSlashesEncode($current));
 	exit();
+}
+
+/*******************************************************************************
+ * stream (HTML5 player)
+ ******************************************************************************/
+if ($stream != "") {
+	if ($cfg["enable_file_download"] != 1) {
+		AuditAction($cfg["constants"]["error"], "ILLEGAL ACCESS: ".$cfg["user"]." tried to stream (".$stream.")");
+		@error("download is disabled", "index.php?iid=index", "");
+	}
+	if ((isValidEntry(basename($stream))) && (hasPermission($stream, $cfg["user"], 'r'))) {
+		streamFile($stream);
+		exit();
+	} else {
+		AuditAction($cfg["constants"]["error"], "ILLEGAL STREAM: ".$cfg["user"]." tried to stream ".$stream);
+		@header("HTTP/1.1 403 Forbidden");
+		exit();
+	}
 }
 
 /*******************************************************************************

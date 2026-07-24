@@ -216,6 +216,91 @@ function downloadFile($down) {
 }
 
 /**
+ * map a file extension to a media MIME type the browser can play inline.
+ *
+ * @param $ext lowercase extension
+ * @return string mime type, or "" if not a browser-playable media type
+ */
+function streamMimeType($ext) {
+	$map = array(
+		'mp4' => 'video/mp4', 'm4v' => 'video/mp4', 'mov' => 'video/mp4',
+		'webm' => 'video/webm', 'ogv' => 'video/ogg',
+		'mp3' => 'audio/mpeg', 'm4a' => 'audio/mp4', 'aac' => 'audio/aac',
+		'oga' => 'audio/ogg', 'ogg' => 'audio/ogg', 'opus' => 'audio/ogg',
+		'wav' => 'audio/wav', 'flac' => 'audio/flac',
+	);
+	$ext = strtolower($ext);
+	return isset($map[$ext]) ? $map[$ext] : '';
+}
+
+/**
+ * stream a file inline for the HTML5 player, with HTTP Range (seek) support.
+ * Unlike downloadFile() this serves the media with a playable Content-Type and
+ * an inline disposition instead of forcing a download.
+ *
+ * @param $down path (relative to cfg[path]) of the file to stream
+ */
+function streamFile($down) {
+	global $cfg;
+	$down = stripslashes(stripslashes($down));
+	if (!tfb_isValidPath($down)) {
+		@header("HTTP/1.1 403 Forbidden");
+		AuditAction($cfg["constants"]["error"], "ILLEGAL STREAM: ".$cfg["user"]." tried to stream ".$down);
+		exit();
+	}
+	$path = $cfg["path"].$down;
+	if (!file_exists($path) || is_dir($path)) {
+		@header("HTTP/1.1 404 Not Found");
+		exit();
+	}
+	$f = explode("/", $path);
+	$file = array_pop($f);
+	$mime = streamMimeType(getExtension($file));
+	if ($mime == '')
+		$mime = 'application/octet-stream';
+
+	$filesize = sprintf("%.0f", filesize($path));
+	$start = 0;
+	$end = $filesize - 1;
+	$isPartial = false;
+	if (isset($_SERVER['HTTP_RANGE'])
+		&& preg_match('/^bytes=(\d+)-(\d*)$/D', $_SERVER['HTTP_RANGE'], $m)) {
+		$start = (int)$m[1];
+		if ($m[2] !== '')
+			$end = (int)$m[2];
+		if ($end >= $filesize) $end = $filesize - 1;
+		if ($start > $end) $start = 0;
+		$isPartial = true;
+	}
+	$length = $end - $start + 1;
+
+	@ini_set('zlib.output_compression', 'Off');
+	@header("Content-Type: ".$mime);
+	@header("Accept-Ranges: bytes");
+	@header("Content-Disposition: inline; filename=\"".rawurlencode($file)."\"");
+	if ($isPartial) {
+		@header("HTTP/1.1 206 Partial Content");
+		@header("Content-Range: bytes ".$start."-".$end."/".$filesize);
+	}
+	@header("Content-Length: ".$length);
+	@session_write_close();
+
+	$fh = fopen($path, "rb");
+	if ($fh === false) exit();
+	fseek($fh, $start);
+	$bufsize = 65536;
+	$remaining = $length;
+	while ($remaining > 0 && !feof($fh)) {
+		$read = ($remaining > $bufsize) ? $bufsize : $remaining;
+		echo fread($fh, $read);
+		@flush();
+		$remaining -= $read;
+	}
+	fclose($fh);
+	exit();
+}
+
+/**
  * downloads as archive.
  *
  * @param $down

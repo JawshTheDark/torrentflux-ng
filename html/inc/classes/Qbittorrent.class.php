@@ -279,6 +279,17 @@ class Qbittorrent
 		return $this->apiJson('/api/v2/torrents/properties?hash='.strtolower($hash));
 	}
 
+	/**
+	 * replace a tracker URL on a torrent (used by the announce-rewrite control).
+	 */
+	public function editTracker($hash, $origUrl, $newUrl) {
+		return $this->apiOk('/api/v2/torrents/editTracker', array(
+			'hash' => strtolower($hash),
+			'origUrl' => $origUrl,
+			'newUrl' => $newUrl,
+		));
+	}
+
 	public function trackers($hash) {
 		return $this->apiJson('/api/v2/torrents/trackers?hash='.strtolower($hash));
 	}

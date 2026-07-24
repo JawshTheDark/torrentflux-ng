@@ -141,7 +141,7 @@
 				</tmpl_if>
 				<tmpl_if name="is_dir" value="0">
 					<tmpl_if name="enable_vlc" value="1">
-						<a href="JavaScript:StreamMultimedia('index.php?iid=vlc&amp;dir=<tmpl_var name="urlencode2">&amp;file=<tmpl_var name="urlencode3">')"><img src="themes/<tmpl_var name="theme">/images/dir/stream.png" alt="vlc streaming" title="Stream Multimedia (vlc)" /></a>
+						<a href="index.php?iid=player&amp;dir=<tmpl_var name="urlencode2">&amp;file=<tmpl_var name="urlencode3">" target="_blank" onclick="window.open(this.href,'tfplayer','width=900,height=600,resizable=yes,scrollbars=no');return false;"><img src="themes/<tmpl_var name="theme">/images/dir/stream.png" alt="play" title="Play (HTML5 player)" /></a>
 					</tmpl_if>
 				</tmpl_if>
 				<tmpl_if name="enable_rename" value="1">

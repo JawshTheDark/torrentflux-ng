@@ -197,11 +197,20 @@ switch ($pageop) {
 		// break
 		break;
 
-	case "rewrite":                                                /* btreannounce*/
+	case "rewrite":                                       /* change tracker URL */
 
 		$newUrl = tfb_getRequestVar('announceUrl');
 		if ($newUrl != $announceUrl) {
-			echo shell_exec("cd ".tfb_shellencode($cfg["transfer_file_path"])."; ".$cfg["pythonCmd"]." -OO ".tfb_shellencode($cfg["docroot"]."bin/clients/tornado/btreannounce.py")." ".tfb_shellencode($newUrl).' '.tfb_shellencode($transfer));
+			if (!empty($cfg["qbittorrent_enable"]) && getTransferClient($transfer) == 'qbittorrent') {
+				require_once('inc/classes/Qbittorrent.class.php');
+				$hash = getTransferHash($transfer);
+				$qbt = Qbittorrent::getInstance();
+				echo ($qbt->editTracker($hash, trim($announceUrl), trim($newUrl)))
+					? "Tracker updated."
+					: "Tracker update failed: ".htmlspecialchars($qbt->lastError);
+			} else {
+				echo "Tracker rewrite is only supported with the qBittorrent backend.";
+			}
 		}
 		break;
 
