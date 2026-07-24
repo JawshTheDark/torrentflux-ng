@@ -66,7 +66,16 @@ function image_pieTransferTotals() {
 	else
 		$hash = getTransferHash($transfer);
 
-	if ($cfg["transmission_rpc_enable"]) {
+	if (!empty($cfg["qbittorrent_enable"])) {
+		require_once('inc/functions/functions.rpc.qbittorrent.php');
+		$qbtTransfer = getQbittorrentTransfer($hash);
+		if ( is_array($qbtTransfer) ) {
+			$uptotal = $qbtTransfer['uploadedEver'];
+			$downtotal = $qbtTransfer['downloadedEver'];
+			$validTransfer = true;
+		}
+	}
+	if (!$validTransfer && $cfg["transmission_rpc_enable"]) {
 		require_once('inc/functions/functions.rpc.transmission.php');
 		$options = array('uploadedEver','downloadedEver');
 		$transTransfer = getTransmissionTransfer($hash, $options); // false if not found; TODO check if transmission enabled
