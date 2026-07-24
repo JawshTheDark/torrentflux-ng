@@ -46,6 +46,8 @@ function admin_updateTransferSettings() {
 			$settings['qbittorrent_enable'] = 1;
 		else if ($settings['btclient'] == 'transmissionrpc')
 			$settings['transmission_rpc_enable'] = 1;
+		else if ($settings['btclient'] == 'deluge')
+			$settings['deluge_enable'] = 1;
 	}
 	saveSettings('tf_settings', $settings);
 	AuditAction($cfg["constants"]["admin"], " Updating Transfer Settings");

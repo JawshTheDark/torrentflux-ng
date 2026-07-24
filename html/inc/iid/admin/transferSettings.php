@@ -62,6 +62,8 @@ $tmpl->setvar('transmission_rpc_host', $cfg["transmission_rpc_host"]);
 $tmpl->setvar('transmission_rpc_port', $cfg["transmission_rpc_port"]);
 $tmpl->setvar('transmission_rpc_user', $cfg["transmission_rpc_user"]);
 $tmpl->setvar('transmission_rpc_password', $cfg["transmission_rpc_password"]);
+$tmpl->setvar('deluge_url', isset($cfg["deluge_url"]) ? $cfg["deluge_url"] : 'http://localhost:8112');
+$tmpl->setvar('deluge_password', isset($cfg["deluge_password"]) ? $cfg["deluge_password"] : 'deluge');
 
 $tmpl->setvar('vuze_rpc_enable', $cfg["vuze_rpc_enable"]);
 $tmpl->setvar('vuze_rpc_host', $cfg["vuze_rpc_host"]);

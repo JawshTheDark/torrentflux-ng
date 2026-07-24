@@ -39,6 +39,11 @@ if (!empty($cfg["transmission_rpc_enable"])) {
 	require_once('inc/functions/functions.rpc.transmission.php');
 	trmRefreshAll();
 }
+// refresh Deluge daemon stat-files
+if (!empty($cfg["deluge_enable"])) {
+	require_once('inc/functions/functions.rpc.deluge.php');
+	delRefreshAll();
+}
 
 if (isset($_REQUEST['ajax_update'])) {
 	$isAjaxUpdate = true;

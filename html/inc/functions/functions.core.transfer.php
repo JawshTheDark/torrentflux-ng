@@ -712,6 +712,12 @@ function getTransferListArray() {
 		trmRefreshAll();
 	}
 
+	// refresh stat-files from the Deluge daemon
+	if (!empty($cfg["deluge_enable"])) {
+		require_once('inc/functions/functions.rpc.deluge.php');
+		delRefreshAll();
+	}
+
 	$arList = getTransferArray($sortOrder);
 	foreach ($arList as $transfer) {
 		// init some vars

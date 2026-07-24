@@ -57,6 +57,9 @@ class RunningTransfer
 			case "qbittorrent":
 				require_once('inc/classes/RunningTransfer.qbittorrent.php');
 				return new RunningTransferQbittorrent($psLine);
+			case "deluge":
+				require_once('inc/classes/RunningTransfer.deluge.php');
+				return new RunningTransferDeluge($psLine);
 			case "mainline":
 				require_once('inc/classes/RunningTransfer.mainline.php');
 				return new RunningTransferMainline($psLine);

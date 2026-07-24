@@ -718,6 +718,11 @@ function _dispatcher_processDownload($url, $type = 'torrent', $ext = '.torrent')
 				$hash = addQbittorrentTransfer($cfg['uid'], $url, $cfg['path'].$cfg['user']);
 				if (isHash($hash)) startQbittorrentTransfer($hash);
 			}
+			if ($client == 'deluge' && !empty($cfg["deluge_enable"])) {
+				require_once('inc/functions/functions.rpc.deluge.php');
+				$hash = addDelugeTransfer($cfg['uid'], $url, $cfg['path'].$cfg['user']);
+				if (isHash($hash)) startDelugeTransfer($hash);
+			}
 			if (($client == 'vuzerpc' || $client == 'azureus')  && $cfg["vuze_rpc_enable"]) {
 				require_once('inc/functions/functions.rpc.vuze.php');
 				$hash = addVuzeMagnetTransfer($cfg['uid'], $url, $cfg['transfer_file_path']);

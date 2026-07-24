@@ -37,6 +37,7 @@
 			<select name="btclient" id="btclient">
 				<option value="qbittorrent" <tmpl_if name="btclient" value="qbittorrent">selected</tmpl_if>>qBittorrent (Web API)</option>
 				<option value="transmissionrpc" <tmpl_if name="btclient" value="transmissionrpc">selected</tmpl_if>>Transmission (RPC)</option>
+				<option value="deluge" <tmpl_if name="btclient" value="deluge">selected</tmpl_if>>Deluge (Web JSON-RPC)</option>
 			</select>
 		</td>
 	</tr>
@@ -90,6 +91,23 @@
 		<th class="alt">Transmission Password<br /><span>RPC password. Leave blank if RPC authentication is disabled.</span></th>
 		<td class="alt">
 			<input name="transmission_rpc_password" id="transmission_rpc_password" type="Password" maxlength="100" value="<tmpl_var name="transmission_rpc_password">" size="20">
+		</td>
+	</tr>
+</table>
+
+<h3>Deluge (Web JSON-RPC)</h3>
+<p class="NormalText">Connects to Deluge's Web UI (<code>deluge-web</code>, default port 8112), which proxies to the Deluge daemon. Make sure deluge-web is running and connected to a daemon. In a Docker network, use the service name and port (e.g. <code>http://deluge:8112</code>).</p>
+<table id="adminTransferSettings">
+	<tr>
+		<th>Deluge URL<br /><span>Base URL of the Deluge Web UI, including scheme and port &ndash; e.g. <code>http://deluge:8112</code>.</span></th>
+		<td>
+			<input name="deluge_url" id="deluge_url" type="Text" maxlength="254" value="<tmpl_var name="deluge_url">" size="45">
+		</td>
+	</tr>
+	<tr>
+		<th class="alt">Deluge Password<br /><span>Deluge Web UI password (the default is <code>deluge</code>).</span></th>
+		<td class="alt">
+			<input name="deluge_password" id="deluge_password" type="Password" maxlength="100" value="<tmpl_var name="deluge_password">" size="20">
 		</td>
 	</tr>
 </table>
