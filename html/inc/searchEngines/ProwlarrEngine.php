@@ -192,7 +192,8 @@ class SearchEngine extends SearchEngineBase
 			if (isset($r['protocol']) && $r['protocol'] != 'torrent')
 				continue;
 			$seeds = isset($r['seeders']) ? intval($r['seeders']) : 0;
-			if ($this->hideSeedless && $seeds <= 0)
+			// hideSeedless holds the 'yes'/'no' session string, not a boolean
+			if ($this->hideSeedless === 'yes' && $seeds <= 0)
 				continue;
 			$rows[] = $r;
 		}
@@ -216,7 +217,17 @@ class SearchEngine extends SearchEngineBase
 	}
 
 	function tableHeader() {
-		$output = "<table width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"0\">\n";
+		// Show/Hide seedless toggle (persists via the hideSeedless session var)
+		$tmpURI = str_replace(
+			array("?hideSeedless=yes","&hideSeedless=yes","?hideSeedless=no","&hideSeedless=no"),
+			"", $_SERVER["REQUEST_URI"]);
+		$tmpURI .= (strpos($tmpURI, '?')) ? "&" : "?";
+		$toggle = ($this->hideSeedless === "yes")
+			? "<a href=\"".htmlspecialchars($tmpURI)."hideSeedless=no\">Show Seedless</a>"
+			: "<a href=\"".htmlspecialchars($tmpURI)."hideSeedless=yes\">Hide Seedless</a>";
+
+		$output = "<div style=\"margin:4px 0\">(".$toggle.")</div>\n";
+		$output .= "<table width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"0\">\n";
 		$output .= "<tr bgcolor=\"".$this->cfg["table_header_bg"]."\">\n";
 		$output .= "	<td colspan=\"2\"><strong>Name</strong></td>\n";
 		$output .= "	<td><strong>Indexer</strong></td>\n";

@@ -264,8 +264,39 @@ function setFilePriority($transfer) {
 		$theTorrent = getTransmissionTransfer($transfer, array('hashString', 'id', 'name'));
 		$isTransmissionTorrent = is_array($theTorrent);
 	}
-	
-	if ( $isTransmissionTorrent ) {
+	$isQbTorrent = false;
+	if (!$isTransmissionTorrent && !empty($cfg["qbittorrent_enable"])
+		&& getTransferClient($transfer) == 'qbittorrent') {
+		require_once('inc/functions/functions.rpc.qbittorrent.php');
+		$isQbTorrent = true;
+	}
+
+	if ( $isQbTorrent ) {
+		// map the checked file list to qBittorrent priorities: selected files
+		// get normal priority (1), everything else "do not download" (0).
+		$selected = array();
+		if (isset($_REQUEST['files'])) {
+			foreach ((array)$_REQUEST['files'] as $fileid)
+				$selected[] = (int)$fileid;
+		}
+		$hash = getTransferHash($transfer);
+		$qbt = Qbittorrent::getInstance();
+		$qbFiles = $qbt->files($hash);
+		if (!is_array($qbFiles)) $qbFiles = array();
+		$wantedIds = array();
+		$unwantedIds = array();
+		foreach ($qbFiles as $idx => $f) {
+			$id = isset($f['index']) ? (int)$f['index'] : $idx;
+			if (in_array($idx, $selected, true))
+				$wantedIds[] = $id;
+			else
+				$unwantedIds[] = $id;
+		}
+		if (!empty($wantedIds))
+			$qbt->setFilePriority($hash, $wantedIds, 1);
+		if (!empty($unwantedIds))
+			$qbt->setFilePriority($hash, $unwantedIds, 0);
+	} elseif ( $isTransmissionTorrent ) {
 		foreach ($_REQUEST['files'] as $fileid ) {
 			$selectedFiles[] = (int)$fileid;
 		}
@@ -328,7 +359,7 @@ function setFilePriority($transfer) {
 			if ($okToCreate) {
 			$fp = fopen($fileName, "w");
 			fwrite($fp,tfb_getRequestVar('filecount').",");
-			fwrite($fp,implode($result,','));
+			fwrite($fp,implode(',',$result));
 			fclose($fp);
 			} else {
 			// No files to skip so must be wanting them all.

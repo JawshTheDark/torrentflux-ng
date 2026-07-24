@@ -294,6 +294,26 @@ class Qbittorrent
 		return $this->apiJson('/api/v2/torrents/files?hash='.strtolower($hash));
 	}
 
+	/**
+	 * set per-file download priority.
+	 *
+	 * @param $hash torrent hash
+	 * @param $ids array of file ids (or a single id)
+	 * @param $priority 0 = do not download, 1 = normal, 6 = high, 7 = maximal
+	 * @return boolean
+	 */
+	public function setFilePriority($hash, $ids, $priority) {
+		if (!is_array($ids))
+			$ids = array($ids);
+		if (empty($ids))
+			return true;
+		return $this->apiOk('/api/v2/torrents/filePrio', array(
+			'hash' => strtolower($hash),
+			'id' => implode('|', array_map('intval', $ids)),
+			'priority' => intval($priority),
+		));
+	}
+
 	public function transferInfo() {
 		return $this->apiJson('/api/v2/transfer/info');
 	}

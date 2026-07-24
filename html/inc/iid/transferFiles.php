@@ -62,7 +62,12 @@ if (!$isQbittorrentTransfer && $cfg["transmission_rpc_enable"] > 0) {
         }
 }
 
-if ($isTransmissionTransfer) {
+if ($isQbittorrentTransfer) {
+	// qBittorrent can change file priority at any time (running or not)
+	require_once("inc/functions/functions.fileprio.php");
+	$tmpl->setvar('filePrio', getFilePrioForm($transfer, true));
+	$tmpl->setvar('file_priority_enabled', 1);
+} elseif ($isTransmissionTransfer) {
 	require_once("inc/functions/functions.fileprio.php");
 	$tmpl->setvar('filePrio', getFilePrioForm($hash, true));
 	$tmpl->setvar('file_priority_enabled', 1);

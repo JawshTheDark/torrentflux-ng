@@ -28,6 +28,9 @@
  * @return string
  */
 function tfb_getRequestVar($varName, $return = '') {
+	// array-valued params (?x[]=...) would fatal trim()/htmlentities() on PHP 8
+	if (array_key_exists($varName, $_REQUEST) && is_array($_REQUEST[$varName]))
+		return $return;
 	if(array_key_exists($varName, $_REQUEST)){
 		// If magic quoting on, strip magic quotes:
 		/**
@@ -71,7 +74,7 @@ function tfb_getRequestVarRaw($varName,$return = '') {
 	// Note: CANNOT use tfb_strip_quotes directly on $_REQUEST
 	// here, because it works in-place, i.e. would break other
 	// future uses of tfb_getRequestVarRaw on the same variables.
-	if (array_key_exists($varName, $_REQUEST)){
+	if (array_key_exists($varName, $_REQUEST) && !is_array($_REQUEST[$varName])){
 		$return = $_REQUEST[$varName];
 		// Seems get_magic_quotes_gpc is deprecated
 		// in PHP 6, use ini_get instead.

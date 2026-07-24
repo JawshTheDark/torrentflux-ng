@@ -72,12 +72,19 @@ function getFilePrioForm($transfer, $withForm = false) {
 	$retVal .= '<script type="text/javascript" src="js/dtree.js"></script>';
 
 	$isTransmissionTorrent = false;
+	$isQbTorrent = false;
 	if ($cfg["transmission_rpc_enable"]) {
 		require_once('inc/functions/functions.rpc.transmission.php');
 		$isTransmissionTorrent = isTransmissionTransfer($transfer);
 	}
+	if (!$isTransmissionTorrent && !empty($cfg["qbittorrent_enable"])
+		&& getTransferClient($transfer) == 'qbittorrent') {
+		require_once('inc/functions/functions.rpc.qbittorrent.php');
+		$isQbTorrent = true;
+	}
 
 	$files = array();
+	$btmeta = array('info' => array()); // keep the later array_key_exists() checks safe
 	if ( $isTransmissionTorrent ) {
 		$allFilesResponse = getTransmissionTransfer($transfer, array('files'));
 		$allFiles = $allFilesResponse['files'];
@@ -87,8 +94,8 @@ function getFilePrioForm($transfer, $withForm = false) {
 
 		$tree = new dir("/",$dirnum, -1);
 		foreach($allFiles as $file) {
-			$fileparts = explode("/", $file[name]);
-			$filesize = $file[length];
+			$fileparts = explode("/", $file['name']);
+			$filesize = $file['length'];
 			$fileprops = array( 'length' => $filesize, 'path' => $fileparts );
 			array_push($files, $fileprops);
 		}
@@ -119,6 +126,52 @@ function getFilePrioForm($transfer, $withForm = false) {
 		$torrent_directoryname = $aTorrent['downloadDir'];
 		$torrent_announceurl = $aTorrent['comment'];
 		$torrent_creationdate = $aTorrent['dateCreated'];
+		$torrent_filescount = $filescount;
+
+	} elseif ( $isQbTorrent ) {
+		// build the file tree from qBittorrent's live file list, seeding each
+		// file's "wanted" state from its current qB priority (0 = skip).
+		$hash = getTransferHash($transfer);
+		$qbt = Qbittorrent::getInstance();
+		$qbFiles = $qbt->files($hash);
+		if (!is_array($qbFiles)) $qbFiles = array();
+		$dirnum = count($qbFiles);
+		$tree = new dir("/", $dirnum, -1);
+		foreach ($qbFiles as $filenum => $f) {
+			$fileparts = explode("/", isset($f['name']) ? $f['name'] : '');
+			$files[] = array(
+				'length' => isset($f['size']) ? $f['size'] : 0,
+				'path' => $fileparts,
+				'prio' => (isset($f['priority']) && $f['priority'] > 0) ? 1 : -1,
+			);
+		}
+		$filescount = count($files);
+		foreach ($files as $filenum => $file) {
+			$depth = count($file['path']);
+			$branch =& $tree;
+			for ($i = 0; $i < $depth; $i++) {
+				if ($i != $depth - 1) {
+					$d =& $branch->findDir($file['path'][$i]);
+					if ($d) {
+						$branch =& $d;
+					} else {
+						$dirnum++;
+						$d =& $branch->addDir(new dir($file['path'][$i], $dirnum, -1));
+						$branch =& $d;
+					}
+				} else {
+					$branch->addFile(new file($file['path'][$i]." (".$file['length'].")", $filenum, $file['length'], $file['prio']));
+				}
+			}
+			unset($branch);
+		}
+		$props = $qbt->properties($hash);
+		$t = $qbt->torrent($hash);
+		$torrent_size = is_array($t) ? $t['totalSize'] : 0;
+		$torrent_chunksize = (is_array($props) && isset($props['piece_size'])) ? $props['piece_size'] : 0;
+		$torrent_directoryname = is_array($t) ? $t['name'] : '';
+		$torrent_announceurl = (is_array($props) && isset($props['comment'])) ? $props['comment'] : '';
+		$torrent_creationdate = (is_array($props) && isset($props['creation_date'])) ? $props['creation_date'] : 0;
 		$torrent_filescount = $filescount;
 
 	} else {
@@ -159,11 +212,11 @@ function getFilePrioForm($transfer, $withForm = false) {
 				}
 			}
 		}
-		$torrent_chunksize = $btmeta[info]['piece length'];
-		$torrent_directoryname = $btmeta[info][name];
-		$torrent_announceurl = $btmeta[announce];
-		$torrent_creationdate = $btmeta['creation date'];
-		$torrent_filescount = count($btmeta['info']['files']);
+		$torrent_chunksize = $btmeta['info']['piece length'];
+		$torrent_directoryname = $btmeta['info']['name'];
+		$torrent_announceurl = isset($btmeta['announce']) ? $btmeta['announce'] : '';
+		$torrent_creationdate = isset($btmeta['creation date']) ? $btmeta['creation date'] : 0;
+		$torrent_filescount = array_key_exists('files', $btmeta['info']) ? count($btmeta['info']['files']) : 1;
 	}
 
 	$retVal .= "<table><tr>";
@@ -175,7 +228,7 @@ function getFilePrioForm($transfer, $withForm = false) {
 	$retVal .= "<tr><td>Created:</td><td>".( $torrent_creationdate == 0 ? 'n/a' : date("F j, Y, g:i a",$torrent_creationdate) )."</td></tr>";
 	$retVal .= "<tr><td>Torrent Size:</td><td>".$torrent_size." (".@formatBytesTokBMBGBTB($torrent_size).")</td></tr>";
 	$retVal .= "<tr><td>Chunk size:</td><td>".$torrent_chunksize." (".@formatBytesTokBMBGBTB($torrent_chunksize).")</td></tr>";
-	if ( array_key_exists('files',$btmeta['info']) || count($files)>0 ) {
+	if ( (isset($btmeta['info']) && is_array($btmeta['info']) && array_key_exists('files',$btmeta['info'])) || count($files)>0 ) {
 		$retVal .= "<tr><td>Selected size:</td><td id=\"sel\">0</td></tr>";
 		$retVal .= "</table><br>\n";
 		if ($withForm) {
@@ -200,7 +253,8 @@ function getFilePrioForm($transfer, $withForm = false) {
 		}
 	} else {
 		$retVal .= "</table><br>";
-		$retVal .= $btmeta['info']['name'].$torrent_size." (".@formatBytesTokBMBGBTB($torrent_size).")";
+		$name = (isset($btmeta['info']['name'])) ? $btmeta['info']['name'] : $torrent_directoryname;
+		$retVal .= $name.$torrent_size." (".@formatBytesTokBMBGBTB($torrent_size).")";
 	}
 	// return
 	return $retVal;
@@ -221,7 +275,7 @@ class dir {
 	var $num;
 	var $prio;
 
-	function dir($name,$num,$prio) {
+	function __construct($name,$num,$prio) {
 		$this->name = $name;
 		$this->num = $num;
 		$this->prio = $prio;
@@ -274,7 +328,7 @@ class file {
 	var $size;
 	var $num;
 
-	function file($name,$num,$size,$prio) {
+	function __construct($name,$num,$size,$prio) {
 		$this->name = $name;
 		$this->num	= $num;
 		$this->size = $size;
