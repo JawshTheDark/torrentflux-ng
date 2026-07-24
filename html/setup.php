@@ -32,7 +32,7 @@ else
 	die("Fatal Error. inc/install/functions.install.php is missing.");
 
 // defines
-define('_NAME', 'TorrentFlux-NG');
+define('_NAME', 'FluxTorrent');
 define('_TITLE', _NAME.' '._VERSION.' - Setup');
 define('_DIR', dirname($_SERVER["SCRIPT_FILENAME"])."/");
 define('_FILE_DBCONF', 'inc/config/config.db.php');
@@ -47,7 +47,7 @@ define('_FORUM_URL', "http://tf-b4rt.berlios.de/forum/");
 if (@is_file(_FILE_DBCONF)) {
 	if (empty($_SESSION['tf_setup_active'])) {
 		@header('HTTP/1.1 403 Forbidden');
-		die('TorrentFlux-NG is already configured. To re-run setup, remove '._FILE_DBCONF.' first.');
+		die('FluxTorrent is already configured. To re-run setup, remove '._FILE_DBCONF.' first.');
 	}
 } else {
 	$_SESSION['tf_setup_active'] = 1;

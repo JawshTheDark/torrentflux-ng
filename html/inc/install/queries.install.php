@@ -135,7 +135,7 @@ array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('enable_btclie
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transfer_profiles','3')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transfer_customize_settings','2')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transferHosts','0')");
-array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('pagetitle','TorrentFlux')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('pagetitle','FluxTorrent')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('enable_sharekill','1')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transfer_window_default','transferStats')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('index_show_seeding','1')");

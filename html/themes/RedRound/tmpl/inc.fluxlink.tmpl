@@ -5,7 +5,7 @@
  <tmpl_else>
   <a href="<tmpl_var name='fluxlink_url'>"> <tmpl_var name="fluxlink_name"></a>
  </tmpl_if>
- | TF-NG theme by <a href="#" id="credit_link">Kanesodi and Epsylon3</a>
+ | <a href="#" id="credit_link">credits</a>
 </tmpl_if>
 <div id="credits" title="credits" style="display:none;">
 <p style="text-align:center;"><img src="themes/RedRound/images/credits/logo.png" alt="RedRound logo" /></p>
@@ -16,16 +16,17 @@
 			<li><a href="#credit_tabs-3">People</a></li>
 		</ul>
 		<div id="credit_tabs-1"> <!-- About -->
-			<h2>RedRound theme for TorrentFlux-NG</h2>
+			<h2>FluxTorrent</h2>
+			<p>A modern, self-hosted web front-end for qBittorrent, with Prowlarr-powered search.</p>
 			<tmpl_if name="is_superadmin">
 				<h3>Version</h3>
 				<ul>
-					<li>RedRound: v1.0git by Epsylon3</li>
-					<li>Dashboard: v1.1git by Epsylon3</li>
+					<li>FluxTorrent: v<tmpl_var name="version"></li>
+					<li>Theme: RedRound (Dashboard)</li>
 				</ul>
 				<p>
-					<a href="https://github.com/epsylon3/torrentflux/issues" target="_blank">report bug</a> | 
-					<a href="https://github.com/epsylon3/torrentflux/tree/master/html/themes/RedRound/" target="_blank">check for a new version</a>
+					<a href="https://github.com/JawshTheDark/torrentflux-ng/issues" target="_blank">report bug</a> |
+					<a href="https://github.com/JawshTheDark/torrentflux-ng" target="_blank">project home</a>
 				</p>
 			<tmpl_else>
 				<h3>Having problems?</h3>
@@ -34,8 +35,10 @@
 		</div>
 		<div id="credit_tabs-2"> <!-- Credits -->
 			<ul>
-				<li>Fixups and TFNG integration: <a href="http://github.com/epsylon3">Epsylon3</a></li>
-				<li>Base: <a href="http://www.kaotonik.net/en/home/thk/torrentflux-b4rt-theme">thk tf-b4rt Theme</a></li>
+				<li>FluxTorrent (PHP 8 / qBittorrent / Prowlarr fork): <a href="https://github.com/JawshTheDark/torrentflux-ng">JawshTheDark</a></li>
+				<li>Based on TorrentFlux-NG &amp; TFB4RT: <a href="http://github.com/epsylon3">Epsylon3</a> and the original TorrentFlux authors</li>
+				<li>RedRound theme by Kanesodi &amp; Epsylon3</li>
+				<li>Theme base: <a href="http://www.kaotonik.net/en/home/thk/torrentflux-b4rt-theme">thk tf-b4rt Theme</a></li>
 				<li>RedRound <a href="http://www.minimalistic-design.net/">Minimalistic Design</a></li>
 				<li>Transfer/Directory Options: <a href="http://www.intensivstation.ch/">intensivstation</a></li>
 				<li>Dashboard tables: <a href="http://veerle.duoh.com/blog/comments/a_css_styled_table/">Veerle Pieters</a></li>

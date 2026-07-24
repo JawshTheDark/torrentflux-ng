@@ -2,11 +2,11 @@
 <form name="theForm" action="admin.php?op=updateServerSettings" method="post" onsubmit="return validateSettings('server')">
 <h1>server settings</h1>
 <p><input type="Submit" value="Update Settings"></p>
-<h2>TorrentFlux-NG Paths</h2>
+<h2>FluxTorrent Paths</h2>
 <table id="adminServerSettings">
 	<tr>
 		<th>
-			Transfer Parent Path<br /><span>Define the main TorrentFlux-NG parent path. Directory must be writable by the webserver user</span></th>
+			Transfer Parent Path<br /><span>Define the main FluxTorrent parent path. Directory must be writable by the webserver user</span></th>
 		<td>
 			<input name="path" id="path" type="Text" maxlength="254" value="<tmpl_var name="path">">
 				<tmpl_if name="is_path" value="1">
@@ -60,7 +60,7 @@
 	</tr>
 </table>
 <h2>Binary Paths</h2>
-<p class="NormalText">Paths to the command-line tools TorrentFlux-NG shells out to. In the Docker image these are already installed on the default <code>PATH</code>, so you normally do not need to change them &ndash; only edit a path if the tool lives somewhere unusual on your host. A green tick means the binary was found and is executable.</p>
+<p class="NormalText">Paths to the command-line tools FluxTorrent shells out to. In the Docker image these are already installed on the default <code>PATH</code>, so you normally do not need to change them &ndash; only edit a path if the tool lives somewhere unusual on your host. A green tick means the binary was found and is executable.</p>
 <table id="adminServerSettings">
 		<tr>
 			<th class="alt">wget<br /><span>Fetches plain HTTP/FTP downloads (the non-torrent transfer type).</span></th>

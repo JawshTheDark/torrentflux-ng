@@ -1,0 +1,40 @@
+FluxTorrent — Credits & Lineage
+===============================
+
+FluxTorrent is a maintained, modernized fork. It exists only because of the
+work of the projects and people below. All original attribution is preserved.
+
+PROJECT LINEAGE
+---------------
+FluxTorrent (PHP 8 / qBittorrent / Prowlarr fork)
+                        https://github.com/JawshTheDark/torrentflux-ng
+  ← TorrentFlux-NG      https://github.com/epsylon3/torrentflux   (Epsylon3)
+  ← TorrentFlux-b4rt    (the b4rt team and contributors)
+  ← TorrentFlux         (Bytemonkey / Qbittorrent-era original authors)
+
+The modernization (PHP 5 → 8.5 port, qBittorrent Web-API backend, Prowlarr
+search integration, Docker packaging, dark UI, HTML5 player) is by JawshTheDark.
+
+THEME (RedRound)
+----------------
+DESIGN
+  thk                   http://www.kaotonik.net/en/home/thk/torrentflux-b4rt-theme
+  RoundRed              http://www.minimalistic-design.net/
+  Blue Freedom          http://www.minimalistic-design.net/
+  dashboard tables      http://veerle.duoh.com/blog/comments/a_css_styled_table/
+  RedRound theme        Kanesodi & Epsylon3
+GRAPHICS
+  ajax-loader.gif       http://www.ajaxload.info/
+  famfamfam silk icons  http://www.famfamfam.com/
+  Tango Icons           http://tango.freedesktop.org/
+  favicon               http://gnome-look.org/usermanager/search.php?username=jaanos
+
+LIBRARIES
+---------
+  jQuery / jQuery UI    https://jquery.com/
+  ADOdb                 (database abstraction, via Composer)
+
+LICENSE
+-------
+FluxTorrent is released under the GNU General Public License v2, the same
+license as its ancestors. See ../COPYING.

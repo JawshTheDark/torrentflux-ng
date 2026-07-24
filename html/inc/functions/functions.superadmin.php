@@ -123,7 +123,7 @@ function sa_processes($action = "") {
 		case "0": // Processes-main
 			$htmlTitle = "Processes";
 			$htmlMain .= '<p>';
-			$htmlMain .= 'View currently running TorrentFlux-NG processes:<br><br>';
+			$htmlMain .= 'View currently running FluxTorrent processes:<br><br>';
 			$htmlMain .= '<a href="' . _FILE_THIS . '?p=1"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="All" border="0"> All</a> - detailed process list';
 			$htmlMain .= '<p>';
 			$htmlMain .= '<a href="' . _FILE_THIS . '?p=2"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Transfers" border="0"> Transfers</a> - simple list of running transfers with option to force stop individual transfers';
@@ -271,7 +271,7 @@ function sa_maintenance($action = "") {
 			$htmlTitle = "Maintenance - Kill";
 			$htmlMain .= '<br>';
 			$htmlMain .= '<font color="red"><strong>DON\'T</strong> do this or you will screw up things for sure!</font><br><br>';
-			$htmlMain .= 'This is only meant as emergency \'last resort\' if things have already gone terribly wrong already.<br>Please use this only if you know what you are doing.<br><br><hr><strong>ALL the selected process types will be killed, not just those related to TorrentFlux-NG!!!</strong><hr><br>';
+			$htmlMain .= 'This is only meant as emergency \'last resort\' if things have already gone terribly wrong already.<br>Please use this only if you know what you are doing.<br><br><hr><strong>ALL the selected process types will be killed, not just those related to FluxTorrent!!!</strong><hr><br>';
 			$htmlMain .= '<p>';
 			$htmlMain .= '<strong>PHP</strong><br>';
 			$htmlMain .= 'Kill all PHP processes:<br>';
@@ -472,7 +472,7 @@ function sa_maintenance($action = "") {
 			$htmlMain .= '<a href="' . _FILE_THIS . '?m=34"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="mainline-clean" border="0"> BitTorrent Mainline Clean</a>';
 			$htmlMain .= '<p>';
 			$htmlMain .= '<strong>Template Cache</strong><br>';
-			$htmlMain .= 'Delete the TorrentFlux-NG template cache:<br>';
+			$htmlMain .= 'Delete the FluxTorrent template cache:<br>';
 			$htmlMain .= '<a href="' . _FILE_THIS . '?m=35"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="template-cache-clean" border="0"> Template Cache Clean</a>';
 			$htmlMain .= '<br><br>';
 			break;
@@ -558,7 +558,7 @@ function sa_maintenance($action = "") {
 
 		case "35": // Maintenance-Clean:template-cache-clean
 			$htmlTitle = "Maintenance - Clean - Template Cache";
-			$htmlMain .= '<br><strong>Cleaning TorrentFlux-NG Template Cache:</strong><br>';
+			$htmlMain .= '<br><strong>Cleaning FluxTorrent Template Cache:</strong><br>';
 			$result = cleanDir($cfg["path"].'.templateCache');
 			if (is_dir("/tmp/.templateCache"))
 				$result = cleanDir("/tmp/.templateCache");
@@ -580,7 +580,7 @@ function sa_maintenance($action = "") {
 		case "41": // Maintenance: Repair
 			$htmlTitle = "Maintenance - Repair";
 			$htmlMain .= '<br>';
-			$htmlMain .= 'Repairing TorrentFlux-NG:';
+			$htmlMain .= 'Repairing FluxTorrent:';
 			require_once("inc/classes/MaintenanceAndRepair.php");
 			MaintenanceAndRepair::repair();
 			$htmlMain .= ' <font color="green">done</font>';
@@ -638,8 +638,8 @@ function sa_maintenance($action = "") {
 			break;
 
 		case "6": // Maintenance: Lock
-			$htmlTitle = "Maintenance - Lock TorrentFlux-NG Frontend";
-			$htmlMain .= '<br>Lock/unlock access to the TorrentFlux-NG frontend.  Only the superadmin can access the locked frontend.<br><br><hr>';
+			$htmlTitle = "Maintenance - Lock FluxTorrent Frontend";
+			$htmlMain .= '<br>Lock/unlock access to the FluxTorrent frontend.  Only the superadmin can access the locked frontend.<br><br><hr>';
 			switch ($cfg['webapp_locked']) {
 				case 0:
 					$htmlMain .= '<strong><font color="green">Frontend currently unlocked.</font></strong>';
@@ -722,11 +722,11 @@ function sa_backup($action = "") {
 			$htmlMain .= '"Backup to Client" will create the backup archive and prompt you to save in your web browser.<br><br><strong>Please wait</strong> until the backup is complete.  Don\'t click stuff while backup archive is being created - you will be informed if something goes wrong so no need to stress it.<br><br>';
 			$htmlMain .= "<hr><strong>What Data is Backed Up?</strong><br>";
 			$htmlMain .= "<ul>";
-			$htmlMain .= "<li>Document root directory structure -<br>all files underneath the webserver document root folder where you installed TorrentFlux-NG.<br><br></li>";
+			$htmlMain .= "<li>Document root directory structure -<br>all files underneath the webserver document root folder where you installed FluxTorrent.<br><br></li>";
 			$htmlMain .= "<li>The Transfers folder directory structure -<br>all files in the .transfers folder located in the path configured in the admin pages 'server' tab.<br><br></li>";
 			$htmlMain .= "<li>The fluxd folder directory structure -<br>all files in the .fluxd folder located in the path configured in the admin pages 'server' tab.<br><br></li>";
 			$htmlMain .= "<li>The MRTG folder directory structure -<br>all files in the .mrtg folder located in the path configured in the admin pages 'server' tab.<br><br></li>";
-			$htmlMain .= "<li>The TorrentFlux-NG database -<br>the database used to store information used in the day to day running of TorrentFlux-NG.<br><br></li>";
+			$htmlMain .= "<li>The FluxTorrent database -<br>the database used to store information used in the day to day running of FluxTorrent.<br><br></li>";
 			$htmlMain .= "</ul><hr>";
 
 			printPage();
@@ -827,9 +827,9 @@ function sa_log($action = "") {
 		case "0": // log-main
 			$htmlTitle = "Log Viewer";
 			$htmlMain .= '<br>Select the type of log you want to view below:<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?l=1"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="fluxd" border="0"> fluxd</a> - STDOUT logfiles for the TorrentFlux-NG fluxd daemon';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?l=1"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="fluxd" border="0"> fluxd</a> - STDOUT logfiles for the FluxTorrent fluxd daemon';
 			$htmlMain .= '<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?l=2"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="fluxd-error" border="0"> fluxd-error</a> - STDERR logfiles for the TorrentFlux-NG fluxd daemon';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?l=2"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="fluxd-error" border="0"> fluxd-error</a> - STDERR logfiles for the FluxTorrent fluxd daemon';
 			$htmlMain .= '<p>';
 			$htmlMain .= '<a href="' . _FILE_THIS . '?l=3"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="fluazu" border="0"> fluazu</a> - logfiles for the fluazu interface to Azureus';
 			$htmlMain .= '<p>';
@@ -936,11 +936,11 @@ function sa_misc($action = "") {
 		case "0": // misc-main
 			$htmlTitle = "Miscellaneous Admin Tasks";
 			$htmlMain .= '<br>Select the task you wish to perform from below:<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?y=1"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="List files installed" border="0"> Lists</a> - view a list of currently installed TorrentFlux-NG files';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?y=1"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="List files installed" border="0"> Lists</a> - view a list of currently installed FluxTorrent files';
 			$htmlMain .= '<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?y=3"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Checksum Validation" border="0"> Checksum Validation</a> - check the integrity of installed TorrentFlux-NG files';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?y=3"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Checksum Validation" border="0"> Checksum Validation</a> - check the integrity of installed FluxTorrent files';
 			$htmlMain .= '<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?y=5"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Check Requirements" border="0"> Check Requirements</a> - check your server meets the requirements to run TorrentFlux-NG';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?y=5"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Check Requirements" border="0"> Check Requirements</a> - check your server meets the requirements to run FluxTorrent';
 			$htmlMain .= '<br><br>';
 			break;
 
@@ -1000,11 +1000,11 @@ function sa_misc($action = "") {
 		case "5": // misc - Check
 			$htmlTitle = "Misc - Check Requirements";
 			$htmlMain .= '<br>Select the requirements you wish to check from below:<p>';
-			$htmlMain .= "<strong>PHP Web</strong><br>Check your PHP web installation meets the requirements for web based activities in TorrentFlux-NG:<br>";
+			$htmlMain .= "<strong>PHP Web</strong><br>Check your PHP web installation meets the requirements for web based activities in FluxTorrent:<br>";
 			$htmlMain .= '<a href="' . _FILE_THIS . '?y=51"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="php-web" border="0"> Check PHP Web Requirements</a><br><br>';
-			$htmlMain .= "<strong>PHP CLI</strong><br>Check your PHP commandline binary installation meets the requirements for commandline based activities in TorrentFlux-NG:<br>";
+			$htmlMain .= "<strong>PHP CLI</strong><br>Check your PHP commandline binary installation meets the requirements for commandline based activities in FluxTorrent:<br>";
 			$htmlMain .= '<a href="' . _FILE_THIS . '?y=52"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="php-cli" border="0"> Check PHP CLI Binary Requirements</a><br><br>';
-			$htmlMain .= "<strong>Perl</strong><br>Check your Perl installation meets the requirements for perl based activities in TorrentFlux-NG:<br>";
+			$htmlMain .= "<strong>Perl</strong><br>Check your Perl installation meets the requirements for perl based activities in FluxTorrent:<br>";
 			$htmlMain .= '<a href="' . _FILE_THIS . '?y=53"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Perl" border="0"> Check Perl Requirements</a>';
 			$htmlMain .= '<br><br>';
 			break;
@@ -1063,11 +1063,11 @@ function sa_tfb($action = "") {
 		case "0": // main
 			$htmlTitle = "About";
 			$htmlMain .= '<br>Select the information you wish to view from below:<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?z=1"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Version" border="0"> Version</a> - check your TorrentFlux-NG version is up to date';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?z=1"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Version" border="0"> Version</a> - check your FluxTorrent version is up to date';
 			$htmlMain .= '<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?z=2"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="News" border="0"> News</a> - view the release news for each version of TorrentFlux-NG';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?z=2"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="News" border="0"> News</a> - view the release news for each version of FluxTorrent';
 			$htmlMain .= '<p>';
-			$htmlMain .= '<a href="' . _FILE_THIS . '?z=3"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Changelog" border="0"> Changelog</a> - view the changelogs for each version of TorrentFlux-NG';
+			$htmlMain .= '<a href="' . _FILE_THIS . '?z=3"><img src="themes/'.$cfg["theme"].'/images/arrow.gif" width="9" height="9" title="Changelog" border="0"> Changelog</a> - view the changelogs for each version of FluxTorrent';
 			$htmlMain .= '<br><br>';
 			break;
 
@@ -1318,7 +1318,7 @@ function sa_update($action = "") {
 			sendLine('<strong>Update - Files</strong><br><br><em>Updating Files... Please Wait...</em><br><ul>');
 			sendLine('<li>Getting Update-Archive:<br>');
 			@ini_set("allow_url_fopen", "1");
-			@ini_set("user_agent", "TorrentFlux-NG/". _VERSION);
+			@ini_set("user_agent", "FluxTorrent/". _VERSION);
 			// get md5
 			$md5hash = getDataFromUrl(_SUPERADMIN_URLBASE . _SUPERADMIN_PROXY ."?u=4&v=" . _VERSION);
 			if ((!isset($md5hash)) || (strlen($md5hash) != 32)) {
@@ -2329,7 +2329,7 @@ function validateLocalFiles() {
 	// download list
 	$checksumsString = "";
 	@ini_set("allow_url_fopen", "1");
-	@ini_set("user_agent", "TorrentFlux-NG/". _VERSION);
+	@ini_set("user_agent", "FluxTorrent/". _VERSION);
 	if ($urlHandle = @fopen(_SUPERADMIN_URLBASE._FILE_CHECKSUMS_PRE._VERSION._FILE_CHECKSUMS_SUF, 'r')) {
 		stream_set_timeout($urlHandle, 15);
 		$info = stream_get_meta_data($urlHandle);
@@ -2577,20 +2577,20 @@ function phpCheckWeb() {
 		$state .= '<font color="green">Ok</font>';
 		$state .= "</strong><br>";
 		$retVal .= $state;
-		$retVal .= "TorrentFlux-NG should run on this system.";
+		$retVal .= "FluxTorrent should run on this system.";
 	} else {
 		if (($errors == 0) && ($warnings > 0)) {
 			// may run with flaws
 			$state .= '<font color="orange">Warning</font>';
 			$state .= "</strong><br>";
 			$retVal .= $state;
-			$retVal .= "TorrentFlux-NG may run on this system, but there may be problems.";
+			$retVal .= "FluxTorrent may run on this system, but there may be problems.";
 		} else {
 			// not ok
 			$state .= '<font color="red">Failed</font>';
 			$state .= "</strong><br>";
 			$retVal .= $state;
-			$retVal .= "TorrentFlux-NG cannot run on this system.";
+			$retVal .= "FluxTorrent cannot run on this system.";
 		}
 	}
 	// errors

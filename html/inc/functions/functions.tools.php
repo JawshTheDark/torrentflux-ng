@@ -222,7 +222,7 @@ function getSVNRevisionFromId($filename) {
  */
 function getDataFromUrl($url) {
 	ini_set("allow_url_fopen", "1");
-	ini_set("user_agent", "TorrentFlux-NG/". _VERSION);
+	ini_set("user_agent", "FluxTorrent/". _VERSION);
 	if ($urlHandle = @fopen($url, 'r')) {
 		stream_set_timeout($urlHandle, 15);
 		$info = stream_get_meta_data($urlHandle);

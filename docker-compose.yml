@@ -1,7 +1,7 @@
 version: "3.8"
 
-# TorrentFlux-NG modern stack:
-#   web        - TorrentFlux-NG (PHP 8 / Apache)
+# FluxTorrent modern stack:
+#   web        - FluxTorrent (PHP 8 / Apache)
 #   qbittorrent - download engine, controlled via its Web API
 #   prowlarr   - indexer aggregation for the built-in search
 #

@@ -874,7 +874,7 @@ function validateTransmissionCli($the_file) {
 		((stripos($transmissionHelp, 'tfcli') === false) &&
 		 (stripos($transmissionHelp, 'torrentflux') === false))
 	)
-		? validationMsg(false, 'Executable is not TorrentFlux-NG bundled transmission-cli')
+		? validationMsg(false, 'Executable is not FluxTorrent bundled transmission-cli')
 		: validationMsg(true);
 }
 

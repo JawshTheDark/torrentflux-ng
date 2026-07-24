@@ -1,7 +1,7 @@
 <tmpl_include name="inc.adminLayoutHeader.tmpl">
 <form name="theForm" action="admin.php?op=updateTransferSettings" method="post" onsubmit="return validateSettings('transfer')">
 <h1>transfer settings</h1>
-<p class="NormalText">These settings control how TorrentFlux-NG talks to its torrent backend and the default limits applied to new transfers. This build uses <strong>qBittorrent</strong> (via its Web API) as the torrent client and <strong>wget</strong> for plain HTTP/FTP downloads.</p>
+<p class="NormalText">These settings control how FluxTorrent talks to its torrent backend and the default limits applied to new transfers. This build uses <strong>qBittorrent</strong> (via its Web API) as the torrent client and <strong>wget</strong> for plain HTTP/FTP downloads.</p>
 <p><input type="Submit" value="Update Settings"></p>
 
 <h2>Access</h2>
@@ -29,7 +29,7 @@
 </table>
 
 <h2>qBittorrent Backend</h2>
-<p class="NormalText">TorrentFlux-NG does not run a torrent client itself &ndash; it drives a running <strong>qBittorrent</strong> (or <code>qbittorrent-nox</code>) instance through its Web API. Enable the Web UI in qBittorrent under <em>Tools &rarr; Options &rarr; Web UI</em>, then enter its address and credentials here. When TorrentFlux and qBittorrent run in the same Docker network, use the service name and internal port (for example <code>http://qbittorrent:8080</code>) rather than a public URL.</p>
+<p class="NormalText">FluxTorrent does not run a torrent client itself &ndash; it drives a running <strong>qBittorrent</strong> (or <code>qbittorrent-nox</code>) instance through its Web API. Enable the Web UI in qBittorrent under <em>Tools &rarr; Options &rarr; Web UI</em>, then enter its address and credentials here. When FluxTorrent and qBittorrent run in the same Docker network, use the service name and internal port (for example <code>http://qbittorrent:8080</code>) rather than a public URL.</p>
 <table id="adminTransferSettings">
 	<tr>
 		<th>qBittorrent<br /><span>Enable the qBittorrent Web API client. This must be on for torrents to work.</span></th>
@@ -53,7 +53,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th class="alt">qBittorrent Password<br /><span>Web UI password. Stored so TorrentFlux can authenticate to the API; use a dedicated account if you can.</span></th>
+		<th class="alt">qBittorrent Password<br /><span>Web UI password. Stored so FluxTorrent can authenticate to the API; use a dedicated account if you can.</span></th>
 		<td class="alt">
 			<input name="qbittorrent_pass" id="qbittorrent_pass" type="Password" maxlength="100" value="<tmpl_var name="qbittorrent_pass">" size="20">
 		</td>
