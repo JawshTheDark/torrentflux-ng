@@ -1,0 +1,56 @@
+/**
+ * Fluid layout for RedRound.
+ *
+ * The original theme is a fixed ~900px column with a 1024px header image.
+ * These overrides (loaded last) make the page follow the browser width:
+ * a full-width flat banner replaces the header art, and the content panel
+ * stretches with comfortable side margins.
+ */
+
+/* ---------------------------------------------------------------- header */
+
+#center_wrap {
+	width: auto !important;
+	height: auto !important;
+}
+
+#header {
+	position: static !important;
+	width: auto !important;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 4px 0 10px;
+	background: linear-gradient(#a41e33, #8e1b2d) !important;
+	border-bottom: 2px solid #6d1523;
+}
+
+#UserBar { padding-top: 8px; }
+
+#header h1 {
+	padding: 8px 0 0 24px !important;
+	margin: 0;
+}
+
+/* ---------------------------------------------------------------- content */
+
+.container {
+	display: block !important;
+	min-width: 0 !important;
+	width: auto !important;
+	margin: 10px 20px 0 !important;
+}
+
+.container div#tabs { min-width: 0 !important; }
+
+table#indexStatsBarWarning { width: 100% !important; }
+
+#footer { width: auto !important; }
+
+/* ---------------------------------------------------------------- admin */
+
+.middle {
+	width: auto !important;
+	margin: 0 20px !important;
+}
+
+#wrap { width: auto !important; }

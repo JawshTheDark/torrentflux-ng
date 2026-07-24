@@ -107,6 +107,14 @@ html.dark #transferList th { background-color: #26262d !important; }
 
 /* ------------------------------------------------------------------ admin dashboard */
 
+/* decorative cell/table background art shows through on dark surfaces */
+html.dark th, html.dark td {
+	background-image: none !important;
+}
+html.dark [id^="adminMainStats"] {
+	background-image: none !important;
+}
+
 html.dark #adminMenu, html.dark .dashboard, html.dark #middle, html.dark .middle {
 	background-color: transparent !important;
 }
