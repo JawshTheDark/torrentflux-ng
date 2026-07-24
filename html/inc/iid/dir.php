@@ -655,7 +655,8 @@ foreach ($entrys as $entry) {
 	else if (!@is_dir($dirName.$entry)) // file
 	{
 
-		if ((0+$size) > 0 && $cfg['enable_dirstats'] == 1) {
+		// $size is a formatted string here; use the raw byte count $ssz
+		if ($cfg['enable_dirstats'] == 1 && isset($ssz) && (float)$ssz > 0) {
 
 			//WEB DL Users (Who Downloaded it ?)
 			$userlist = getDownloadWebLogUsers($dirName.$entry,0);
