@@ -1,0 +1,128 @@
+/**
+ * RedRound dark mode.
+ *
+ * Activated by adding class "dark" to <html> (see js/darkmode.js).
+ * Replaces the image-based light chrome with flat dark surfaces and
+ * modern border-radius corners, keeping the RedRound red accent.
+ */
+
+html.dark, html.dark body {
+	background: #141417;
+	color: #d6d6d9;
+}
+
+/* ------------------------------------------------------------------ chrome */
+
+/* rounded-corner box images -> flat panels */
+html.dark .container .angle,
+html.dark #AngleTopLeft, html.dark #AngleTopRight, html.dark #AngleTopBorder,
+html.dark #AngleBottomLeft, html.dark #AngleBottomRight, html.dark #AngleBottomBorder {
+	background: none !important;
+}
+html.dark #AngleTopLeft { height: 12px; }
+html.dark #AngleBottomLeft { height: 12px; }
+html.dark #ContentBorderLeft {
+	background: #1e1e23 !important;
+	border-radius: 10px;
+	border: 1px solid #2e2e35;
+}
+html.dark #ContentBorderRight {
+	background: none !important;
+}
+
+/* header keeps its red banner image; give a fallback tint */
+html.dark #header { background-color: transparent; }
+
+html.dark #footer, html.dark #footer a { color: #8a8a90; }
+
+/* ------------------------------------------------------------------ text */
+
+html.dark h1, html.dark h2, html.dark h3 { color: #e66478; }
+html.dark a:link, html.dark a:visited { color: #e66478; }
+html.dark a:hover { color: #ff8598; }
+html.dark p, html.dark td, html.dark th, html.dark li, html.dark span, html.dark label, html.dark font {
+	color: #d6d6d9;
+}
+
+/* ------------------------------------------------------------------ tables */
+
+html.dark table.table, html.dark #adminSearchSettings, html.dark #adminTransferSettings,
+html.dark #adminProwlarrSettings, html.dark table[bordercolor] {
+	background-color: #1e1e23 !important;
+	border-color: #33333b !important;
+}
+html.dark th, html.dark .tableheading {
+	background-color: #26262d !important;
+	color: #e8e8ec !important;
+}
+html.dark td.tablecontent { background-color: #1e1e23 !important; }
+html.dark tr:hover td { background-color: #24242b; }
+
+/* legacy bgcolor attributes (engine output, old tables) */
+html.dark [bgcolor] { background-color: #1e1e23 !important; }
+html.dark tr[bgcolor] td, html.dark td[bgcolor] { background-color: #222228 !important; }
+html.dark body[bgcolor] { background-color: #141417 !important; }
+
+/* ------------------------------------------------------------------ forms */
+
+html.dark input[type="text"], html.dark input[type="Text"],
+html.dark input[type="password"], html.dark input[type="Password"],
+html.dark select, html.dark textarea {
+	background-color: #26262d;
+	color: #e8e8ec;
+	border: 1px solid #3a3a44;
+	border-radius: 4px;
+	padding: 2px 4px;
+}
+html.dark input[type="submit"], html.dark input[type="Submit"],
+html.dark input[type="button"], html.dark button {
+	background-color: #8e1b2d;
+	color: #fff;
+	border: 1px solid #6d1523;
+	border-radius: 4px;
+	padding: 3px 10px;
+	cursor: pointer;
+}
+html.dark input[type="submit"]:hover, html.dark button:hover { background-color: #a92238; }
+
+/* ------------------------------------------------------------------ index specifics */
+
+html.dark #indexStatsBar td { background-color: transparent !important; }
+html.dark .ui-progressbar { background: #26262d; border-color: #3a3a44; }
+html.dark #tabs, html.dark .ui-tabs .ui-tabs-panel { background: transparent; }
+html.dark .ui-widget-content { background: #1e1e23; color: #d6d6d9; border-color: #33333b; }
+html.dark .ui-widget-header { background: #8e1b2d; color: #fff; border-color: #6d1523; }
+html.dark .ui-state-default, html.dark .ui-tabs .ui-tabs-nav li {
+	background: #26262d; color: #d6d6d9; border-color: #33333b;
+}
+html.dark .ui-state-default a { color: #d6d6d9; }
+html.dark .ui-tabs .ui-tabs-nav li.ui-tabs-selected, html.dark .ui-state-active {
+	background: #8e1b2d; border-color: #6d1523;
+}
+html.dark .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, html.dark .ui-state-active a { color: #fff; }
+
+/* transfer list */
+html.dark #transferList td, html.dark #transferList th { border-color: #2e2e35; }
+html.dark #transferList th { background-color: #26262d !important; }
+
+/* ------------------------------------------------------------------ admin dashboard */
+
+html.dark #adminMenu, html.dark .dashboard, html.dark #middle, html.dark .middle {
+	background-color: transparent !important;
+}
+html.dark div.middle table, html.dark div.middle td { background-color: transparent !important; }
+
+/* stat boxes on the admin dashboard use background images; flatten them */
+html.dark [style*="statstfb4rt-bg"], html.dark [style*="statsdatabase-bg"],
+html.dark [style*="statssuperadmin-bg"], html.dark [style*="statssystem-bg"] {
+	background-image: none !important;
+	background-color: #1e1e23 !important;
+	border: 1px solid #2e2e35;
+	border-radius: 8px;
+}
+
+/* ------------------------------------------------------------------ misc */
+
+html.dark pre { background: #101013; color: #cfcfd4; border: 1px solid #2e2e35; }
+html.dark hr { border-color: #2e2e35; }
+html.dark ::selection { background: #8e1b2d; color: #fff; }

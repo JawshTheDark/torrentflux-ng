@@ -16,10 +16,11 @@
 		<li><a href="index.php?iid=readrss" accesskey="r"><img src="themes/<tmpl_var name="theme">/images/UserBar/rss.png" alt="RSS Torrents" title="RSS Torrents" /> RSS Torrents</a></li>
 				<tmpl_if name="isAdmin">
 		<li>
-			<img src="themes/<tmpl_var name="theme">/images/UserBar/admin.png" title="<tmpl_var name="_ADMINISTRATION">" alt="admin" /> <a href="admin.php" class="overlay" accesskey="a"><tmpl_var name="_ADMINISTRATION"></a>
+			<a href="admin.php" accesskey="a"><img src="themes/<tmpl_var name="theme">/images/UserBar/admin.png" title="<tmpl_var name="_ADMINISTRATION">" alt="admin" /> <tmpl_var name="_ADMINISTRATION"></a>
 		</li>
 		</tmpl_if>
 		<li><a href="index.php?iid=logout" class="titlebarbutton"><img src="themes/<tmpl_var name="theme">/images/UserBar/logout.png" title="Logout" alt="Logout" /> Log out</a></li>
+		<li><a href="#" id="darkmode-toggle" title="Toggle dark mode">&#9790; Dark</a></li>
 
 	</ul>
 </tmpl_if>
