@@ -25,6 +25,7 @@ services:
     volumes:
       - downloads:/downloads
       - db:/var/www/db
+      - config:/var/www/html/inc/config
     depends_on:
       - qbittorrent
     restart: unless-stopped
@@ -60,5 +61,6 @@ services:
 volumes:
   downloads:
   db:
+  config:          # persists inc/config (config.db.php) across rebuilds
   qbt-config:
   prowlarr-config:
