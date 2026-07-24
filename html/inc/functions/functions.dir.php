@@ -414,7 +414,14 @@ function isValidEntry($entry) {
 	// check if weirdo macos-entry
 	if (substr($entry, 0, 1) == ":")
 		return false;
-	// check if in restricted array
+	// check if in restricted array (rebuild if the global wasn't initialised
+	// by the caller, e.g. when invoked outside the dir-listing flow)
+	if (!is_array($restrictedFileEntries)) {
+		global $cfg;
+		$restrictedFileEntries = ((isset($cfg["dir_restricted"])) && (strlen($cfg["dir_restricted"]) > 0))
+			? explode(":", $cfg["dir_restricted"])
+			: array();
+	}
 	if (in_array($entry, $restrictedFileEntries))
 		return false;
 	// entry ok
