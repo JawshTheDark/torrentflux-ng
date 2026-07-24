@@ -118,6 +118,14 @@ html.dark a.transferName,
 html.dark table#transfer_table td,
 html.dark table#transfer_table th,
 html.dark table#transfer_table th a { color: #e2e2e6 !important; }
+
+/* column-header row + its sort links: the sort links carry background:black,
+   sized to their text, which renders as separate black boxes. Make the whole
+   header row one flat dark bar. */
+html.dark table#transfer_table th { background-color: #26262d !important; }
+html.dark table#transfer_table th a,
+html.dark table#transfer_table th a.sortheader,
+html.dark table.sortable a.sortheader { background-color: transparent !important; }
 html.dark table#transfer_table tr:hover td { background-color: #2a2a31; }
 html.dark table#transfer_table tr.hover, html.dark table#transfer_table tr.hover a { color: #fff !important; }
 
