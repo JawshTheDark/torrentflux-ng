@@ -41,6 +41,19 @@ function tmplInitializeInstance($theme, $template) {
 	//  set common template-vars
 	$tmpl->setUnknowns('comment');
 	$tmpl->setvar('theme', $theme);
+	// asset cache-buster: max mtime of the theme files we iterate on, so a
+	// redeploy changes the ?v= and browsers fetch fresh CSS/JS automatically
+	$assetV = 0;
+	foreach (array(
+		"themes/".$theme."/css/fluid.css",
+		"themes/".$theme."/css/dark.css",
+		"themes/".$theme."/css/mainLayout.css",
+		"themes/".$theme."/scripts/index.js",
+	) as $af) {
+		$m = @filemtime($af);
+		if ($m !== false && $m > $assetV) $assetV = $m;
+	}
+	$tmpl->setvar('asset_v', $assetV);
 	$tmpl->setvar('pagetitle', @ $cfg["pagetitle"]);
 	$tmpl->setvar('main_bgcolor', @ $cfg["main_bgcolor"]);
 	$tmpl->setvar('table_border_dk', @ $cfg["table_border_dk"]);
