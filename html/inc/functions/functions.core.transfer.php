@@ -830,15 +830,16 @@ function getTransferListArray() {
 		// ============================================================ progress
 		if ($settings[5] != 0) {
 			$percentage = "";
-			if (($percentDone >= 100) && (trim($sf->up_speed) != "")) {
-				$percentage = @number_format((($transferTotals["uptotal"] / $sf->size) * 100), 2) . '%';
+			if ($percentDone >= 100) {
+				// download complete -> full bar (seeding). The share ratio is
+				// a separate metric shown in the details, not the progress.
+				$percentage = '100%';
+			} else if ($percentDone >= 1) {
+				$percentage = $percentDone . '%';
+			} else if ($percentDone < 0) {
+				$percentage = round(($percentDone*-1)-100,1) . '%';
 			} else {
-				if ($percentDone >= 1)
-					$percentage = $percentDone . '%';
-				else if ($percentDone < 0)
-					$percentage = round(($percentDone*-1)-100,1) . '%';
-				else
-					$percentage = '0%';
+				$percentage = '0%';
 			}
 			array_push($transferAry, $percentage);
 		}
