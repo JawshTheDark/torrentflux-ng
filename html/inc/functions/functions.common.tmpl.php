@@ -58,20 +58,8 @@ function tmplSetIndexPageFormVars() {
 	$tmpl->setvar('index_page_sortorder', $cfg["index_page_sortorder"]);
 	$tmpl->setvar('transfer_delete_data', $cfg["transfer_delete_data"]);
 	$tmpl->setloop('Engine_List', tmplSetSearchEngineDDL($cfg["searchEngine"]));
-	// index-page Search tab: for Prowlarr, offer the live indexer list (same as
-	// the standalone search page) so the user can target a specific tracker.
-	if ($cfg["searchEngine"] == 'Prowlarr' && is_file('inc/searchEngines/ProwlarrEngine.php')) {
-		require_once('inc/searchEngines/SearchEngineBase.php');
-		require_once('inc/searchEngines/ProwlarrEngine.php');
-		$sEngineIdx = new SearchEngine(serialize($cfg));
-		if ($sEngineIdx->initialized && method_exists($sEngineIdx, 'getIndexers')) {
-			$indexer_list = array(array('indexerId' => 'all', 'indexerName' => 'All Indexers', 'selected' => 1));
-			foreach ($sEngineIdx->getIndexers() as $ix)
-				$indexer_list[] = array('indexerId' => $ix['id'], 'indexerName' => $ix['name'], 'selected' => 0);
-			$tmpl->setvar('has_indexers', 1);
-			$tmpl->setloop('Indexer_List', $indexer_list);
-		}
-	}
+	// Prowlarr: also offer the live indexer list for the embedded search box
+	tmplSetSearchIndexerDDL();
 	$transferWindowDefaultList = array();
 	array_push($transferWindowDefaultList, array(
 		'name' => 'Stats',

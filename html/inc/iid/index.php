@@ -1096,7 +1096,7 @@ if ($cfg['enable_xfer'] == 1) {
 		if ($cfg['xfer_week'])
 			$tmpl->setvar('xfer_week', tmplGetXferBar($cfg['xfer_week'],$xfer_total['week']['total'],$cfg['_XFERTHRU'].' '.$cfg['week_start'].':'));
 		$monthStart = strtotime(date('Y-m-').$cfg['month_start']);
-		$monthText = (date('j') < $cfg['month_start']) ? date('M j',strtotime('-1 Day',$monthStart)) : date('M j',strtotime('+1 Month -1 Day',$monthStart));
+		$monthText = (date('j') < $cfg['month_start']) ? date('Mï¿½j',strtotime('-1 Day',$monthStart)) : date('Mï¿½j',strtotime('+1 Month -1 Day',$monthStart));
 		if ($cfg['xfer_month'])
 			$tmpl->setvar('xfer_month', tmplGetXferBar($cfg['xfer_month'],$xfer_total['month']['total'],$cfg['_XFERTHRU'].' '.$monthText.':'));
 		if ($cfg['xfer_total'])
@@ -1196,6 +1196,7 @@ $tmpl->setvar('drivespace', $cfg['driveSpace']);
 $tmpl->setvar('freeSpaceFormatted', $cfg['freeSpaceFormatted']);
 $tmpl->setvar('file_types_label', $cfg['file_types_label']);
 $tmpl->setloop('Engine_List', tmplSetSearchEngineDDL($cfg["searchEngine"]));
+tmplSetSearchIndexerDDL();
 //
 $tmpl->setvar('_ABOUTTODELETE', $cfg['_ABOUTTODELETE']);
 $tmpl->setvar('_SELECTFILE', $cfg['_SELECTFILE']);

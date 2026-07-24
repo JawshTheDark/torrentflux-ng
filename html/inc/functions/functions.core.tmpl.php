@@ -139,6 +139,46 @@ function tmplSetIidVars() {
  * @param $selectedEngine
  * @param $autoSubmit
  */
+/**
+ * Populate the Prowlarr indexer dropdown (has_indexers + Indexer_List loop) for
+ * any page that renders a search box. Uses the session-cached indexer list so
+ * it does not hit Prowlarr on every page load. Returns true if set.
+ */
+function tmplSetSearchIndexerDDL() {
+	global $cfg, $tmpl;
+	if ($cfg["searchEngine"] != 'Prowlarr')
+		return false;
+	// reuse the freshly-cached list where possible (avoids a per-page ping)
+	if (isset($_SESSION['prowlarr_indexers'], $_SESSION['prowlarr_indexers_ts'])
+		&& is_array($_SESSION['prowlarr_indexers'])
+		&& (time() - $_SESSION['prowlarr_indexers_ts']) < 120) {
+		$list = $_SESSION['prowlarr_indexers'];
+	} else {
+		if (!is_file('inc/searchEngines/ProwlarrEngine.php'))
+			return false;
+		require_once('inc/searchEngines/SearchEngineBase.php');
+		require_once('inc/searchEngines/ProwlarrEngine.php');
+		$eng = new SearchEngine(serialize($cfg));
+		if (!$eng->initialized || !method_exists($eng, 'getIndexers'))
+			return false;
+		$list = $eng->getIndexers();
+	}
+	$selected = tfb_getRequestVar('indexer');
+	if (empty($selected)) $selected = 'all';
+	$indexer_list = array(array(
+		'indexerId' => 'all', 'indexerName' => 'All Indexers',
+		'selected' => ($selected == 'all') ? 1 : 0,
+	));
+	foreach ($list as $ix)
+		$indexer_list[] = array(
+			'indexerId' => $ix['id'], 'indexerName' => $ix['name'],
+			'selected' => ((string)$selected === (string)$ix['id']) ? 1 : 0,
+		);
+	$tmpl->setvar('has_indexers', 1);
+	$tmpl->setloop('Indexer_List', $indexer_list);
+	return true;
+}
+
 function tmplSetSearchEngineDDL($selectedEngine = 'Prowlarr', $autoSubmit = false) {
 	global $cfg, $tmpl;
 	// set some vars
