@@ -34,6 +34,11 @@ if (!empty($cfg["qbittorrent_enable"])) {
 	require_once('inc/functions/functions.rpc.qbittorrent.php');
 	qbtRefreshAll();
 }
+// refresh Transmission daemon stat-files
+if (!empty($cfg["transmission_rpc_enable"])) {
+	require_once('inc/functions/functions.rpc.transmission.php');
+	trmRefreshAll();
+}
 
 if (isset($_REQUEST['ajax_update'])) {
 	$isAjaxUpdate = true;

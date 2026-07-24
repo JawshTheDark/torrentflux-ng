@@ -150,10 +150,18 @@ class ClientHandlerTransmissionRPC extends ClientHandler
 		} else {
 			$this->command .= "\n". 'torrent-start '.$transfer.' '.$hash; //log purpose
 		}
-		if (!empty($hash)) {
-			
-			if ($this->sharekill > 100) {
-				// bad sharekill, must be 2.5 for 250%
+		if (!empty($hash) && is_string($hash)) {
+
+			// persist the daemon hash so updateStatFiles() can match this
+			// transfer against the live torrent list (mirrors the qBittorrent handler)
+			if (isHash($hash)) {
+				$sql = "UPDATE tf_transfers SET hash=".$db->qstr(strtolower($hash))." WHERE transfer=".$db->qstr($transfer);
+				$db->Execute($sql);
+			}
+
+			// sharekill is a percentage of the share ratio (100 = 1:1); Transmission
+			// wants a ratio, so convert.
+			if ($this->sharekill > 0) {
 				$this->sharekill = round((float) $this->sharekill / 100.0,2);
 			}
 
@@ -598,14 +606,26 @@ class ClientHandlerTransmissionRPC extends ClientHandler
 			$transfer = $hashes[$hash];
 			$sf = new StatFile($transfer);
 
-			$sf->running      = ArrayGet($t,'running',0);
+			// $t carries compat status codes (4=downloading, 8=seeding, 9=seed-wait)
+			$status = $t['status'];
+			$sf->running      = ($status == 4 || $status == 8 || $status == 9) ? 1 : 0;
 			$sf->percent_done = round($t['percentDone'] * 100, 2);
-			if ($t['status'] == 8 || $t['status'] == 9) {
+			if ($status == 8 || $status == 9) {
 				$sf->sharing = round($t['uploadRatio'] * 100, 2);
 			}
 
 			$sf->downtotal = $t['downloadedEver'];
-			$sf->uptotal = $t['uploadedEver'];
+			$sf->uptotal   = $t['uploadedEver'];
+			$sf->down_speed = formatBytesTokBMBGBTB($t['rateDownload'])."/s";
+			$sf->up_speed   = formatBytesTokBMBGBTB($t['rateUpload'])."/s";
+			$sf->seeds = ArrayGet($t, 'peersSendingToUs', 0);
+			$sf->peers = ArrayGet($t, 'peersGettingFromUs', 0);
+			if ($status == 8 || $status == 9)
+				$sf->time_left = 'Seeding';
+			elseif (isset($t['eta']) && $t['eta'] > 0 && $t['eta'] < 8640000)
+				$sf->time_left = convertTime($t['eta']);
+			else
+				$sf->time_left = 'Downloading';
 
 			$sf->write();
 		}
@@ -698,7 +718,8 @@ class ClientHandlerTransmissionRPC extends ClientHandler
 
 		$stat = array();
 		foreach ($aTorrent as $t) {
-			if ($t['status'] == 4 || $t['status'] == 8) $stat[$t['hashString']] = $t;
+			// 4=downloading, 8=seeding, 9=seed-wait (compat codes)
+			if ($t['status'] == 4 || $t['status'] == 8 || $t['status'] == 9) $stat[$t['hashString']] = $t;
 		}
 		return $stat;
 	}

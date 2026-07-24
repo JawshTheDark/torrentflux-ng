@@ -38,6 +38,15 @@ function admin_updateServerSettings() {
 function admin_updateTransferSettings() {
 	global $cfg;
 	$settings = processSettingsParams(false, false);
+	// The Active Backend selector is the single source of truth: make sure the
+	// chosen client is enabled. We only turn the selected one ON (non-destructive),
+	// so transfers already started on the other client keep being managed.
+	if (isset($settings['btclient'])) {
+		if ($settings['btclient'] == 'qbittorrent')
+			$settings['qbittorrent_enable'] = 1;
+		else if ($settings['btclient'] == 'transmissionrpc')
+			$settings['transmission_rpc_enable'] = 1;
+	}
 	saveSettings('tf_settings', $settings);
 	AuditAction($cfg["constants"]["admin"], " Updating Transfer Settings");
 	@header("location: admin.php?op=transferSettings");

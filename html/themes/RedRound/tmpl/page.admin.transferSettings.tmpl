@@ -28,18 +28,23 @@
 	</tr>
 </table>
 
-<h2>qBittorrent Backend</h2>
-<p class="NormalText">FluxTorrent does not run a torrent client itself &ndash; it drives a running <strong>qBittorrent</strong> (or <code>qbittorrent-nox</code>) instance through its Web API. Enable the Web UI in qBittorrent under <em>Tools &rarr; Options &rarr; Web UI</em>, then enter its address and credentials here. When FluxTorrent and qBittorrent run in the same Docker network, use the service name and internal port (for example <code>http://qbittorrent:8080</code>) rather than a public URL.</p>
+<h2>Torrent Backend</h2>
+<p class="NormalText">FluxTorrent does not run a torrent client itself &ndash; it drives a client you already run. Choose which one <strong>new</strong> torrents are sent to, then fill in that client's connection details below. Existing transfers keep whichever client they were started with.</p>
 <table id="adminTransferSettings">
 	<tr>
-		<th>qBittorrent<br /><span>Enable the qBittorrent Web API client. This must be on for torrents to work.</span></th>
+		<th>Active Backend<br /><span>Which torrent client new transfers use. Only the details for the selected client need to be filled in.</span></th>
 		<td>
-			<select name="qbittorrent_enable" id="qbittorrent_enable">
-				<option value="0" <tmpl_if name="qbittorrent_enable" value="0"> selected</tmpl_if>>Disabled</option>
-				<option value="1" <tmpl_if name="qbittorrent_enable" value="1"> selected</tmpl_if>>Enabled</option>
+			<select name="btclient" id="btclient">
+				<option value="qbittorrent" <tmpl_if name="btclient" value="qbittorrent">selected</tmpl_if>>qBittorrent (Web API)</option>
+				<option value="transmissionrpc" <tmpl_if name="btclient" value="transmissionrpc">selected</tmpl_if>>Transmission (RPC)</option>
 			</select>
 		</td>
 	</tr>
+</table>
+
+<h3>qBittorrent (Web API)</h3>
+<p class="NormalText">Enable the Web UI in qBittorrent under <em>Tools &rarr; Options &rarr; Web UI</em>, then enter its address and credentials. When FluxTorrent and qBittorrent share a Docker network, use the service name and internal port (e.g. <code>http://qbittorrent:8080</code>) rather than a public URL.</p>
+<table id="adminTransferSettings">
 	<tr>
 		<th class="alt">qBittorrent URL<br /><span>Base URL of the qBittorrent Web UI, including scheme and port, with no trailing path &ndash; e.g. <code>http://qbittorrent:8080</code> or <code>https://qbit.example.com</code>.</span></th>
 		<td class="alt">
@@ -56,6 +61,35 @@
 		<th class="alt">qBittorrent Password<br /><span>Web UI password. Stored so FluxTorrent can authenticate to the API; use a dedicated account if you can.</span></th>
 		<td class="alt">
 			<input name="qbittorrent_pass" id="qbittorrent_pass" type="Password" maxlength="100" value="<tmpl_var name="qbittorrent_pass">" size="20">
+		</td>
+	</tr>
+</table>
+
+<h3>Transmission (RPC)</h3>
+<p class="NormalText">Connects to a Transmission daemon (<code>transmission-daemon</code>) over its RPC interface. Enable RPC in Transmission's settings, and if it runs in the same Docker network use the service name as the host (e.g. <code>transmission</code>).</p>
+<table id="adminTransferSettings">
+	<tr>
+		<th>Transmission Host<br /><span>Hostname or IP of the Transmission daemon (e.g. <code>transmission</code> or <code>127.0.0.1</code>). No scheme or port.</span></th>
+		<td>
+			<input name="transmission_rpc_host" id="transmission_rpc_host" type="Text" maxlength="254" value="<tmpl_var name="transmission_rpc_host">" size="30">
+		</td>
+	</tr>
+	<tr>
+		<th class="alt">Transmission Port<br /><span>RPC port (Transmission default is <code>9091</code>).</span></th>
+		<td class="alt">
+			<input name="transmission_rpc_port" id="transmission_rpc_port" type="Text" maxlength="5" value="<tmpl_var name="transmission_rpc_port">" size="6">
+		</td>
+	</tr>
+	<tr>
+		<th>Transmission User<br /><span>RPC username. Leave blank if RPC authentication is disabled.</span></th>
+		<td>
+			<input name="transmission_rpc_user" id="transmission_rpc_user" type="Text" maxlength="60" value="<tmpl_var name="transmission_rpc_user">" size="20">
+		</td>
+	</tr>
+	<tr>
+		<th class="alt">Transmission Password<br /><span>RPC password. Leave blank if RPC authentication is disabled.</span></th>
+		<td class="alt">
+			<input name="transmission_rpc_password" id="transmission_rpc_password" type="Password" maxlength="100" value="<tmpl_var name="transmission_rpc_password">" size="20">
 		</td>
 	</tr>
 </table>

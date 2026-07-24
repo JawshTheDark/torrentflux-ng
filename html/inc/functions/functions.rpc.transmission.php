@@ -160,8 +160,7 @@ function isValidTransmissionTransfer($uid = 0,$tid) {
 	;
 	$recordset = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
-	if ( sizeof($recordset)!=0 ) return true;
-	else return false;
+	return ($recordset && !$recordset->EOF);
 }
 
 /**
@@ -175,7 +174,7 @@ function getTransmissionTransferOwner($transfer) {
 	$sql = "SELECT user_id FROM tf_users u join tf_transmission_user t on (t.uid = u.uid) WHERE t.tid = '$transfer';";
 	$recordset = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
-	if ( sizeof($recordset)!=0 ) {
+	if ( $recordset && !$recordset->EOF ) {
 		$row = $recordset->FetchRow();
 		return $row['user_id'];
 	}
@@ -346,8 +345,15 @@ function addTransmissionTransfer($uid = 0, $url, $path, $paused=true) {
 		return $result;
 	}
 
-	$hash = $result['arguments']['torrent-added']['hashString'];
-	//rpc_error("The hash is: $hash. The uid is $uid"); exit();
+	// Transmission answers a fresh add with "torrent-added" and an add of an
+	// already-present torrent with "torrent-duplicate"; both carry the hash.
+	$args = isset($result['arguments']) ? $result['arguments'] : array();
+	if (isset($args['torrent-added']['hashString']))
+		$hash = $args['torrent-added']['hashString'];
+	else if (isset($args['torrent-duplicate']['hashString']))
+		$hash = $args['torrent-duplicate']['hashString'];
+	else
+		return $result;
 
 	if (isHash($hash))
 		addTransmissionTransferToDB($uid, $hash);
@@ -485,6 +491,27 @@ function getTransmissionSpeedLimitDownload($usecache=false) {
 	}
 
 	return 0;
+}
+
+/**
+ * trmRefreshAll — sync live state from the Transmission daemon into the
+ * FluxTorrent stat-files (and enforce sharekill). Mirrors qbtRefreshAll().
+ * Throttled to once every 5s per session.
+ */
+function trmRefreshAll() {
+	global $cfg;
+	if (empty($cfg["transmission_rpc_enable"]))
+		return;
+	$now = time();
+	if (isset($_SESSION['trm_last_refresh']) && ($now - $_SESSION['trm_last_refresh']) < 5)
+		return;
+	$_SESSION['trm_last_refresh'] = $now;
+	require_once('inc/classes/Transmission.class.php');
+	if (!Transmission::isRunning())
+		return;
+	require_once('inc/classes/ClientHandler.php');
+	$ch = ClientHandler::getInstance('transmissionrpc');
+	$ch->updateStatFiles();
 }
 
 ?>

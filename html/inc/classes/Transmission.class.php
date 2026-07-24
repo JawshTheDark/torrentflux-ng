@@ -263,8 +263,20 @@ class Transmission
 	 */
 	public function add( $torrent_location, $save_path = '', $extra_options = array() )
 	{
-		$extra_options['download-dir'] = $save_path;
-		$extra_options['filename'] = $torrent_location;
+		if ($save_path !== '')
+			$extra_options['download-dir'] = $save_path;
+
+		// A remote or containerised daemon cannot read FluxTorrent's local
+		// filesystem, so for a local .torrent file we send its contents as
+		// base64 "metainfo". Magnet links and http(s)/ftp URLs are passed as
+		// "filename" for the daemon to fetch itself.
+		if (preg_match('#^(magnet:|https?://|ftp://)#i', $torrent_location)) {
+			$extra_options['filename'] = $torrent_location;
+		} else if (@is_file($torrent_location)) {
+			$extra_options['metainfo'] = base64_encode(@file_get_contents($torrent_location));
+		} else {
+			$extra_options['filename'] = $torrent_location;
+		}
 
 		return $this->request( "torrent-add", $extra_options );
 	}

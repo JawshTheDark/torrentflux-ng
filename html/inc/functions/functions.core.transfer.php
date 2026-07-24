@@ -706,22 +706,10 @@ function getTransferListArray() {
 		qbtRefreshAll();
 	}
 
-	if ($cfg["transmission_rpc_enable"]==2) {
+	// refresh stat-files from the Transmission daemon (mirrors the qBittorrent path above)
+	if (!empty($cfg["transmission_rpc_enable"])) {
 		require_once('inc/functions/functions.rpc.transmission.php');
-		
-		// New method for transmission-daemon transfers
-		$result = getUserTransmissionTransfers($cfg['uid']);
-		foreach ($result as $aTorrent) {
-			if ( $aTorrent['status']==4 || $aTorrent['status'] == 8 ) {
-				if (!isset($cfg["total_upload"]))
-					$cfg["total_upload"] = 0;
-				if (!isset($cfg["total_download"]))
-					$cfg["total_download"] = 0;
-				$cfg["total_upload"] = $cfg["total_upload"] + GetSpeedValue($aTorrent['rateUpload']/1000);
-				$cfg["total_download"] = $cfg["total_download"] + GetSpeedValue($aTorrent['rateDownload']/1000);
-			}
-			array_push($arUserTransfers, $aTorrent);
-		}
+		trmRefreshAll();
 	}
 
 	$arList = getTransferArray($sortOrder);
