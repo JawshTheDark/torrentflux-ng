@@ -54,3 +54,27 @@ table#indexStatsBarWarning { width: 100% !important; }
 }
 
 #wrap { width: auto !important; }
+
+/* ---------------------------------------------------------------- larger UI */
+/* base theme text is 10-12px; scale the whole interface up for readability */
+body, .ui-widget, p, td, th, font, li, span, label, div, a, input, select {
+	font-size: 14px;
+}
+#UserBar, #UserBar a { font-size: 14px; }
+#header h1 { font-size: 1.6em; }
+
+/* transfer list: taller rows ("the bar") + bigger text */
+table#transfer_table,
+table#transfer_table td,
+table#transfer_table th,
+table#transfer_table a,
+table#transfer_table th a { font-size: 14px !important; }
+table#transfer_table td,
+table#transfer_table th {
+	padding-top: 7px !important;
+	padding-bottom: 7px !important;
+}
+#TransferHeader, #transferList .heading { font-size: 15px; }
+
+/* top stats bar (storage / upload / download) */
+#indexStatsBar td { font-size: 14px; }
