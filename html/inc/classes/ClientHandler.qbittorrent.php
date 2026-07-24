@@ -28,6 +28,8 @@ require_once("inc/functions/functions.rpc.qbittorrent.php");
  */
 class ClientHandlerQbittorrent extends ClientHandler
 {
+	// when true, delete() tells qBittorrent to remove the payload too
+	var $deleteData = false;
 
 	// =========================================================================
 	// constructor
@@ -224,7 +226,9 @@ class ClientHandlerQbittorrent extends ClientHandler
 		}
 
 		$hash = getTransferHash($transfer);
-		deleteQbittorrentTransfer($cfg['uid'], $hash, false);
+		// $deleteData is set by the "delete with data" dispatcher path; qBittorrent
+		// owns the payload at its own save path (which may differ from TF's path).
+		deleteQbittorrentTransfer($cfg['uid'], $hash, !empty($this->deleteData));
 
 		// delete
 		return $this->_delete();

@@ -161,8 +161,8 @@ class StatFile
 		$this->running = "0";
 		if ($this->percent_done == 0)
 			$this->running = "2"; //new
-		elseif ($this->percent_done > 0) {
-			$this->percent_done= 0 - $this->percent_done;
+		elseif ((float)$this->percent_done > 0) {
+			$this->percent_done= 0 - (float)$this->percent_done;
 		}
 		$this->time_left = "Stopped";
 		$this->down_speed = "";

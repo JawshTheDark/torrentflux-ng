@@ -296,9 +296,10 @@ function tmplGetXferBar($total, $used, $title, $type='xfer') {
 	global $cfg;
 	// create template-instance
 	$tmpl = tmplGetInstance($cfg["theme"], "component.xferBar.tmpl");
-	$remaining = $total - ($used / 1048576);
+	$total = (float)$total;
+	$remaining = $total - ((float)$used / 1048576);
 	$remaining = max(0, min($total, $remaining));
-	$percent = round(($remaining / $total) * 100,0);
+	$percent = ($total > 0) ? round(($remaining / $total) * 100, 0) : 0;
 	$text = ' ('.formatFreeSpace($remaining).') '.$cfg['_REMAINING'];
 	if($type=='xfer')
 	{

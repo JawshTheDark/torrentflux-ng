@@ -241,11 +241,13 @@ function dispatcher_deleteDataTransfer($transfer) {
 	if ($tRunningFlag) {
 		@error("Delete with Data failed, Transfer is running and stop failed", "", "", $ch->messages);
 	} else {
-		// transferData
+		// transferData (removes files under TF's own path, if any)
 		$msgsDelete = deleteTransferData($transfer);
 		if (count($msgsDelete) > 0)
 			@error("There were Problems deleting Transfer-Data", "", "", $msgsDelete);
-		// transfer
+		// transfer — for qBittorrent, also have the daemon delete its own payload
+		if ($client == 'qbittorrent')
+			$ch->deleteData = true;
 		$ch->delete($transfer);
 		if (count($ch->messages) > 0)
 			@error("There were Problems", "", "", $ch->messages);
