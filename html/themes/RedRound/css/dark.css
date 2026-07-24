@@ -105,6 +105,17 @@ html.dark .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, html.dark .ui-state-activ
 html.dark #transferList td, html.dark #transferList th { border-color: #2e2e35; }
 html.dark #transferList th { background-color: #26262d !important; }
 
+/* transfer-name links + cells read #222 (near-black) by default */
+html.dark table#transfer_table a,
+html.dark a.transferName,
+html.dark table#transfer_table td,
+html.dark table#transfer_table th,
+html.dark table#transfer_table th a { color: #e2e2e6 !important; }
+html.dark table#transfer_table tr:hover td { background-color: #2a2a31; }
+html.dark table#transfer_table tr.hover, html.dark table#transfer_table tr.hover a { color: #fff !important; }
+/* progress-bar percentage labels are inline color:black on colored bars — keep legible */
+html.dark .pbpercent { color: #111 !important; text-shadow: 0 0 2px rgba(255,255,255,.6); }
+
 /* ------------------------------------------------------------------ admin dashboard */
 
 /* decorative cell/table background art shows through on dark surfaces */
