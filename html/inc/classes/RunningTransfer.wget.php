@@ -32,7 +32,7 @@ class RunningTransferWget extends RunningTransfer
 	 * @param $psLine
 	 * @return RunningTransferWget
 	 */
-	function RunningTransferWget($psLine) {
+	function __construct($psLine = "") {
 		global $cfg;
 		// ps-parse
 		if (strlen($psLine) > 0) {

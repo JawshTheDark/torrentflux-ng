@@ -53,6 +53,10 @@ $tmpl->setvar('superseeder', $cfg["superseeder"]);
 $tmpl->setvar('skiphashcheck', $cfg["skiphashcheck"]);
 $tmpl->setvar('enable_sharekill', $cfg["enable_sharekill"]);
 
+$tmpl->setvar('qbittorrent_enable', isset($cfg["qbittorrent_enable"]) ? $cfg["qbittorrent_enable"] : 0);
+$tmpl->setvar('qbittorrent_url', isset($cfg["qbittorrent_url"]) ? $cfg["qbittorrent_url"] : 'http://localhost:8081');
+$tmpl->setvar('qbittorrent_user', isset($cfg["qbittorrent_user"]) ? $cfg["qbittorrent_user"] : 'admin');
+$tmpl->setvar('qbittorrent_pass', isset($cfg["qbittorrent_pass"]) ? $cfg["qbittorrent_pass"] : '');
 $tmpl->setvar('transmission_rpc_enable', $cfg["transmission_rpc_enable"]);
 $tmpl->setvar('transmission_rpc_host', $cfg["transmission_rpc_host"]);
 $tmpl->setvar('transmission_rpc_port', $cfg["transmission_rpc_port"]);

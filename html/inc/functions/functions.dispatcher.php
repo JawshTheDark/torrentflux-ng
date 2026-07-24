@@ -673,6 +673,33 @@ function _dispatcher_processDownload($url, $type = 'torrent', $ext = '.torrent')
 	$origurl = $url; // Added by deadeyes; copied as later $url gets changed
 	if (!empty($url)) {
 
+		// indexer proxies (e.g. Prowlarr) hand out http links that redirect to
+		// magnet URIs; resolve those redirects so the magnet branch triggers
+		if ($type === 'torrent' && preg_match('#^https?://#i', $url) && function_exists('curl_init')) {
+			$probeUrl = $url;
+			for ($i = 0; $i < 5; $i++) {
+				$chc = curl_init($probeUrl);
+				curl_setopt_array($chc, array(
+					CURLOPT_RETURNTRANSFER => true,
+					// GET with a 1-byte range: some servers 405 on HEAD
+					CURLOPT_RANGE => '0-0',
+					CURLOPT_FOLLOWLOCATION => false,
+					CURLOPT_CONNECTTIMEOUT => 5,
+					CURLOPT_TIMEOUT => 15,
+				));
+				curl_exec($chc);
+				$redirect = curl_getinfo($chc, CURLINFO_REDIRECT_URL);
+				$code = curl_getinfo($chc, CURLINFO_RESPONSE_CODE);
+				if (empty($redirect) || $code < 300 || $code >= 400)
+					break;
+				if (stripos($redirect, 'magnet:') === 0) {
+					$url = $redirect;
+					break;
+				}
+				$probeUrl = $redirect;
+			}
+		}
+
 		$hash = false;
 		// Added by deadeyes to detect a magnet link
 		if ( $type === 'torrent' && strlen( stristr( $url, 'magnet:' ) ) > 0 ) {
@@ -683,6 +710,11 @@ function _dispatcher_processDownload($url, $type = 'torrent', $ext = '.torrent')
 				require_once('inc/functions/functions.rpc.transmission.php');
 				$hash = addTransmissionTransfer($cfg['uid'], $url, $cfg['path'].$cfg['user']);
 				if (isHash($hash)) startTransmissionTransfer($hash);
+			}
+			if ($client == 'qbittorrent' && !empty($cfg["qbittorrent_enable"])) {
+				require_once('inc/functions/functions.rpc.qbittorrent.php');
+				$hash = addQbittorrentTransfer($cfg['uid'], $url, $cfg['path'].$cfg['user']);
+				if (isHash($hash)) startQbittorrentTransfer($hash);
 			}
 			if (($client == 'vuzerpc' || $client == 'azureus')  && $cfg["vuze_rpc_enable"]) {
 				require_once('inc/functions/functions.rpc.vuze.php');

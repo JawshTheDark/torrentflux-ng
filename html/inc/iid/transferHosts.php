@@ -38,9 +38,16 @@ tmplInitializeInstance($cfg["theme"], "page.transferHosts.tmpl");
 // init transfer
 transfer_init();
 
+$isQbittorrentTransfer = false;
+if (!empty($cfg["qbittorrent_enable"])) {
+	$hash = isHash($transfer) ? $transfer : getTransferHash($transfer);
+	require_once('inc/functions/functions.rpc.qbittorrent.php');
+	$isQbittorrentTransfer = isQbittorrentTransfer($hash) || (getTransferClient($transfer) == 'qbittorrent');
+}
+
 $isTransmissionTransfer = false;
-if ($cfg["transmission_rpc_enable"] > 0) {
-	if (isHash($transfer)) 
+if (!$isQbittorrentTransfer && $cfg["transmission_rpc_enable"] > 0) {
+	if (isHash($transfer))
 		$hash = $transfer;
 	else
 		$hash = getTransferHash($transfer);
@@ -52,7 +59,18 @@ if ($cfg["transmission_rpc_enable"] > 0) {
 }
 
 $list_host = array();
-if ($isTransmissionTransfer) {
+if ($isQbittorrentTransfer) {
+	$transfer = getQbittorrentTransfer($hash, array('peers'));
+	if (is_array($transfer)) {
+		foreach ( $transfer['peers'] as $peer) {
+			array_push($list_host, array(
+				'host' => @gethostbyaddr($peer['address']),
+				'port' => $peer['port']
+				)
+			);
+		}
+	}
+} elseif ($isTransmissionTransfer) {
 	$options = array('peers');
 	$transfer = getTransmissionTransfer($hash, $options);
 	

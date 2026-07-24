@@ -663,6 +663,12 @@ function getTransferListArray() {
 	if ($sortOrder == "")
 		$sortOrder = $cfg["index_page_sortorder"];
 
+	// refresh stat-files from the qBittorrent API and pick up magnet adds
+	if (!empty($cfg["qbittorrent_enable"])) {
+		require_once('inc/functions/functions.rpc.qbittorrent.php');
+		qbtRefreshAll();
+	}
+
 	if ($cfg["transmission_rpc_enable"]==2) {
 		require_once('inc/functions/functions.rpc.transmission.php');
 		
@@ -884,6 +890,9 @@ function getTransferListArray() {
 					break;
 				case "transmissionrpc":
 					array_push($transferAry, "Tr");
+					break;
+				case "qbittorrent":
+					array_push($transferAry, "Q");
 					break;
 				case "mainline":
 					array_push($transferAry, "M");

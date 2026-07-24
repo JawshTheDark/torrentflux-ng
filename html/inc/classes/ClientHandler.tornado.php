@@ -38,7 +38,7 @@ class ClientHandlerTornado extends ClientHandler
 	/**
 	 * ctor
 	 */
-	function ClientHandlerTornado() {
+	function __construct() {
 		global $cfg;
 		$this->type = "torrent";
 		$this->client = "tornado";

@@ -130,6 +130,10 @@ class ClientHandler
 			require_once('inc/classes/ClientHandler.transmissionrpc.php');
 			$ch = new ClientHandlerTransmissionRPC();
 			break;
+		case "qbittorrent":
+			require_once('inc/classes/ClientHandler.qbittorrent.php');
+			$ch = new ClientHandlerQbittorrent();
+			break;
 		case "azureus":
 			global $cfg;
 			if ($cfg['vuze_rpc_enable']) {

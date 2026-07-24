@@ -147,7 +147,7 @@ class MaintenanceAndRepair
      *
      * @return MaintenanceAndRepair
      */
-    function MaintenanceAndRepair() {
+    function __construct() {
     	global $argv;
         // messages
         $this->messages = array();

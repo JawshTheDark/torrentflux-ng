@@ -114,7 +114,7 @@ class CommandHandler
 	 *
 	 * @return CommandHandler
 	 */
-	function CommandHandler() {
+	function __construct() {
 		$this->_messages = array();
 		$this->_commands = array();
 	}

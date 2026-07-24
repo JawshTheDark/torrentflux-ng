@@ -44,8 +44,13 @@ $ch = ClientHandler::getInstance(getTransferClient($transfer));
 // set file vars
 transfer_setFileVars();
 
+$isQbittorrentTransfer = false;
+if (!empty($cfg["qbittorrent_enable"]) && getTransferClient($transfer) == 'qbittorrent') {
+	$isQbittorrentTransfer = true;
+}
+
 $isTransmissionTransfer = false;
-if ($cfg["transmission_rpc_enable"] > 0) {
+if (!$isQbittorrentTransfer && $cfg["transmission_rpc_enable"] > 0) {
         if (isHash($transfer))
                 $hash = $transfer;
         else

@@ -307,7 +307,7 @@ class FluAzu
 	/**
 	 * ctor
 	 */
-	function FluAzu() {
+	function __construct() {
 		global $cfg;
 		
 		if (strncmp(PHP_OS,'WIN',3) === 0)

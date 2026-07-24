@@ -207,7 +207,7 @@ class Vlc
      *
      * @return Vlc
      */
-    function Vlc() {
+    function __construct() {
     	global $cfg;
     	$this->addr = $_SERVER['SERVER_ADDR'];
     	$this->port_default = (int) $cfg['vlc_port'];

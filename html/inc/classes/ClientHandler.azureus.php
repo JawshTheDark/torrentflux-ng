@@ -33,7 +33,7 @@ class ClientHandlerAzureus extends ClientHandler
 	/**
 	 * ctor
 	 */
-	function ClientHandlerAzureus() {
+	function __construct() {
 		$this->type = "torrent";
 		$this->client = "azureus";
 		$this->binSystem = "java";

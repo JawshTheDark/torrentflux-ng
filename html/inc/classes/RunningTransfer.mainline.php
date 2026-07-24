@@ -32,7 +32,7 @@ class RunningTransferMainline extends RunningTransfer
 	 * @param $psLine
 	 * @return RunningTransferMainline
 	 */
-	function RunningTransferMainline($psLine) {
+	function __construct($psLine = "") {
 		global $cfg;
 		// mainlineBin
 		$mainlineBin = $cfg["docroot"]."bin/clients/mainline/tfmainline.py";

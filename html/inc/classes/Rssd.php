@@ -154,7 +154,7 @@ class Rssd
 	 *
 	 * @return Rssd
 	 */
-	function Rssd() {
+	function __construct() {
 		global $argv;
 		// cli/web
 		$this->_mode = (empty($argv[0]))

@@ -29,6 +29,12 @@ if ((!isset($cfg['user'])) or (isset($_REQUEST['cfg']))) {
 
 /******************************************************************************/
 
+// refresh qBittorrent stat-files and adopt magnet-added transfers
+if (!empty($cfg["qbittorrent_enable"])) {
+	require_once('inc/functions/functions.rpc.qbittorrent.php');
+	qbtRefreshAll();
+}
+
 if (isset($_REQUEST['ajax_update'])) {
 	$isAjaxUpdate = true;
 	$ajaxUpdateParams = tfb_getRequestVar('ajax_update');

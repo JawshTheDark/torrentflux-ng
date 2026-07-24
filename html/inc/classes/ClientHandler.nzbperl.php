@@ -38,7 +38,7 @@ class ClientHandlerNzbperl extends ClientHandler
 	/**
 	 * ctor
 	 */
-	function ClientHandlerNzbperl() {
+	function __construct() {
 		global $cfg;
 		$this->type = "nzb";
 		$this->client = "nzbperl";

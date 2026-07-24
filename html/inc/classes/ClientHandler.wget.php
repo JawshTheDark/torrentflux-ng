@@ -36,7 +36,7 @@ class ClientHandlerWget extends ClientHandler
 	/**
 	 * ctor
 	 */
-	function ClientHandlerWget() {
+	function __construct() {
 		$this->type = "wget";
 		$this->client = "wget";
 		$this->binSystem = "php";

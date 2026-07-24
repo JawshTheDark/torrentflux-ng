@@ -129,7 +129,15 @@ function image_pieTransferPeers() {
 	else
 		$hash = getTransferHash($transfer);
 
-	if ($cfg["transmission_rpc_enable"]) {
+	if (!empty($cfg["qbittorrent_enable"])) {
+		require_once('inc/functions/functions.rpc.qbittorrent.php');
+		$qbtTransfer = getQbittorrentTransfer($hash, array('trackerStats','peers'));
+		if ( is_array($qbtTransfer) ) {
+			$validTransfer = true;
+			$client = "qbittorrent";
+		}
+	}
+	if (!$validTransfer && $cfg["transmission_rpc_enable"]) {
 		require_once('inc/functions/functions.rpc.transmission.php');
 		$options = array('trackerStats','peers');
 		$transTransfer = getTransmissionTransfer($hash, $options); // false if not found; TODO check if transmission enabled
@@ -181,6 +189,17 @@ function image_pieTransferPeers() {
 			$peers = sizeof($transTransfer['peers']);
 			$seeds = 0;
 			foreach ( $transTransfer['trackerStats'] as $tracker ) {
+				$seeds += ($tracker['seederCount'] == -1 ? 0:$tracker['seederCount']);
+			}
+			$peerData['seedsLabel'] = $seeds;
+			$peerData['seeds'] = $seeds;
+			$peerData['peersLabel'] = $peers;
+			$peerData['peers'] = $peers;
+			break;
+		case "qbittorrent":
+			$peers = sizeof($qbtTransfer['peers']);
+			$seeds = 0;
+			foreach ( $qbtTransfer['trackerStats'] as $tracker ) {
 				$seeds += ($tracker['seederCount'] == -1 ? 0:$tracker['seederCount']);
 			}
 			$peerData['seedsLabel'] = $seeds;

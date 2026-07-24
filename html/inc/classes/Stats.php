@@ -129,7 +129,7 @@ class Stats
 	 * @param $params
 	 * @return Stats
 	 */
-	function Stats($params) {
+	function __construct($params) {
 		global $cfg;
 
 		// type

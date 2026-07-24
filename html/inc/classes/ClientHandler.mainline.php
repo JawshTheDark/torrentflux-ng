@@ -38,7 +38,7 @@ class ClientHandlerMainline extends ClientHandler
 	/**
 	 * ctor
 	 */
-	function ClientHandlerMainline() {
+	function __construct() {
 		global $cfg;
 		$this->type = "torrent";
 		$this->client = "mainline";

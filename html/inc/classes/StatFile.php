@@ -73,7 +73,7 @@ class StatFile
 	 * @param $user
 	 * @return StatFile
 	 */
-	function StatFile($transfer, $user = "") {
+	function __construct($transfer, $user = "") {
 		// init
 		$this->init($transfer, $user);
 	}

@@ -77,7 +77,13 @@ $cfg["user"] = "";
 // ip + hostname
 if (isset($_SERVER['REMOTE_ADDR'])) {
 	$cfg['ip'] = htmlentities($_SERVER['REMOTE_ADDR'], ENT_QUOTES);
-	$cfg['ip_resolved'] = htmlentities(@gethostbyaddr($_SERVER['REMOTE_ADDR']), ENT_QUOTES);
+	// only reverse-resolve public addresses: rDNS for private ranges just
+	// stalls page loads (up to 5s) on hosts without local reverse zones
+	$isPublic = (bool) filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP,
+		FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+	$cfg['ip_resolved'] = $isPublic
+		? htmlentities(@gethostbyaddr($_SERVER['REMOTE_ADDR']), ENT_QUOTES)
+		: $cfg['ip'];
 } else {
 	$cfg['ip'] = "127.0.0.1";
 	$cfg['ip_resolved'] = "localhost";

@@ -63,7 +63,7 @@ class NZBFile
      * @param $user
      * @return NZBFile
      */
-    function NZBFile($nzbname = "") {
+    function __construct($nzbname = "") {
     	$this->initialize($nzbname);
     }
 

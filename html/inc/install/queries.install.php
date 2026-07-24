@@ -202,6 +202,10 @@ array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transmission_
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transmission_rpc_port','9091')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transmission_rpc_user','transmission')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transmission_rpc_password','')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('qbittorrent_enable','1')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('qbittorrent_url','http://localhost:8081')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('qbittorrent_user','admin')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('qbittorrent_pass','')");
 
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transfer_delete_data','1')");
 
@@ -427,6 +431,20 @@ foreach ($queries['data']['common'] as $dataQuery)
 	array_push($queries[$cqt][$cdb], $dataQuery);
 // tf_links
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://github.com/epsylon3/torrentflux/','TorrentFlux on Github','0')");
+// tf_qbittorrent_user
+array_push($queries[$cqt][$cdb], "
+CREATE TABLE tf_qbittorrent_user (
+  tid VARCHAR(40) NOT NULL default '',
+  uid INT(10) NOT NULL default '0',
+  PRIMARY KEY  (tid,uid)
+) ENGINE=MYISAM");
+// sql-queries : Data
+$cqt = 'data';
+$queries[$cqt][$cdb] = array();
+foreach ($queries['data']['common'] as $dataQuery)
+	array_push($queries[$cqt][$cdb], $dataQuery);
+// tf_links
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://github.com/epsylon3/torrentflux/','TorrentFlux on Github','0')");
 
 // -----------------------------------------------------------------------------
 // SQL : sqlite
@@ -600,6 +618,13 @@ CREATE TABLE tf_settings_stats (
 // tf_transmission_user
 array_push($queries[$cqt][$cdb], "
 CREATE TABLE tf_transmission_user (
+  tid VARCHAR(40) NOT NULL default '',
+  uid INTEGER(10) NOT NULL default '0',
+  PRIMARY KEY  (tid,uid)
+)");
+// tf_qbittorrent_user
+array_push($queries[$cqt][$cdb], "
+CREATE TABLE tf_qbittorrent_user (
   tid VARCHAR(40) NOT NULL default '',
   uid INTEGER(10) NOT NULL default '0',
   PRIMARY KEY  (tid,uid)
@@ -807,6 +832,13 @@ CREATE TABLE tf_settings_stats (
 // tf_transmission_user
 array_push($queries[$cqt][$cdb], "
 CREATE TABLE tf_transmission_user (
+  tid VARCHAR(40) NOT NULL default '',
+  uid INTEGER NOT NULL default '0',
+  PRIMARY KEY  (tid,uid)
+)");
+// tf_qbittorrent_user
+array_push($queries[$cqt][$cdb], "
+CREATE TABLE tf_qbittorrent_user (
   tid VARCHAR(40) NOT NULL default '',
   uid INTEGER NOT NULL default '0',
   PRIMARY KEY  (tid,uid)

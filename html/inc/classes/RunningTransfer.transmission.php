@@ -32,7 +32,7 @@ class RunningTransferTransmission extends RunningTransfer
 	 * @param $psLine
 	 * @return RunningTransferTransmission
 	 */
-	function RunningTransferTransmission($psLine) {
+	function __construct($psLine = "") {
 		global $cfg;
 		// ps-parse
 		if (strlen($psLine) > 0) {

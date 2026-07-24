@@ -117,7 +117,7 @@ class FluxCLI
 	 * @param $args
 	 * @return FluxCLI
 	 */
-	function FluxCLI($args) {
+	function __construct($args) {
 		global $cfg;
 
 		// set user-var

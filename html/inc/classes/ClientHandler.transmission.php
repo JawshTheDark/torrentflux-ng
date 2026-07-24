@@ -33,7 +33,7 @@ class ClientHandlerTransmission extends ClientHandler
 	/**
 	 * ctor
 	 */
-	function ClientHandlerTransmission() {
+	function __construct() {
 		$this->type = "torrent";
 		$this->client = "transmission";
 		$this->binSystem = "transmission-cli";

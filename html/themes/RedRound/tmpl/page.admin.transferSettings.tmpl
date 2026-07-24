@@ -233,6 +233,38 @@ B = BitTornado, T = Transmission-cli, Tr = Transmission Daemon, M = BitTorrent M
 <p class="NormalText">Fluazu is a proxy to use an Azureus backend as client for torrents.
 <a href="admin.php?op=fluazuSettings">Edit Fluazu Settings</a></p>
 
+<h2>qBittorrent (Web API)</h2>
+<p class="NormalText">Connects to a running qBittorrent (or qbittorrent-nox) instance via its Web API</p>
+<table id="adminTransferSettings">
+	<tr>
+		<th>qBittorrent<br /><span>Enable the qBittorrent Web API client</span></th>
+		<td>
+			<select name="qbittorrent_enable" id="qbittorrent_enable">
+				<option value="0" <tmpl_if name="qbittorrent_enable" value="0"> selected</tmpl_if>>Disabled</option>
+				<option value="1" <tmpl_if name="qbittorrent_enable" value="1"> selected</tmpl_if>>Enabled</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th class="alt">qBittorrent URL<br /><span>Base URL of the Web UI, e.g. http://localhost:8081</span></th>
+		<td class="alt">
+			<input name="qbittorrent_url" id="qbittorrent_url" type="Text" maxlength="254" value="<tmpl_var name="qbittorrent_url">" size="35">
+		</td>
+	</tr>
+	<tr>
+		<th>qBittorrent User<br /><span>Web UI username (def. "admin")</span></th>
+		<td>
+			<input name="qbittorrent_user" id="qbittorrent_user" type="Text" maxlength="60" value="<tmpl_var name="qbittorrent_user">" size="15">
+		</td>
+	</tr>
+	<tr>
+		<th class="alt">qBittorrent Password<br /><span>Web UI password</span></th>
+		<td class="alt">
+			<input name="qbittorrent_pass" id="qbittorrent_pass" type="Password" maxlength="100" value="<tmpl_var name="qbittorrent_pass">" size="15">
+		</td>
+	</tr>
+</table>
+
 <h2>Transmission Daemon (RPC)</h2>
 <p class="NormalText">New method to use with official Transmission-daemon</p>
 <table id="adminTransferSettings">

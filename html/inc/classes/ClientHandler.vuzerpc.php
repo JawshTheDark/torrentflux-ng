@@ -38,7 +38,7 @@ class ClientHandlerVuzeRPC extends ClientHandler
 	/**
 	 * ctor
 	 */
-	function ClientHandlerVuzeRPC() {
+	function __construct() {
 		global $cfg;
 
 		$this->type = "torrent";

@@ -464,7 +464,7 @@ class Image
 	 *
 	 * @return Image
 	 */
-	function Image($t = IMG_GIF, $w = 0, $h = 0) {
+	function __construct($t = IMG_GIF, $w = 0, $h = 0) {
 
 		// GD required
 		if (extension_loaded('gd')) {

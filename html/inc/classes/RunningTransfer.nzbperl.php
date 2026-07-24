@@ -32,7 +32,7 @@ class RunningTransferNzbperl extends RunningTransfer
 	 * @param $psLine
 	 * @return RunningTransferNzbperl
 	 */
-	function RunningTransferNzbperl($psLine) {
+	function __construct($psLine = "") {
 		global $cfg;
 		// ps-parse
 		if (strlen($psLine) > 0) {

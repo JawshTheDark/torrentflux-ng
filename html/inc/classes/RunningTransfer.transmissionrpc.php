@@ -32,7 +32,7 @@ class RunningTransferTransmissionRPC extends RunningTransfer
 	 * @param $psLine
 	 * @return RunningTransferTransmissionRPC
 	 */
-	function RunningTransferTransmissionRPC($psLine) {
+	function __construct($psLine = "") {
 		global $cfg;
 		$this->processId = 0;
 		$this->transferFile = "";

@@ -54,6 +54,9 @@ class RunningTransfer
 			case "transmissionrpc":
 				require_once('inc/classes/RunningTransfer.transmissionrpc.php');
 				return new RunningTransferTransmissionRPC($psLine);
+			case "qbittorrent":
+				require_once('inc/classes/RunningTransfer.qbittorrent.php');
+				return new RunningTransferQbittorrent($psLine);
 			case "mainline":
 				require_once('inc/classes/RunningTransfer.mainline.php');
 				return new RunningTransferMainline($psLine);

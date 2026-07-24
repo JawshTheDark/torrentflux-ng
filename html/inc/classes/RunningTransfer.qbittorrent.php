@@ -1,7 +1,5 @@
 <?php
 
-/* $Id$ */
-
 /*******************************************************************************
 
  LICENSE
@@ -21,16 +19,16 @@
 *******************************************************************************/
 
 /**
- * class RunningTransferVuzeRPC for vuze xmwebui
+ * class RunningTransferQbittorrent for the qBittorrent Web API client.
+ * No per-transfer process exists; the daemon handles everything.
  */
-class RunningTransferVuzeRPC extends RunningTransfer
+class RunningTransferQbittorrent extends RunningTransfer
 {
 
 	/**
 	 * ctor
 	 *
 	 * @param $psLine
-	 * @return RunningTransferVuzeRPC
 	 */
 	function __construct($psLine = "") {
 		global $cfg;

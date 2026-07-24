@@ -32,7 +32,7 @@ class RunningTransferTornado extends RunningTransfer
 	 * @param $psLine
 	 * @return RunningTransferTornado
 	 */
-	function RunningTransferTornado($psLine) {
+	function __construct($psLine = "") {
 		global $cfg;
 		// tornadoBin
 		$tornadoBin = $cfg["docroot"]."bin/clients/tornado/tftornado.py";

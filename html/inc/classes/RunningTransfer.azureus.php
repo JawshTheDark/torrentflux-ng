@@ -32,7 +32,7 @@ class RunningTransferAzureus extends RunningTransfer
 	 * @param $psLine
 	 * @return RunningTransferAzureus
 	 */
-	function RunningTransferAzureus($psLine) {
+	function __construct($psLine = "") {
 		global $cfg;
 		$this->processId = 0;
 		$this->transferFile = "";
