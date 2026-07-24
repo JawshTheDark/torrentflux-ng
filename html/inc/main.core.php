@@ -76,13 +76,31 @@ $cfg["user"] = "";
 
 // ip + hostname
 if (isset($_SERVER['REMOTE_ADDR'])) {
-	$cfg['ip'] = htmlentities($_SERVER['REMOTE_ADDR'], ENT_QUOTES);
+	$remoteAddr = $_SERVER['REMOTE_ADDR'];
+	// When the immediate peer is a private/reserved address it is a local
+	// reverse proxy (e.g. nginx-proxy-manager on a docker network), so the
+	// real client IP is in the proxy's forwarded headers. Only trust those
+	// headers behind such a proxy, otherwise clients could spoof their IP.
+	$peerIsProxy = ! (bool) filter_var($remoteAddr, FILTER_VALIDATE_IP,
+		FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+	$clientIp = $remoteAddr;
+	if ($peerIsProxy) {
+		if (!empty($_SERVER['HTTP_X_REAL_IP'])
+			&& filter_var($_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)) {
+			$clientIp = $_SERVER['HTTP_X_REAL_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$fwd = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+			if (filter_var($fwd, FILTER_VALIDATE_IP))
+				$clientIp = $fwd;
+		}
+	}
+	$cfg['ip'] = htmlentities($clientIp, ENT_QUOTES);
 	// only reverse-resolve public addresses: rDNS for private ranges just
 	// stalls page loads (up to 5s) on hosts without local reverse zones
-	$isPublic = (bool) filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP,
+	$isPublic = (bool) filter_var($clientIp, FILTER_VALIDATE_IP,
 		FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
 	$cfg['ip_resolved'] = $isPublic
-		? htmlentities(@gethostbyaddr($_SERVER['REMOTE_ADDR']), ENT_QUOTES)
+		? htmlentities(@gethostbyaddr($clientIp), ENT_QUOTES)
 		: $cfg['ip'];
 } else {
 	$cfg['ip'] = "127.0.0.1";
