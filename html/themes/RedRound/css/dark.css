@@ -147,6 +147,17 @@ html.dark #footer {
 	border-top: 1px solid #2e2e35;
 }
 
+/* ------------------------------------------------------------------ login page */
+
+html.dark #inhalt {
+	background-color: #1e1e23 !important;
+	border: 1px solid #2e2e35 !important;
+	color: #d6d6d9;
+}
+html.dark #inhalt h1 { background-color: #8e1b2d !important; }
+html.dark #inhalt td, html.dark #inhalt p { color: #d6d6d9; }
+html.dark #inhalt a { color: #e66478; }
+
 /* ------------------------------------------------------------------ misc */
 
 html.dark pre { background: #101013; color: #cfcfd4; border: 1px solid #2e2e35; }
