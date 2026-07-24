@@ -82,9 +82,9 @@ switch ($type) {
 	case "all":
 		// set vars
 		$tmpl->setvar('all_df', shell_exec("df -h ".tfb_shellencode($cfg["path"])));
-		$tmpl->setvar('all_du', shell_exec("du -sh ".tfb_shellencode($cfg["path"]."*")));
+		$tmpl->setvar('all_du', (shell_exec("du -sh ".tfb_shellencode($cfg["path"]."*")) ?: "n/a"));
 		$tmpl->setvar('all_w', shell_exec("w"));
-		$tmpl->setvar('all_free', shell_exec("free -mo"));
+		$tmpl->setvar('all_free', (shell_exec("free -m") ?: "memory stats unavailable"));
 		// language
 		$tmpl->setvar('_DRIVESPACE', $cfg['_DRIVESPACE']);
 		$tmpl->setvar('_SERVERSTATS', $cfg['_SERVERSTATS']);
@@ -96,7 +96,7 @@ switch ($type) {
 	case "drivespace":
 		// set vars
 		$tmpl->setvar('drivespace_df', shell_exec("df -h ".tfb_shellencode($cfg["path"])));
-		$tmpl->setvar('drivespace_du', shell_exec("du -sh ".tfb_shellencode($cfg["path"]."*")));
+		$tmpl->setvar('drivespace_du', (shell_exec("du -sh ".tfb_shellencode($cfg["path"]."*")) ?: "n/a"));
 		// language
 		tmplSetTitleBar($cfg['_DRIVESPACE']);
 		// drivespace-bar
@@ -107,7 +107,7 @@ switch ($type) {
 	case "who":
 		// set vars
 		$tmpl->setvar('who_w', shell_exec("w"));
-		$tmpl->setvar('who_free', shell_exec("free -mo"));
+		$tmpl->setvar('who_free', (shell_exec("free -m") ?: "memory stats unavailable"));
 		// drivespace-bar
 		tmplSetDriveSpaceBar();
 		break;

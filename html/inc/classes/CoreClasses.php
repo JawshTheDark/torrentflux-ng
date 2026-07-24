@@ -48,7 +48,7 @@ class ProcessInfo {
 	var $pid = "";
 	var $ppid = "";
 	var $cmdline = "";
-	function ProcessInfo($psLine) {
+	function __construct($psLine) {
 		$psLine = trim($psLine);
 		if (strlen($psLine) > 12) {
 			$this->pid = trim(substr($psLine, 0, 5));

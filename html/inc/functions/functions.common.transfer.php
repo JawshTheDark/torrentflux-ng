@@ -297,8 +297,11 @@ function setFilePriority($transfer) {
 		if (!empty($unwantedIds))
 			$qbt->setFilePriority($hash, $unwantedIds, 0);
 	} elseif ( $isTransmissionTorrent ) {
-		foreach ($_REQUEST['files'] as $fileid ) {
-			$selectedFiles[] = (int)$fileid;
+		$selectedFiles = array();
+		if (!empty($_REQUEST['files']) && is_array($_REQUEST['files'])) {
+			foreach ($_REQUEST['files'] as $fileid ) {
+				$selectedFiles[] = (int)$fileid;
+			}
 		}
 		# Get files that are wanted or not for download, then we can compare.
 		$responseWantedFiles = getTransmissionTransfer( $transfer, array('wanted') );

@@ -416,7 +416,7 @@ if ($wget_url != "") {
 /*******************************************************************************
  * multi-delete
  ******************************************************************************/
-if ($multidel != "") {
+if ($multidel != "" && !empty($_POST['file']) && is_array($_POST['file'])) {
 	foreach($_POST['file'] as $key => $element) {
 		$element = urldecode($element);
 		// only valid entry with permission

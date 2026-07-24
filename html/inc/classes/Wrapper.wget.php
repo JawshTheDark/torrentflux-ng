@@ -105,7 +105,7 @@ class WrapperWget
 	 * @param $pasv
      * @return WrapperWget
      */
-    function WrapperWget($file, $owner, $path, $drate, $retries, $pasv) {
+    function __construct($file, $owner, $path, $drate, $retries, $pasv) {
     	global $cfg;
 
         // set fields from params

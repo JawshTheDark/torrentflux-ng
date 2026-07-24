@@ -287,6 +287,43 @@ function getTransferOwnerID($transfer, $default=0) {
  */
 function getTorrentMetaInfo($transfer) {
 	global $cfg;
+	// qBittorrent: build the metainfo summary from the Web API instead of
+	// shelling out to the (Python 2) btshowmetainfo.py / transmissioncli tools.
+	if (!empty($cfg["qbittorrent_enable"]) && getTransferClient($transfer) == 'qbittorrent') {
+		require_once('inc/classes/Qbittorrent.class.php');
+		$hash = getTransferHash($transfer);
+		$qbt = Qbittorrent::getInstance();
+		$t = $qbt->torrent($hash);
+		if (!is_array($t))
+			return "qBittorrent: transfer not found.";
+		$props = $qbt->properties($hash);
+		$files = $qbt->files($hash);
+		$out  = "metainfo file.: ".$transfer."\n";
+		$out .= "info hash.....: ".$hash."\n";
+		$out .= "file name.....: ".$t['name']."\n";
+		$out .= "file size.....: ".$t['totalSize']." (".@formatBytesTokBMBGBTB($t['totalSize']).")\n";
+		if (is_array($props)) {
+			if (!empty($props['comment']))
+				$out .= "comment.......: ".$props['comment']."\n";
+			$out .= "piece length..: ".(isset($props['piece_size']) ? $props['piece_size'] : 0)."\n";
+			$out .= "save path.....: ".(isset($props['save_path']) ? $props['save_path'] : '')."\n";
+		}
+		$trackers = $qbt->trackers($hash);
+		if (is_array($trackers)) {
+			foreach ($trackers as $tr) {
+				if (!empty($tr['url']) && strpos($tr['url'], '**') === false) {
+					$out .= "announce url..: ".$tr['url']."\n";
+					break;
+				}
+			}
+		}
+		if (is_array($files) && count($files) > 1) {
+			$out .= "files.........: ".count($files)."\n";
+			foreach ($files as $f)
+				$out .= "  ".$f['name']." (".@formatBytesTokBMBGBTB($f['size']).")\n";
+		}
+		return htmlentities($out, ENT_QUOTES);
+	}
 	switch ($cfg["metainfoclient"]) {
 		case "transmissioncli":
 			return shell_exec("HOME=".tfb_shellencode($cfg["path"])."; export HOME; ".$cfg["btclient_transmission_bin"]." -i ".tfb_shellencode($cfg["transfer_file_path"].$transfer));
