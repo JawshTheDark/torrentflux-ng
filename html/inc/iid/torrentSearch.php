@@ -80,6 +80,30 @@ if (!is_file('inc/searchEngines/'.$searchEngine.'Engine.php')) {
 		$tmpl->setvar('sEngine_msg', $sEngine->msg);
 	} else {
 		// Search Engine ready to go
+
+		// Prowlarr: build the indexer dropdown (live-synced), so the user can
+		// target a specific tracker or search all of them.
+		if ($searchEngine == 'Prowlarr' && method_exists($sEngine, 'getIndexers')) {
+			$selectedIndexer = tfb_getRequestVar('indexer');
+			if (empty($selectedIndexer))
+				$selectedIndexer = 'all';
+			$indexer_list = array(array(
+				'indexerId' => 'all',
+				'indexerName' => 'All Indexers',
+				'selected' => ($selectedIndexer == 'all') ? 1 : 0,
+			));
+			foreach ($sEngine->getIndexers() as $ix) {
+				$indexer_list[] = array(
+					'indexerId' => $ix['id'],
+					'indexerName' => $ix['name'],
+					'selected' => ((string)$selectedIndexer === (string)$ix['id']) ? 1 : 0,
+				);
+			}
+			$tmpl->setvar('has_indexers', 1);
+			$tmpl->setvar('selectedIndexer', $selectedIndexer);
+			$tmpl->setloop('Indexer_List', $indexer_list);
+		}
+
 		$mainStart = true;
 		$catLinks = '';
 		$tmpCatLinks = '';

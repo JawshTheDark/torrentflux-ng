@@ -130,6 +130,37 @@ class SearchEngine extends SearchEngineBase
 		return $data;
 	}
 
+	/**
+	 * live list of enabled indexers configured in Prowlarr, sorted by name.
+	 * Result is cached in the session for a short while so the dropdown stays
+	 * in sync with Prowlarr without an API call on every keystroke/page.
+	 *
+	 * @return array of array('id' => int, 'name' => string)
+	 */
+	function getIndexers() {
+		$now = @time();
+		if (isset($_SESSION['prowlarr_indexers'], $_SESSION['prowlarr_indexers_ts'])
+			&& is_array($_SESSION['prowlarr_indexers'])
+			&& ($now - $_SESSION['prowlarr_indexers_ts']) < 120) {
+			return $_SESSION['prowlarr_indexers'];
+		}
+		$list = $this->apiCall('/api/v1/indexer');
+		if ($list === false || !is_array($list))
+			return isset($_SESSION['prowlarr_indexers']) ? $_SESSION['prowlarr_indexers'] : array();
+		$out = array();
+		foreach ($list as $ix) {
+			if (isset($ix['enable']) && !$ix['enable'])
+				continue;
+			if (!isset($ix['id'], $ix['name']))
+				continue;
+			$out[] = array('id' => (int)$ix['id'], 'name' => (string)$ix['name']);
+		}
+		usort($out, function ($a, $b) { return strcasecmp($a['name'], $b['name']); });
+		$_SESSION['prowlarr_indexers'] = $out;
+		$_SESSION['prowlarr_indexers_ts'] = $now;
+		return $out;
+	}
+
 	function doSearch($query) {
 		$mainGenre = tfb_getRequestVar('mainGenre');
 		$page = intval($this->pg);
@@ -143,6 +174,11 @@ class SearchEngine extends SearchEngineBase
 		);
 		if (!empty($mainGenre) && ctype_digit((string)$mainGenre))
 			$params['categories'] = $mainGenre;
+
+		// restrict to a single indexer when one is picked in the dropdown
+		$indexer = tfb_getRequestVar('indexer');
+		if (!empty($indexer) && $indexer !== 'all' && ctype_digit((string)$indexer))
+			$params['indexerIds'] = $indexer;
 
 		$results = $this->apiCall('/api/v1/search', $params);
 		if ($results === false)
@@ -253,7 +289,8 @@ class SearchEngine extends SearchEngineBase
 		$page = intval($this->pg);
 		$base = $this->searchURL()
 			.'&searchterm='.urlencode($this->searchTerm)
-			.(($g = tfb_getRequestVar('mainGenre')) != '' ? '&mainGenre='.urlencode($g) : '');
+			.(($g = tfb_getRequestVar('mainGenre')) != '' ? '&mainGenre='.urlencode($g) : '')
+			.(($ix = tfb_getRequestVar('indexer')) != '' ? '&indexer='.urlencode($ix) : '');
 		$output = '<div style="margin:6px 0">';
 		if ($page > 0)
 			$output .= '<a href="'.$base.'&pg='.($page - 1).'">&laquo; Prev</a> ';
