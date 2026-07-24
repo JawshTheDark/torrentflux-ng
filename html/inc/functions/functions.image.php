@@ -92,6 +92,10 @@ function image_pieTransferTotals() {
 		Image::paintNoOp();
 	}
 
+	// normalize to numbers (stat values may be empty strings) for PHP 8
+	$uptotal = (float) $uptotal;
+	$downtotal = (float) $downtotal;
+
 	// draw image
 	Image::paintPie3D(
 		202,
@@ -102,7 +106,7 @@ function image_pieTransferTotals() {
 		100,
 		20,
 		Image::stringToRGBColor($cfg["body_data_bg"]),
-		array((float)$uptotal + 1, (float)$downtotal + 1),
+		array($uptotal + 1, $downtotal + 1),
 		image_getColors(),
 		array('Up : '.@formatFreeSpace($uptotal / 1048576), 'Down : '.@formatFreeSpace($downtotal / 1048576)),
 		48,
