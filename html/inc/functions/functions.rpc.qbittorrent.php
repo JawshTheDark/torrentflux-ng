@@ -369,34 +369,39 @@ function getUserQbittorrentTransfers($uid = 0) {
 }
 
 /**
- * adopt daemon transfers that have no TorrentFlux transfer entry yet
- * (typically magnet adds): once qBittorrent has the metadata, export the
- * .torrent into transfer_file_path and register it in tf_transfers so the
- * normal file-based UI picks it up.
+ * adopt daemon transfers that have no TorrentFlux transfer entry yet:
+ * everything already living in qBittorrent (pre-existing torrents, magnet
+ * adds once their metadata arrives) is exported into transfer_file_path
+ * and registered in tf_transfers so the normal file-based UI picks it up.
+ * Exports are capped per call so a big daemon syncs over a few refreshes
+ * instead of stalling one page load.
  */
-function qbtAdoptForeignTransfers($uid) {
+function qbtAdoptForeignTransfers($uid, $maxAdopt = 25) {
 	global $cfg, $db;
-	$hashes = getUserQbittorrentTransferArrayFromDB($uid);
-	if (empty($hashes))
+	$qbt = Qbittorrent::getInstance();
+	$all = $qbt->torrents();
+	if (!is_array($all) || empty($all))
 		return;
 	// hashes already known to tf_transfers
 	$known = array();
 	$recordset = $db->Execute("SELECT hash FROM tf_transfers WHERE hash != ''");
 	while (($row = $recordset->FetchRow()) !== false)
 		$known[] = strtolower($row[0]);
-	$qbt = Qbittorrent::getInstance();
-	foreach ($hashes as $hash) {
+	$adopted = 0;
+	foreach ($all as $hash => $t) {
 		if (in_array($hash, $known))
 			continue;
-		$t = $qbt->torrent($hash);
-		if ($t === false || $t['totalSize'] <= 0 || $t['state'] == 'metaDL')
+		if ($adopted >= $maxAdopt)
+			break;
+		if ($t['totalSize'] <= 0 || $t['state'] == 'metaDL')
 			continue; // still fetching metadata
 		$raw = $qbt->export($hash);
 		if ($raw === false)
 			continue;
-		// build a unique transfer file name
-		$base = tfb_cleanFileName($t['name']);
-		if ($base == "" || $base === false)
+		// build a unique transfer file name from the torrent name
+		$base = preg_replace("/[^0-9a-zA-Z\.\-]+/", '_', tfb_clean_accents($t['name']));
+		$base = trim($base, '_');
+		if ($base == "")
 			$base = $hash;
 		$transfer = $base.".torrent";
 		$num = 1;
@@ -411,13 +416,18 @@ function qbtAdoptForeignTransfers($uid) {
 		$db->Execute("INSERT INTO tf_transfers (transfer,type,client,hash,savepath,running) VALUES ("
 			.$db->qstr($transfer).",'torrent','qbittorrent',".$db->qstr($hash).","
 			.$db->qstr($savepath).",".($t['running'] ? "'1'" : "'0'").")");
+		// claim ownership for the adopting user
+		addQbittorrentTransferToDB($uid, $hash);
 		// seed the stat file so the list shows something sensible
 		$sf = new StatFile($transfer, $cfg['user']);
 		$sf->size = $t['totalSize'];
 		$sf->running = $t['running'];
 		$sf->percent_done = round($t['percentDone'] * 100, 2);
+		if ($t['status'] == 8 || $t['status'] == 9)
+			$sf->time_left = 'Seeding';
 		$sf->write();
 		AuditAction($cfg["constants"]["fm_download"], "qbittorrent-adopt : ".$transfer." (".$hash.")");
+		$adopted++;
 	}
 }
 

@@ -113,12 +113,10 @@ if (!cacheIsSet($currentUser)) {
 
 	// login-check-tasks
 	if (!isset($_SESSION['login_tasks'])) {
-		// check for setup.php
+		// check for setup.php (only a problem while unconfigured; the
+		// installer itself refuses to run once config.db.php exists)
 		if (!isset($_SESSION['check']['setup'])) {
 			$_SESSION['check']['setup'] = 1;
-			// check for setup.php and upgrade.php
-			if (@file_exists("setup.php") === true)
-				@error("setup.php must be deleted", "index.php?iid=index", "");
 		}
 		// check for upgrade.php
 		if (!isset($_SESSION['check']['upgrade'])) {

@@ -39,6 +39,20 @@ define('_FILE_DBCONF', 'inc/config/config.db.php');
 define('_FILE_THIS', $_SERVER['SCRIPT_NAME']);
 define('_FORUM_URL', "http://tf-b4rt.berlios.de/forum/");
 
+// refuse to run once the app is configured: the installer no longer has to
+// be deleted after use, so make sure it cannot be replayed by visitors.
+// (the wizard writes the config mid-flow, so the session that started an
+// install is allowed to finish it)
+@session_start();
+if (@is_file(_FILE_DBCONF)) {
+	if (empty($_SESSION['tf_setup_active'])) {
+		@header('HTTP/1.1 403 Forbidden');
+		die('TorrentFlux-NG is already configured. To re-run setup, remove '._FILE_DBCONF.' first.');
+	}
+} else {
+	$_SESSION['tf_setup_active'] = 1;
+}
+
 // Database-Types
 $databaseTypes = array();
 $databaseTypes['MySQL'] = 'mysqli_connect';

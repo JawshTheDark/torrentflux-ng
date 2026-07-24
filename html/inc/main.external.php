@@ -31,9 +31,10 @@ if (!isset($_SESSION['check']['upgrade'])) {
 		exit();
 	}
 }
-// check for setup.php
+// check for setup.php: only redirect while the app is unconfigured, so the
+// installer can ship with the code instead of having to be deleted
 if (!isset($_SESSION['check']['setup'])) {
-	if (@file_exists("setup.php") === true) {
+	if ((@file_exists("setup.php") === true) && (@is_file("inc/config/config.db.php") !== true)) {
 		@ob_end_clean();
 		@header("location: setup.php");
 		exit();

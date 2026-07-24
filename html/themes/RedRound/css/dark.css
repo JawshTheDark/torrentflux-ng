@@ -121,6 +121,24 @@ html.dark [style*="statssuperadmin-bg"], html.dark [style*="statssystem-bg"] {
 	border-radius: 8px;
 }
 
+/* ------------------------------------------------------------------ index page panels */
+
+html.dark #indexTorrentUpload, html.dark #indexTorrentGet,
+html.dark #TransferListBulkActions, html.dark #indexRefreshOptions,
+html.dark #action_in_progress, html.dark #dirActions,
+html.dark .ui-tabs .ui-tabs-panel, html.dark #tabs > div {
+	background-color: #1e1e23 !important;
+	color: #d6d6d9;
+}
+html.dark #indexTorrentUpload, html.dark #indexTorrentGet {
+	border: 1px solid #2e2e35;
+	border-radius: 8px;
+}
+html.dark #footer {
+	background-color: #141417 !important;
+	border-top: 1px solid #2e2e35;
+}
+
 /* ------------------------------------------------------------------ misc */
 
 html.dark pre { background: #101013; color: #cfcfd4; border: 1px solid #2e2e35; }
