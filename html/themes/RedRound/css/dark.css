@@ -113,8 +113,18 @@ html.dark table#transfer_table th,
 html.dark table#transfer_table th a { color: #e2e2e6 !important; }
 html.dark table#transfer_table tr:hover td { background-color: #2a2a31; }
 html.dark table#transfer_table tr.hover, html.dark table#transfer_table tr.hover a { color: #fff !important; }
-/* progress-bar percentage labels are inline color:black on colored bars — keep legible */
-html.dark .pbpercent { color: #111 !important; text-shadow: 0 0 2px rgba(255,255,255,.6); }
+
+/* progress bar: the empty track defaults to white. Darken it, keep the
+   colored fill (set inline per state), and make the % label readable on
+   both the dark track and the colored fill via a dark halo. */
+html.dark .progress,
+html.dark .pbseeding, html.dark .pbdownload, html.dark .pbstop, html.dark .pbfinished {
+	background-color: #33333b !important;
+}
+html.dark .pbbackgnd, html.dark .pbpercent {
+	color: #fff !important;
+	text-shadow: 0 1px 2px rgba(0,0,0,.95), 0 0 2px rgba(0,0,0,.95) !important;
+}
 
 /* ------------------------------------------------------------------ admin dashboard */
 
