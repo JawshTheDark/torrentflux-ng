@@ -121,6 +121,9 @@ html.dark .progress,
 html.dark .pbseeding, html.dark .pbdownload, html.dark .pbstop, html.dark .pbfinished {
 	background-color: #33333b !important;
 }
+/* the fill carries a light gradient PNG designed for the light theme; drop it
+   so the solid state color (green/blue/red, set inline) shows on the dark track */
+html.dark .pbbackgnd { background-image: none !important; }
 html.dark .pbbackgnd, html.dark .pbpercent {
 	color: #fff !important;
 	text-shadow: 0 1px 2px rgba(0,0,0,.95), 0 0 2px rgba(0,0,0,.95) !important;
