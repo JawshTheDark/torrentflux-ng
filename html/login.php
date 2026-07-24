@@ -48,6 +48,10 @@ if (isset($_SESSION['user'])) {
 $isLoginRequest = false;
 $bSetReCaptcha = false;
 $nAuthTypeCookie = 0; // Is this a cookie-supporting auth type?
+// reCAPTCHA v1 was retired by Google in 2018; map the old captcha
+// auth-types to their captcha-less equivalents.
+if ($cfg['auth_type'] == 5) $cfg['auth_type'] = 0;
+if ($cfg['auth_type'] == 6) $cfg['auth_type'] = 1;
 switch ($cfg['auth_type']) {
 	case 3: /* Basic-Passthru */
 	case 2: /* Basic-Auth */
@@ -64,9 +68,6 @@ switch ($cfg['auth_type']) {
 			exit();
 		}
 		break;
-	case 6:
-		// bring in the recaptcha library
-		require_once('inc/lib/recaptcha/recaptchalib.php');
 	case 1: /* Form-Auth + Cookie */
 		$cookieDelim = '|';
 		$nAuthTypeCookie = 1;
@@ -152,22 +153,6 @@ switch ($cfg['auth_type']) {
 			$tmpl->setvar('imageSupported', 0);
 		}
 		break;
-	case 5: /* Form-Based + ReCaptcha */
-		// 2009-04-19 pmunn@munn.com
-		require_once('inc/lib/recaptcha/recaptchalib.php');
-		$user = strtolower(tfb_getRequestVar('username'));
-		$iamhim = addslashes(tfb_getRequestVar('iamhim'));
-		$md5password = "";
-		if (!empty($user)) {
-			$isLoginRequest = true;
-
-			// test the captcha.
-			auth_validateRecaptcha($user, $iamhim, $bSetRecaptcha);
-		} else {
-			// this is not a login request
-			$bSetReCaptcha = true;
-		}
-		break;
 	case 0: /* Form-Based Auth Standard */
 	default:
 		$user = strtolower(tfb_getRequestVar('username'));
@@ -194,16 +179,7 @@ if ($isLoginRequest) {
 		exit();
 	} else {
 		$tmpl->setvar('login_failed', 1);
-		
-		// reset the captcha if this was an auth types of 5 or 6.
-		$bSetReCaptcha = ($cfg["auth_type"] == 5 || $cfg["auth_type"] == 6);
 	}
-}
-
-// Do we need to reset the captcha for this page?
-if($bSetReCaptcha) {
-	// write recaptcha code
-	$tmpl->setvar('recaptcha_html', recaptcha_get_html($cfg["recaptcha_public_key"], $error));
 }
 
 // defines

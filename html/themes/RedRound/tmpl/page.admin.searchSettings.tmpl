@@ -13,6 +13,24 @@
 	</tr>
 </form>
 </table>
+	<tmpl_if name="is_prowlarr">
+		<form name="theProwlarrSettings" action="admin.php?op=updateSearchSettings" method="post">
+		<input type="hidden" name="searchEngine" value="Prowlarr">
+		<h2>Prowlarr Connection</h2>
+		<tmpl_if name="prowlarr_msg"><p style="color:#b00"><tmpl_var name="prowlarr_msg"></p></tmpl_if>
+		<table id="adminProwlarrSettings">
+		<tr>
+			<th>Prowlarr URL</th>
+			<td><input type="text" name="prowlarr_url" size="40" value="<tmpl_var name="prowlarr_url">"></td>
+		</tr>
+		<tr>
+			<th class="alt">API Key<br /><span>Prowlarr &gt; Settings &gt; General &gt; API Key</span></th>
+			<td class="alt"><input type="text" name="prowlarr_apikey" size="40" value="<tmpl_var name="prowlarr_apikey">"></td>
+		</tr>
+		</table>
+		<p><input type="Submit" value="Save Prowlarr Settings"></p>
+		</form>
+	</tmpl_if>
 	<tmpl_if name="is_file">
 		<form name="theSearchEngineSettings" action="admin.php?op=updateSearchSettings" method="post">
 		<input type="hidden" name="searchEngine" value="<tmpl_var name="searchEngine">">

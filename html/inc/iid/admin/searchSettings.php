@@ -71,6 +71,15 @@ if (is_file('inc/searchEngines/'.$searchEngine.'Engine.php')) {
 		$tmpl->setvar('is_file', 0);
 	}
 }
+// Prowlarr connection settings: always shown for the Prowlarr engine so it
+// can be configured before the first successful connection.
+if ($searchEngine == 'Prowlarr') {
+	$tmpl->setvar('is_prowlarr', 1);
+	$tmpl->setvar('prowlarr_url', isset($cfg['prowlarr_url']) ? $cfg['prowlarr_url'] : 'http://localhost:9696');
+	$tmpl->setvar('prowlarr_apikey', isset($cfg['prowlarr_apikey']) ? $cfg['prowlarr_apikey'] : '');
+	if (isset($sEngine) && !$sEngine->initialized)
+		$tmpl->setvar('prowlarr_msg', $sEngine->msg);
+}
 $tmpl->setloop('Engine_List', tmplSetSearchEngineDDL($searchEngine,true));
 //
 tmplSetTitleBar("Administration - Search Settings");

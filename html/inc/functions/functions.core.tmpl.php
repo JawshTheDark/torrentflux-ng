@@ -139,10 +139,12 @@ function tmplSetIidVars() {
  * @param $selectedEngine
  * @param $autoSubmit
  */
-function tmplSetSearchEngineDDL($selectedEngine = 'TorrentSpy', $autoSubmit = false) {
+function tmplSetSearchEngineDDL($selectedEngine = 'Prowlarr', $autoSubmit = false) {
 	global $cfg, $tmpl;
 	// set some vars
 	$tmpl->setvar('autoSubmit', $autoSubmit);
+	if (!isset($cfg['searchEngineLinks']) || !is_array($cfg['searchEngineLinks']))
+		$cfg['searchEngineLinks'] = array();
 	$handle = opendir("./inc/searchEngines");
 	while($entry = readdir($handle))
 		$entrys[] = $entry;
