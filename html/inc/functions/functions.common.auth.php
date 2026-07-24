@@ -48,7 +48,7 @@ function performAuthentication($username = '', $password = '', $md5password = ''
 	// exec query
 	$result = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
-	list($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"]) = $result->FetchRow();
+	if (is_array($__row = $result->FetchRow())) list($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"]) = $__row;
 	if ($result->RecordCount() == 1) { // suc. auth.
 		// Add a hit to the user
 		$hits++;
@@ -183,7 +183,7 @@ function firstLogin($username = '', $password = '') {
 					'state'=>1
 					);
 	$sTable = 'tf_users';
-	$sql = $db->GetInsertSql($sTable, $record);
+	$sql = tf_db_insert_sql($sTable, $record);
 	$result = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
 	// Test and setup some paths for the TF settings

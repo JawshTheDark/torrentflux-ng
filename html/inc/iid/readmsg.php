@@ -67,7 +67,7 @@ if (isset($_REQUEST['mid'])) {
 	$result = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
 	$message_list = array();
-	while (list($mid, $from_user, $message, $new, $ip, $time, $force_read) = $result->FetchRow()) {
+	while (($__row = $result->FetchRow()) !== false) { list($mid, $from_user, $message, $new, $ip, $time, $force_read) = $__row;
 		$mail_image = ($new == 1)
 			? "themes/".$cfg['theme']."/images/new_message.gif"
 			: "themes/".$cfg['theme']."/images/old_message.gif";

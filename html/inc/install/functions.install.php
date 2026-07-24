@@ -33,7 +33,7 @@ function loadSettings($dbTable) {
 	if ($dbCon->ErrorNo() != 0)
 		return false;
 	$retVal = array();
-	while (list($key, $value) = $recordset->FetchRow()) {
+	while (($__row = $recordset->FetchRow()) !== false) { list($key, $value) = $__row;
 		$tmpValue = '';
 		if (strpos($key,"Filter") > 0) {
 		  $tmpValue = unserialize($value);
@@ -144,7 +144,7 @@ $cfg["db_pcon"] = '.$pcon.'; // Persistent Connection enabled : true/false
 function getAdoConnection($type, $host, $user, $pass, $name = "") {
 	require_once('inc/lib/adodb/adodb.inc.php');
 	// create ado-object
-	$db = &ADONewConnection($type);
+	$db = ADONewConnection(tf_adodb_driver($type));
 	// connect
 	$result = @ $db->Connect($host, $user, $pass, $name);
 	// check for error

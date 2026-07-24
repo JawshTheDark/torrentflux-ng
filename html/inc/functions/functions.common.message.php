@@ -77,7 +77,7 @@ function SaveMessage($to_user, $from_user, $message, $to_all=0, $force_read=0) {
 						'time' => $create_time,
 						'force_read' => $force_read
 						);
-			$sql = $db->GetInsertSql($sTable, $rec);
+			$sql = tf_db_insert_sql($sTable, $rec);
 			$result2 = $db->Execute($sql);
 			if ($db->ErrorNo() != 0) dbError($sql);
 		}
@@ -92,7 +92,7 @@ function SaveMessage($to_user, $from_user, $message, $to_all=0, $force_read=0) {
 					'time' => $create_time,
 					'force_read' => $force_read
 					);
-		$sql = $db->GetInsertSql($sTable, $rec);
+		$sql = tf_db_insert_sql($sTable, $rec);
 		$result = $db->Execute($sql);
 		if ($db->ErrorNo() != 0) dbError($sql);
 	}

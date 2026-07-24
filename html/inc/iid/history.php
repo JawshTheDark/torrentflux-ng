@@ -48,7 +48,7 @@ if ($cfg['enable_restrictivetview'] == 0) {
 }
 $result = $db->SelectLimit($sql, $offset, $min);
 $file_result = array();
-while (list($user_id, $file, $time) = $result->FetchRow()) {
+while (($__row = $result->FetchRow()) !== false) { list($user_id, $file, $time) = $__row;
 	$user_icon = (IsOnline($user_id)) ? "themes/".$cfg['theme']."/images/user.gif" : "themes/".$cfg['theme']."/images/user_offline.gif";
 	array_push($file_result, array(
 		'user_id' => $user_id,

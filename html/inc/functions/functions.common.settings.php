@@ -31,7 +31,7 @@ function loadSettings($dbTable) {
     $sql = "SELECT tf_key, tf_value FROM ".$dbTable;
     $recordset = $db->Execute($sql);
     if ($db->ErrorNo() != 0) dbError($sql);
-    while(list($key, $value) = $recordset->FetchRow()) {
+    while (($__row = $recordset->FetchRow()) !== false) { list($key, $value) = $__row;
 		$tmpValue = '';
 		if (strpos($key,"Filter") > 0)
 			$tmpValue = unserialize($value);
@@ -201,8 +201,9 @@ function loadUserSettingsToConfig($uid) {
 	$recordset = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
 	if ((isset($recordset)) && ($recordset->NumRows() > 0)) {
-		while(list($key, $value) = $recordset->FetchRow())
+		while (($__row = $recordset->FetchRow()) !== false) { list($key, $value) = $__row;
 			$cfg[$key] = $value;
+		}
 	}
 	// return
 	return true;

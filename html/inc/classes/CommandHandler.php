@@ -44,7 +44,7 @@ class CommandHandler
 	 * @param $command
 	 * @return boolean
 	 */
-   function add($transfer, $command) {
+   static function add($transfer, $command) {
 		global $instanceCommandHandler;
 		// initialize if needed
 		if (!isset($instanceCommandHandler))
@@ -59,7 +59,7 @@ class CommandHandler
 	 * @param $transfer
 	 * @return boolean
 	 */
-	function send($transfer) {
+	static function send($transfer) {
 		global $instanceCommandHandler;
 		// return false if not set
 		if (!isset($instanceCommandHandler))
@@ -74,7 +74,7 @@ class CommandHandler
 	 * @param $transfer
 	 * @return boolean
 	 */
-	function clean($transfer) {
+	static function clean($transfer) {
 		global $instanceCommandHandler;
 		// initialize if needed
 		if (!isset($instanceCommandHandler))
@@ -98,7 +98,7 @@ class CommandHandler
 	/**
 	 * initialize CommandHandler.
 	 */
-	function initialize() {
+	static function initialize() {
 		global $instanceCommandHandler;
 		// create instance
 		if (!isset($instanceCommandHandler))

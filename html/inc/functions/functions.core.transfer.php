@@ -529,8 +529,9 @@ function getTransferArrayFromDB() {
 	$sql = "SELECT transfer FROM tf_transfers ORDER BY transfer ASC";
 	$recordset = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
-	while(list($transfer) = $recordset->FetchRow())
+	while (($__row = $recordset->FetchRow()) !== false) { list($transfer) = $__row;
 		array_push($retVal, $transfer);
+	}
 	return $retVal;
 }
 
@@ -549,7 +550,7 @@ function getTransferArray($sortOrder = '') {
 		return $retVal;
 	}
 	while ($transfer = @readdir($handle)) {
-		if ($transfer{0} != ".") {
+		if ($transfer[0] != ".") {
 			switch (substr($transfer, -4)) {
 				case 'stat':
 				case '.log':
@@ -770,7 +771,7 @@ function getTransferListArray() {
 				} else {
 					if ($sf->time_left != "" && $sf->time_left != "0") {
 						if (($cfg["display_seeding_time"] == 1) && ($sf->percent_done >= 100) ) {
-							$estTime = (($sf->seedlimit > 0) && (!empty($sf->up_speed)) && (intval(($sf->up_speed{0})) > 0))
+							$estTime = (($sf->seedlimit > 0) && (!empty($sf->up_speed)) && (intval(($sf->up_speed[0])) > 0))
 									? convertTimeText(((($sf->seedlimit) / 100 * $sf->size) - $sf->uptotal) / GetSpeedInBytes($sf->up_speed))
 									: '-';
 						} else {

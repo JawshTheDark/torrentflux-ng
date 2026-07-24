@@ -43,7 +43,7 @@ if (!defined('vlibIniClassLoaded')) {
     class vlibIni {
 
         /** config vars for vlibTemplate */
-        function vlibTemplate () {
+        static function vlibTemplate () {
             global $cfg;
 
             $cache_dir = $cfg["path"].'.templateCache';
@@ -82,7 +82,7 @@ if (!defined('vlibIniClassLoaded')) {
 
 
         /** config vars for vlibDate */
-        function vlibDate () {
+        static function vlibDate () {
             return array(
                 'DEFAULT_LANG' => 'en' // default language for the date displays
             );
@@ -91,7 +91,7 @@ if (!defined('vlibIniClassLoaded')) {
 
 
         /** config vars for vlibSearchToSQL */
-        function vlibSearchToSQL () {
+        static function vlibSearchToSQL () {
             return array(
                 'MIN_WORD_LENGTH'       =>   3, // minimum length of word
                 'ALLOW_WILDCARDS'       =>   0, // whether to allow % and _ as wildcards in SQL LIKE '' clause

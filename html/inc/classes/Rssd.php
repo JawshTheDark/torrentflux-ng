@@ -96,7 +96,7 @@ class Rssd
 	/**
 	 * initialize Rssd.
 	 */
-	function initialize() {
+	static function initialize() {
 		global $instanceRssd;
 		// create instance
 		if (!isset($instanceRssd))
@@ -136,7 +136,7 @@ class Rssd
 	 * @param $url
 	 * @return boolean
 	 */
-	function processFeed($sdir, $filter, $hist, $url) {
+	static function processFeed($sdir, $filter, $hist, $url) {
 		global $instanceRssd;
 		// initialize if needed
 		if (!isset($instanceRssd))

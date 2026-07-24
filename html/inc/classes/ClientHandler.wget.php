@@ -169,7 +169,7 @@ class ClientHandlerWget extends ClientHandler
 		global $cfg;
 		$this->url = $transferUrl;
 		$transfer = strrchr($transferUrl,'/');
-		if ($transfer{0} == '/')
+		if ($transfer[0] == '/')
 			$transfer = substr($transfer, 1);
 		$transfer = tfb_cleanFileName($transfer.".wget");
 		$this->_setVarsForTransfer($transfer);

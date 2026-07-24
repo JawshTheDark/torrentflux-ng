@@ -70,7 +70,7 @@ class Image
 	 * @param $w
 	 * @param $h
 	 */
-	function getImage($t = IMG_GIF, $w = 0, $h = 0) {
+	static function getImage($t = IMG_GIF, $w = 0, $h = 0) {
 		$img = new Image($t, $w, $h);
 		if (!$img)
 			return false;
@@ -89,7 +89,7 @@ class Image
 	 * @param $t
 	 * @param $r
 	 */
-	function getImageFromRessource($t = IMG_GIF, $r) {
+	static function getImageFromRessource($t = IMG_GIF, $r) {
 		$img = new Image($t);
 		if (!$img)
 			return false;
@@ -121,7 +121,7 @@ class Image
 	 *
 	 * @return boolean
 	 */
-	function isSupported() {
+	static function isSupported() {
 		if (extension_loaded('gd')) {
 			// gd is there but we also need support for at least one image-type
 			$imageTypes = imagetypes();
@@ -143,14 +143,14 @@ class Image
 	 *
 	 * @return boolean
 	 */
-	function isTypeSupported($type) {
+	static function isTypeSupported($type) {
 		return ((extension_loaded('gd')) && (imagetypes() & $type));
 	}
 
 	/**
 	 * check referer
 	 */
-	function checkReferer() {
+	static function checkReferer() {
 		if (!((isset($_SERVER["HTTP_REFERER"])) &&
 			(stristr($_SERVER["HTTP_REFERER"], $_SERVER["SERVER_NAME"]) !== false)))
 			Image::paintInvalidReferer();
@@ -162,7 +162,7 @@ class Image
 	 * @param string $color
 	 * @return array
 	 */
-	function stringToRGBColor($color) {
+	static function stringToRGBColor($color) {
 		$retVal = array();
 		$color = str_replace('#', '', $color);
 		if (preg_match('/[0-9a-fA-F]{6}/', $color)) {
@@ -191,7 +191,7 @@ class Image
 	 * @param $g
 	 * @param $b
 	 */
-	function paintLabelFromImage($bgimage, $label,
+	static function paintLabelFromImage($bgimage, $label,
 			$font = 1,
 			$x = 0, $y = 0,
 			$r = 0, $g = 0, $b = 0) {
@@ -240,7 +240,7 @@ class Image
 	 * @param int $legendFont
 	 * @param int $legendSpace
 	 */
-	function paintPie3D(
+	static function paintPie3D(
 		$w,
 		$h,
 		$cx,
@@ -345,7 +345,7 @@ class Image
 	/**
 	 * output image not supported image
 	 */
-	function paintNotSupported() {
+	static function paintNotSupported() {
 		$d = "";
 		$d .= 'R0lGODlhXAAkAIcAAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 			. 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
@@ -378,7 +378,7 @@ class Image
 	/**
 	 * output invalid referer image
 	 */
-	function paintInvalidReferer() {
+	static function paintInvalidReferer() {
 		$d = "";
 		$d .= 'R0lGODlhEAAQAOZpAJJzRlFFOU4vKOjPNOzTNOvTMkowJ0k5MmU3J1k6OEo8NO3S'
 			. 'KvDUM4VFKuLEMjciIe7WKz4iHVUxJNPAbUgwNKBTLY1HLPTbK/PaLezRMu3TMIVw'
@@ -398,7 +398,7 @@ class Image
 	/**
 	 * output no-op image
 	 */
-	function paintNoOp() {
+	static function paintNoOp() {
 		$d = "";
 		$d .= 'R0lGODlhDQAMAOZeAP///44LDoYLDWMJC18XGKNmZ6cNEXQJDFsHCsUQFbwPFLkP'
 			. 'FKQNEaENEZMMEIoLDokLD4cLD34KDXIJDHAJDG4JDGYIC7YPFJ0NEZoNEYILDncK'
@@ -418,7 +418,7 @@ class Image
 	/**
 	 * output spacer image
 	 */
-	function paintSpacer() {
+	static function paintSpacer() {
 		$d = "";
 		$d .= 'R0lGODlhAQABAIcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 			. 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
@@ -447,7 +447,7 @@ class Image
 	 * @param $data
 	 * @param $len
 	 */
-	function paintData($type, $data, $len) {
+	static function paintData($type, $data, $len) {
 		@header('Accept-Ranges: bytes');
 		@header('Content-Length: '.$len);
 		@header('Content-Type: '.$type);

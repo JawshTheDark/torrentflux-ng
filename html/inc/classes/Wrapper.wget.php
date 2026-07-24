@@ -75,7 +75,7 @@ class WrapperWget
 	 * @param $retries
 	 * @param $pasv
 	 */
-    function start($file, $owner, $path, $drate, $retries, $pasv) {
+    static function start($file, $owner, $path, $drate, $retries, $pasv) {
 		global $instanceWrapperWget;
 		$instanceWrapperWget = new WrapperWget($file, $owner, $path, $drate, $retries, $pasv);
 		$instanceWrapperWget->instance_start();
@@ -594,7 +594,7 @@ class WrapperWget
 		$len = strlen($command);
 		if ($len < 1)
 			return false;
-		$opcode = $command{0};
+		$opcode = $command[0];
 		$workload = ($len > 1)
 			? substr($command, 1)
 			: "";

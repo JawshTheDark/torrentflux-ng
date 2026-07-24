@@ -79,7 +79,7 @@ class FluAzu
 	/**
 	 * initialize FluAzu.
 	 */
-	function initialize() {
+	static function initialize() {
 		global $instanceFluAzu;
 		// create instance
 		if (!isset($instanceFluAzu))
@@ -103,7 +103,7 @@ class FluAzu
 	 *
 	 * @return array
 	 */
-	function getMessages() {
+	static function getMessages() {
 		global $instanceFluAzu;
 		return (isset($instanceFluAzu))
 			? $instanceFluAzu->messages
@@ -115,7 +115,7 @@ class FluAzu
 	 *
 	 * @return boolean
 	 */
-	function isRunning() {
+	static function isRunning() {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -128,7 +128,7 @@ class FluAzu
 	 *
 	 * @return boolean
 	 */
-	function start() {
+	static function start() {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -139,7 +139,7 @@ class FluAzu
 	/**
 	 * stop
 	 */
-	function stop() {
+	static function stop() {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -152,7 +152,7 @@ class FluAzu
 	 *
 	 * @return int with pid
 	 */
-	function getPid() {
+	static function getPid() {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -167,7 +167,7 @@ class FluAzu
 	 * @param $withTS
 	 * @return boolean
 	 */
-	function logMessage($message, $withTS = true) {
+	static function logMessage($message, $withTS = true) {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -195,7 +195,7 @@ class FluAzu
 	 *
 	 * @return boolean
 	 */
-	function sendCommands() {
+	static function sendCommands() {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -209,7 +209,7 @@ class FluAzu
 	 * @param $transfer
 	 * @return boolean
 	 */
-	function delTransfer($transfer) {
+	static function delTransfer($transfer) {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -223,7 +223,7 @@ class FluAzu
 	 * @param $transfer
 	 * @return boolean
 	 */
-	function transferExists($transfer) {
+	static function transferExists($transfer) {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -236,7 +236,7 @@ class FluAzu
 	 *
 	 * @return array
 	 */
-	function getStatus() {
+	static function getStatus() {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -249,7 +249,7 @@ class FluAzu
 	 *
 	 * @return array
 	 */
-	function getStatusKeys() {
+	static function getStatusKeys() {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))
@@ -292,7 +292,7 @@ class FluAzu
 	 * @param $val
 	 * @param $autosend
 	 */
-	function setAzu($key, $val, $autosend = false) {
+	static function setAzu($key, $val, $autosend = false) {
 		global $instanceFluAzu;
 		// initialize if needed
 		if (!isset($instanceFluAzu))

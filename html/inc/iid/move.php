@@ -100,7 +100,7 @@ if((isset($_REQUEST['start'])) && ($_REQUEST['start'] == true)) {
 	if (strlen($targetDir) <= 0) {
 		 $dirValid = false;
 	} else {
-		if ($targetDir{0} != '/') {
+		if ($targetDir[0] != '/') {
 			$tmpl->setvar('not_absolute', 1);
 			$dirValid = false;
 		} else {
@@ -113,9 +113,8 @@ if((isset($_REQUEST['start'])) && ($_REQUEST['start'] == true)) {
 	if (($dirValid) && (checkDirectory($targetDir, 0777))) {
 		$tmpl->setvar('is_valid', 1);
 		$targetDir = checkDirPathString($targetDir);
-		// Add slashes if magic_quotes off:
-		if (get_magic_quotes_gpc() !== 1)
-			$targetDir = addslashes($targetDir);
+		// magic_quotes is gone in modern PHP; always escape:
+		$targetDir = addslashes($targetDir);
 		// Use single quote to escape mv args:
 		$cmd = "mv '".$cfg["path"].$file."' '".$targetDir."'";
 		$cmd .= ' 2>&1';

@@ -104,7 +104,7 @@ function isAuthenticated() {
 		@session_destroy();
 		return 0;
 	}
-	list($uid, $hits) = $recordset->FetchRow();
+	if (is_array($__row = $recordset->FetchRow())) list($uid, $hits) = $__row;
 	// hold the uid in cfg-array
 	$cfg["uid"] = $uid;
 	// increment hit-counter

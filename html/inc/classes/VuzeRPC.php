@@ -198,7 +198,7 @@ class VuzeRPC {
 				echo "</pre>";
 			}
 		}
-		elseif ($res{0} == "{") {
+		elseif ($res[0] == "{") {
 
 			//ok
 			$data=json_decode($res);
@@ -744,7 +744,7 @@ class VuzeRPC {
 	}
 
 	//STATIC HELPERS, usefull to reuse the last instance created
-	public function getInstance() {
+	public static function getInstance() {
 		global $VuzeRPC_instance;
 		if (!is_object($VuzeRPC_instance)) {
 			global $cfg;
@@ -754,20 +754,20 @@ class VuzeRPC {
 	}
 
 	//VuzeRPC::isRunning()
-	public function isRunning() {
+	public static function isRunning() {
 		$instance = VuzeRPC::getInstance();
 		$req = $instance->session_get("version");
 		return  (is_object($req) && $req->result == 'success');
 	}
 
 	//VuzeRPC::transferExists($transfer)
-	public function transferExists($hash) {
+	public static function transferExists($hash) {
 		$instance = VuzeRPC::getInstance();
 		$torrents = $instance->torrent_get_hashids();
 		return array_key_exists(strtoupper($hash),$torrents);
 	}
 
-	public function delTransfer($hash) {
+	public static function delTransfer($hash) {
 		$instance = VuzeRPC::getInstance();
 
 		$torrents = $instance->torrent_get_hashids();
@@ -780,7 +780,7 @@ class VuzeRPC {
 		return false;
 	}
 
-	public function getMessages() {
+	public static function getMessages() {
 		$instance = VuzeRPC::getInstance();
 
 		return array($instance->lastError);

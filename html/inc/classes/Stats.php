@@ -112,7 +112,7 @@ class Stats
 	 *
 	 * @param $params
 	 */
-	function processRequest($params) {
+	static function processRequest($params) {
 		// create new instance
 		$instanceStats = new Stats($params);
 		// call instance-method

@@ -45,7 +45,7 @@ function addNewUser($newUser, $pass1, $userType, $userEmail="") {
 					'state'=>1
 					);
 	$sTable = 'tf_users';
-	$sql = $db->GetInsertSql($sTable, $record);
+	$sql = tf_db_insert_sql($sTable, $record);
 	$result = $db->Execute($sql);
 	if ($db->ErrorNo() != 0) 
 		dbError($sql);

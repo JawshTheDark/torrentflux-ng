@@ -45,7 +45,7 @@ function _getFileChecksums($dir, $talk = false) {
 	while ($file = readdir($dirHandle)) {
 		$fullpath = $dir.'/'.$file;
 		if (is_dir($fullpath)) {
-			if ($file{0} != '.')
+			if ($file[0] != '.')
 				_getFileChecksums($fullpath, $talk);
 		} else {
 			$stringLength = strlen($file);
@@ -121,7 +121,7 @@ function _printFileList($basedir, $dir, $type = 1, $mode = 2) {
 	while ($file = readdir($dirHandle)) {
 		$fullpath = $dir.'/'.$file;
 		if (is_dir($fullpath)) {
-			if ($file{0} != '.')
+			if ($file[0] != '.')
 				_printFileList($basedir, $fullpath, $type, $mode);
 		} else {
 			$stringLength = strlen($file);
@@ -195,16 +195,16 @@ function getSVNRevisionFromId($filename) {
 	$data = file_get_contents($filename);
 	$len = strlen($data);
 	for ($i = 0; $i < $len; $i++) {
-		if ($data{$i} == '$') {
-			if (($data{$i+1} == 'I') && ($data{$i+2} == 'd')) {
+		if ($data[$i] == '$') {
+			if (($data[$i+1] == 'I') && ($data[$i+2] == 'd')) {
 				$revision = "";
 				$j = $i + 3;
 				while ($j < $len) {
-					if ($data{$j} == '$') {
+					if ($data[$j] == '$') {
 						$rev = explode(" ", $revision);
 						return trim($rev[2]);
 					} else {
-						$revision .= $data{$j};
+						$revision .= $data[$j];
 					}
 					$j++;
 				}

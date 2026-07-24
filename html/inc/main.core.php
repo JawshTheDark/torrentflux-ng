@@ -133,11 +133,11 @@ if (@is_file('inc/config/config.db.php')) {
 
 	// check db-type
 	$databaseTypes = array();
-	$databaseTypes['mysql'] = 'mysql_connect';
-	$databaseTypes['sqlite'] = 'sqlite_open';
-	$databaseTypes['postgres'] = 'pg_connect';
+	$databaseTypes['mysql'] = function_exists('mysqli_connect');
+	$databaseTypes['sqlite'] = class_exists('SQLite3');
+	$databaseTypes['postgres'] = function_exists('pg_connect');
 	if (array_key_exists($cfg["db_type"], $databaseTypes)) {
-		if (!function_exists($databaseTypes[$cfg["db_type"]]))
+		if (!$databaseTypes[$cfg["db_type"]])
 			@error("Database Problems", "", "", array('This PHP installation does not have support for '.$cfg["db_type"].' built into it. Please reinstall PHP and ensure support for the selected database is built in.'));
 	} else {
 		@error("Database Problems", "", "", array('Error in database-config, database-type '.$cfg["db_type"].' is not supported.', "Check your database-config-file. (inc/config/config.db.php)"));

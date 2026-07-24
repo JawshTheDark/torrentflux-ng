@@ -525,7 +525,7 @@ function sa_maintenance($action = "") {
 				array_push($hashes, getTransferHash($transfer));
 			if ($dirHandle = @opendir($cfg["path"].".transmission/cache/")) {
 				while (false !== ($file = readdir($dirHandle))) {
-					if ($file{0} == "r") {
+					if ($file[0] == "r") {
 						$thash = substr($file, -40);
 						if (!in_array($thash, $hashes)) {
 							// torrent not in db. delete cache-file.
@@ -1881,7 +1881,7 @@ function updateError($message = "") {
 function getAdoConnection() {
 	global $cfg;
 	// create ado-object
-	$db = &ADONewConnection($cfg["db_type"]);
+	$db = ADONewConnection(tf_adodb_driver($cfg["db_type"]));
 	// connect
 	$result = @ $db->Connect($cfg["db_host"], $cfg["db_user"], $cfg["db_pass"], $cfg["db_name"]);
 	// check for error

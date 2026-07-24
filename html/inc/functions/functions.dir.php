@@ -446,10 +446,8 @@ function chmodRecursive($path, $mode = 0777) {
 function UrlHTMLSlashesEncode($input){
 	$return=htmlentities(rawurlencode($input), ENT_QUOTES);
 
-	// Add slashes if magic quotes off:
-	if(get_magic_quotes_gpc() === 0){
-		$return=addslashes($return);
-	}
+	// magic_quotes is gone in modern PHP; always escape:
+	$return=addslashes($return);
 	return($return);
 }
 

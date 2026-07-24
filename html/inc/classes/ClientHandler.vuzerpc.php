@@ -599,7 +599,7 @@ class ClientHandlerVuzeRPC extends ClientHandler
 		$hashes=array();
 		$sharekills=array();
 		
-		while (list($hash, $transfer, $sharekill) = $recordset->FetchRow()) {
+		while (($__row = $recordset->FetchRow()) !== false) { list($hash, $transfer, $sharekill) = $__row;
 			$hash = strtoupper($hash);
 			$hashes[$hash] = $transfer;
 			$sharekills[$hash] = $sharekill;

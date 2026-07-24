@@ -40,7 +40,7 @@ class RunningTransfer
 	 * @param $client client
 	 * @return RunningTransfer
 	 */
-	function getInstance($psLine, $client = '') {
+	static function getInstance($psLine, $client = '') {
 		global $cfg;
 		
 		// create and return object-instance

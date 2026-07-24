@@ -69,11 +69,9 @@ if ((isset($_REQUEST['start'])) && ($_REQUEST['start'] == true)) {
 	$dir = tfb_getRequestVar('dir');
 	$sourceDir = $cfg["path"].$dir;
 	$targetDir = $cfg["path"].$dir.$fileTo;
-	// Add slashes if magic_quotes off:
-	if (get_magic_quotes_gpc() !== 1) {
-		$targetDir = addslashes($targetDir);
-		$sourceDir = addslashes($sourceDir);
-	}
+	// magic_quotes is gone in modern PHP; always escape:
+	$targetDir = addslashes($targetDir);
+	$sourceDir = addslashes($sourceDir);
 	// only valid dirs + entries with permission
 	if (!((tfb_isValidPath($sourceDir)) &&
 		(tfb_isValidPath($sourceDir.$file)) &&

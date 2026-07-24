@@ -584,7 +584,7 @@ class ClientHandlerTransmissionRPC extends ClientHandler
 
 		$recordset = $db->Execute($sql);
 
-		while (list($hash, $transfer, $sharekill) = $recordset->FetchRow()) {
+		while (($__row = $recordset->FetchRow()) !== false) { list($hash, $transfer, $sharekill) = $__row;
 			$hash = strtolower($hash);
 			$hashes[$hash] = $transfer;
 			$sharekills[$hash] = $sharekill;

@@ -31,7 +31,7 @@ require_once('inc/lib/adodb/adodb.inc.php');
 function dbInitialize() {
 	global $cfg, $db;
 	// create ado-object
-    $db = ADONewConnection($cfg["db_type"]);
+    $db = ADONewConnection(tf_adodb_driver($cfg["db_type"]));
     // connect
     if ($cfg["db_pcon"])
     	$result = @ $db->PConnect($cfg["db_host"], $cfg["db_user"], $cfg["db_pass"], $cfg["db_name"]);
@@ -51,6 +51,27 @@ function dbDispose() {
 	global $db;
 	// close connection
 	@ $db->Close();
+}
+
+/**
+ * build a plain INSERT statement from a field=>value array.
+ *
+ * Replaces ADOdb's GetInsertSQL(), whose table-name code path is broken
+ * with the sqlite3 driver (unguarded dummy query id).
+ *
+ * @param $table table name
+ * @param $record assoc array of field => value
+ * @return string SQL statement
+ */
+function tf_db_insert_sql($table, $record) {
+	global $db;
+	$fields = array();
+	$values = array();
+	foreach ($record as $field => $value) {
+		$fields[] = $field;
+		$values[] = is_null($value) ? "NULL" : $db->qstr($value);
+	}
+	return "INSERT INTO ".$table." (".implode(",", $fields).") VALUES (".implode(",", $values).")";
 }
 
 /**

@@ -578,7 +578,7 @@ function tmplSetActivity($min = 0, $user = "", $srchFile = "", $srchAction = "")
 	$result = $db->SelectLimit($sql, $offset, $min);
 	if ($db->ErrorNo() != 0) dbError($sql);
 	$act_list = array();
-	while (list($user_id, $file, $action, $ip, $ip_resolved, $user_agent, $time) = $result->FetchRow()) {
+	while (($__row = $result->FetchRow()) !== false) { list($user_id, $file, $action, $ip, $ip_resolved, $user_agent, $time) = $__row;
 		$user_icon = (IsOnline($user_id))
 			? "themes/".$cfg['theme']."/images/user.gif"
 			: "themes/".$cfg['theme']."/images/user_offline.gif";
@@ -681,7 +681,7 @@ function tmplSetUserSection() {
 	if ($db->ErrorNo() != 0) dbError($sql);
 	// user-details
 	$user_details_list = array();
-	while (list($user_id, $hits, $last_visit, $time_created, $user_level, $user_state) = $result->FetchRow()) {
+	while (($__row = $result->FetchRow()) !== false) { list($user_id, $hits, $last_visit, $time_created, $user_level, $user_state) = $__row;
 		// disk-usage
 		$disk_usage = "0";
 		$tDir = $cfg["path"].$user_id."/";
@@ -936,7 +936,7 @@ function addNewLink($newLink,$newSite) {
 		'sort_order' => $idx
 	);
 	$sTable = 'tf_links';
-	$sql = $db->GetInsertSql($sTable, $rec);
+	$sql = tf_db_insert_sql($sTable, $rec);
 	$db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
 	// flush session-cache
@@ -1044,7 +1044,7 @@ function addNewRSS($newRSS) {
 	global $db;
 	$rec = array('url'=>$newRSS);
 	$sTable = 'tf_rss';
-	$sql = $db->GetInsertSql($sTable, $rec);
+	$sql = tf_db_insert_sql($sTable, $rec);
 	$db->Execute($sql);
 	if ($db->ErrorNo() != 0) dbError($sql);
 }

@@ -561,7 +561,7 @@ foreach ($arList as $mtimecrc => $transfer) {
 			} else {
 				if ($sf->time_left != "" && $sf->time_left != "0") {
 					if (($cfg["display_seeding_time"] == 1) && ($sf->percent_done >= 100) ) {
-						$estTime = (($sf->seedlimit > 0) && (!empty($sf->up_speed)) && (intval(($sf->up_speed{0})) > 0))
+						$estTime = (($sf->seedlimit > 0) && (!empty($sf->up_speed)) && (intval(($sf->up_speed[0])) > 0))
 							? convertTimeText(((($sf->seedlimit) / 100 * $sf->size) - $sf->uptotal) / GetSpeedInBytes($sf->up_speed))
 							: '-';
 					} else {
@@ -830,7 +830,7 @@ if ($isAjaxUpdate) {
 	$content = "";
 	$isFirst = true;
 	// server stats
-	if ($ajaxUpdateParams{0} == "1") {
+	if ($ajaxUpdateParams[0] == "1") {
 		$isFirst = false;
 		$serverStats = getServerStats();
 		$serverCount = count($serverStats);
@@ -841,7 +841,7 @@ if ($isAjaxUpdate) {
 		}
 	}
 	// xfer
-	if ($ajaxUpdateParams{1} == "1") {
+	if ($ajaxUpdateParams[1] == "1") {
 		if ($isFirst)
 			$isFirst = false;
 		else
@@ -855,7 +855,7 @@ if ($isAjaxUpdate) {
 		}
 	}
 	// users
-	if ($ajaxUpdateParams{2} == "1") {
+	if ($ajaxUpdateParams[2] == "1") {
 		if ($isFirst)
 			$isFirst = false;
 		else
@@ -886,7 +886,7 @@ if ($isAjaxUpdate) {
 		}
 	}
 	// transfer list
-	if ($ajaxUpdateParams{3} == "1") {
+	if ($ajaxUpdateParams[3] == "1") {
 		if ($isFirst)
 			$isFirst = false;
 		else

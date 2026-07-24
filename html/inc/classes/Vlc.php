@@ -87,7 +87,7 @@ class Vlc
     /**
      * initialize Vlc.
      */
-    function initialize() {
+    static function initialize() {
     	global $instanceVlc;
     	// create instance
     	if (!isset($instanceVlc))
@@ -99,7 +99,7 @@ class Vlc
 	 *
 	 * @return port
 	 */
-    function getPort() {
+    static function getPort() {
 		global $instanceVlc;
 		// initialize if needed
 		if (!isset($instanceVlc))
@@ -113,7 +113,7 @@ class Vlc
 	 *
 	 * @return port
 	 */
-    function getAddr() {
+    static function getAddr() {
 		global $instanceVlc;
 		// initialize if needed
 		if (!isset($instanceVlc))
@@ -128,7 +128,7 @@ class Vlc
      * @param $type
      * @return array
      */
-    function getList($type) {
+    static function getList($type) {
 		global $instanceVlc;
 		// initialize if needed
 		if (!isset($instanceVlc))
@@ -148,7 +148,7 @@ class Vlc
 	 * @param $audc
 	 * @param $abit
 	 */
-    function start($file, $vidc, $vbit, $audc, $abit) {
+    static function start($file, $vidc, $vbit, $audc, $abit) {
 		global $instanceVlc;
 		// initialize if needed
 		if (!isset($instanceVlc))
@@ -160,7 +160,7 @@ class Vlc
 	/**
 	 * stop a (/all) stream(s)
 	 */
-    function stop($port = 0) {
+    static function stop($port = 0) {
 		global $instanceVlc;
 		// initialize if needed
 		if (!isset($instanceVlc))
@@ -174,7 +174,7 @@ class Vlc
 	 *
 	 * @return array
 	 */
-    function getRunning($port = 0) {
+    static function getRunning($port = 0) {
 		global $instanceVlc;
 		// initialize if needed
 		if (!isset($instanceVlc))
@@ -189,7 +189,7 @@ class Vlc
 	 * @param $port
 	 * @return boolean
 	 */
-    function isStreamRunning($port) {
+    static function isStreamRunning($port) {
 		global $instanceVlc;
 		// initialize if needed
 		if (!isset($instanceVlc))

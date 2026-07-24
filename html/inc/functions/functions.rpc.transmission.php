@@ -16,7 +16,7 @@
 
 *******************************************************************************/
 
-function rpc_error($errorstr,$dummy="",$dummy="",$response="") {
+function rpc_error($errorstr,$dummy1="",$dummy2="",$response="") {
 	global $cfg;
 	AuditAction($cfg["constants"]["error"], "Transmission RPC : $errorstr - $response");
 	@error($errorstr."\n".$response, "", "", $response, $response);
@@ -124,8 +124,9 @@ function getUserTransmissionTransferArrayFromDB($uid = 0) {
 		$sql = "SELECT tid FROM tf_transmission_user" . ($uid!=0 ? ' WHERE uid=' . $uid : '' );
 		$recordset = $db->Execute($sql);
 		if ($db->ErrorNo() != 0) dbError($sql);
-		while(list($transfer) = $recordset->FetchRow())
+		while (($__row = $recordset->FetchRow()) !== false) { list($transfer) = $__row;
 			$retVal[$transfer]=$transfer;
+		}
 	}
 
 	if ($cfg["transmission_rpc_enable"] == 1) {
@@ -135,8 +136,9 @@ function getUserTransmissionTransferArrayFromDB($uid = 0) {
 		      . ($uid!=0 ? ' AND TT.uid=' . $uid : '' );
 		$recordset = $db->Execute($sql);
 		if ($db->ErrorNo() != 0) dbError($sql);
-		while(list($hash, $transfer) = $recordset->FetchRow())
+		while (($__row = $recordset->FetchRow()) !== false) { list($hash, $transfer) = $__row;
 			$retVal[$hash]=$transfer;
+		}
 	}
 
 	return $retVal;

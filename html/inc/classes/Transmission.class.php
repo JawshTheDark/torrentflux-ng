@@ -454,7 +454,7 @@ class Transmission
 	 * Static return Transmission Instance
 	 * @return object
 	 */
-	public function getInstance() {
+	public static function getInstance() {
 		global $Transmission_inst;
 		if (!is_object($Transmission_inst)) {
 			global $cfg;
@@ -467,7 +467,7 @@ class Transmission
 	 * Static Transmission::isRunning()
 	 * @return boolean
 	 */
-	public function isRunning() {
+	public static function isRunning() {
 		$instance = Transmission::getInstance();
 		$session = $instance->session_get();
 		return  (isset($session['result']) && $session['result'] == 'success');

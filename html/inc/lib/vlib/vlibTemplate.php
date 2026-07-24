@@ -957,8 +957,14 @@ if (!defined('vlibTemplateClassLoaded'))
 				$regex.=	'[\"\']?';
 				$regex.= ')?\s*';
 				$regex.= '(?:>|\/>|}|-->){1}';
-				$regex.= '/ie';
-				$data = preg_replace($regex,"\$this->_parseTag(array('\\0','\\1','\\2','\\3','\\4','\\5','\\6','\\7','\\8'));",$data);
+				$regex.= '/i';
+				// PHP 7+ removed the /e modifier; use a callback instead
+				$data = preg_replace_callback($regex, function ($m) {
+					$args = array();
+					for ($i = 0; $i <= 8; $i++)
+						$args[$i] = isset($m[$i]) ? $m[$i] : '';
+					return $this->_parseTag($args);
+				}, $data);
 
 				if ($this->_cache) { // add cache if need be
 					$this->_createCache($data);

@@ -83,7 +83,7 @@ class MaintenanceAndRepair
     /**
      * initialize MaintenanceAndRepair.
      */
-    function initialize() {
+    static function initialize() {
     	global $instanceMaintenanceAndRepair;
     	// create instance
     	if (!isset($instanceMaintenanceAndRepair))
@@ -119,7 +119,7 @@ class MaintenanceAndRepair
 	 *
 	 * @param $trestart
 	 */
-	function maintenance($type = MAINTENANCEANDREPAIR_TYPE_STD) {
+	static function maintenance($type = MAINTENANCEANDREPAIR_TYPE_STD) {
 		global $instanceMaintenanceAndRepair;
 		// initialize
 		MaintenanceAndRepair::initialize();
@@ -130,7 +130,7 @@ class MaintenanceAndRepair
 	/**
 	 * repair
 	 */
-	function repair() {
+	static function repair() {
 		global $instanceMaintenanceAndRepair;
 		// initialize
 		MaintenanceAndRepair::initialize();
@@ -499,7 +499,7 @@ class MaintenanceAndRepair
 		if ($db->ErrorNo() != 0) dbError($sql);
 		$rc = $recordset->RecordCount();
 		if ($rc > 0) {
-			while (list($tname) = $recordset->FetchRow()) {
+			while (($__row = $recordset->FetchRow()) !== false) { list($tname) = $__row;
 				if (!isTransferRunning($tname)) {
 					$this->_countProblems++;
 					// t is not running, reset running-flag
@@ -519,7 +519,7 @@ class MaintenanceAndRepair
 		$rc = $recordset->RecordCount();
 		if ($rc > 0) {
 			$this->_countProblems += $rc;
-			while (list($tname) = $recordset->FetchRow()) {
+			while (($__row = $recordset->FetchRow()) !== false) { list($tname) = $__row;
 				// t has no hash, update
 				$this->_outputMessage("updating transfer which has empty hash : ".$tname."\n");
 				// get hash
@@ -541,7 +541,7 @@ class MaintenanceAndRepair
 		$rc = $recordset->RecordCount();
 		if ($rc > 0) {
 			$this->_countProblems += $rc;
-			while (list($tname) = $recordset->FetchRow()) {
+			while (($__row = $recordset->FetchRow()) !== false) { list($tname) = $__row;
 				// t has no datapath, update
 				$this->_outputMessage("updating transfer which has empty datapath : ".$tname."\n");
 				// get datapath
@@ -607,7 +607,7 @@ class MaintenanceAndRepair
 		$rc = $recordset->RecordCount();
 		if ($rc > 0) {
 			$this->_countProblems += $rc;
-			while (list($tid) = $recordset->FetchRow()) {
+			while (($__row = $recordset->FetchRow()) !== false) { list($tid) = $__row;
 				
 				// get uid
 				$tname = getTransferFromHash($tid);
@@ -652,7 +652,7 @@ class MaintenanceAndRepair
 		if ($rc > 0) {
 			$this->_outputMessage("updating xfer which has TeraBytes day count\n");
 			$this->_countProblems += $rc;
-			while (list($username, $date) = $recordset->FetchRow()) {
+			while (($__row = $recordset->FetchRow()) !== false) { list($username, $date) = $__row;
 					//if duplicates, delete old uid=0
 					$sql = "DELETE FROM tf_xfer WHERE user_id = ".$db->qstr($username)." AND date=".$db->qstr($date);
 					$db->Execute($sql);

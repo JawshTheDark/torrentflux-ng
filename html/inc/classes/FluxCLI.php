@@ -97,7 +97,7 @@ class FluxCLI
 	 * @param $args
 	 * @return mixed
 	 */
-	function processRequest($args) {
+	static function processRequest($args) {
 		global $instanceFluxCLI;
 		// create new instance
 		$instanceFluxCLI = new FluxCLI($args);
@@ -1329,8 +1329,9 @@ class FluxCLI
 		$recordset = $db->Execute($sql);
 		if ($db->ErrorNo() != 0) dbError($sql);
 		$content = "";
-		while (list($a, $b) = $recordset->FetchRow())
+		while (($__row = $recordset->FetchRow()) !== false) { list($a, $b) = $__row;
 			 $content .= $a._DUMP_DELIM.$b."\n";
+			}
 		echo $content;
 		return ($content != "");
 	}

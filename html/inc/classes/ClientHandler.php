@@ -113,7 +113,7 @@ class ClientHandler
 	 * @param $client client-type
 	 * @return ClientHandler
 	 */
-	function getInstance($client = "") {
+	static function getInstance($client = "") {
 		
 		// create and return object-instance
 		switch ($client) {

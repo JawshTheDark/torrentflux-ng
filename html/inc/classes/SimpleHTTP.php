@@ -149,7 +149,7 @@ class SimpleHTTP
 	 *
 	 * @return SimpleHTTP
 	 */
-	function getInstance() {
+	static function getInstance() {
 		global $instanceSimpleHTTP;
 		// initialize if needed
 		if (!isset($instanceSimpleHTTP))
@@ -160,7 +160,7 @@ class SimpleHTTP
 	/**
 	 * initialize SimpleHTTP.
 	 */
-	function initialize() {
+	static function initialize() {
 		global $instanceSimpleHTTP;
 		// create instance
 		if (!isset($instanceSimpleHTTP))
@@ -172,7 +172,7 @@ class SimpleHTTP
 	 *
 	 * @return state
 	 */
-	function getState() {
+	static function getState() {
 		global $instanceSimpleHTTP;
 		return (isset($instanceSimpleHTTP))
 			? $instanceSimpleHTTP->state
@@ -184,7 +184,7 @@ class SimpleHTTP
 	 *
 	 * @return array
 	 */
-	function getMessages() {
+	static function getMessages() {
 		global $instanceSimpleHTTP;
 		return (isset($instanceSimpleHTTP))
 			? $instanceSimpleHTTP->messages
@@ -196,7 +196,7 @@ class SimpleHTTP
 	 *
 	 * @return string
 	 */
-	function getFilename() {
+	static function getFilename() {
 		global $instanceSimpleHTTP;
 		return (isset($instanceSimpleHTTP))
 			? $instanceSimpleHTTP->filename
@@ -210,7 +210,7 @@ class SimpleHTTP
 	 * @param $get_referer
 	 * @return string
 	 */
-	function getData($get_url, $get_referer = "") {
+	static function getData($get_url, $get_referer = "") {
 		global $instanceSimpleHTTP;
 		// initialize if needed
 		if (!isset($instanceSimpleHTTP))
@@ -225,7 +225,7 @@ class SimpleHTTP
 	 * @param $durl
 	 * @return string
 	 */
-	function getTorrent($durl) {
+	static function getTorrent($durl) {
 		global $instanceSimpleHTTP;
 		// initialize if needed
 		if (!isset($instanceSimpleHTTP))
@@ -240,7 +240,7 @@ class SimpleHTTP
 	 * @param $durl
 	 * @return string
 	 */
-	function getNzb($durl) {
+	static function getNzb($durl) {
 		global $instanceSimpleHTTP;
 		// initialize if needed
 		if (!isset($instanceSimpleHTTP))
@@ -255,7 +255,7 @@ class SimpleHTTP
 	 * @param $durl
 	 * @return int
 	 */
-	function getRemoteSize($durl) {
+	static function getRemoteSize($durl) {
 		global $instanceSimpleHTTP;
 		// initialize if needed
 		if (!isset($instanceSimpleHTTP))
@@ -264,7 +264,7 @@ class SimpleHTTP
 		return $instanceSimpleHTTP->instance_getRemoteSize($durl);
 	}
 
-	function getRealUrl($durl) {
+	static function getRealUrl($durl) {
 		global $instanceSimpleHTTP;
 		$url=$durl;
 		if ($instanceSimpleHTTP->redirectUrl!="")

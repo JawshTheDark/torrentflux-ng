@@ -27,8 +27,10 @@
  * @param $sig
  * @return string
  */
+if (!function_exists('posix_kill')) {
 function posix_kill($pid, $sig) {
 	return exec("kill -s ".$sig." ".$pid);
+}
 }
 
 /**
@@ -38,8 +40,10 @@ function posix_kill($pid, $sig) {
  *
  * @return string
  */
+if (!function_exists('posix_geteuid')) {
 function posix_geteuid() {
 	return exec("id -u");
+}
 }
 
 /**
@@ -50,22 +54,26 @@ function posix_geteuid() {
  * @param $uid
  * @return array
  */
+if (!function_exists('posix_getpwuid')) {
 function posix_getpwuid($uid) {
 	if (!$uid) return FALSE;
 	$file = file("/etc/passwd");
 	foreach ($file as $f) {
 		$l = explode(":",$f);
 		if ($l[2] == $uid) {
-			$out[name] = $l[0];
-			$out[passwd] = $l[1];
-			$out[uid] = $l[2];
-			$out[gid] = $l[3];
-			$out[gecos] = $l[4];
-			$out[dir] = $l[5];
-			$out[shell] = $l[6];
+			$out = array();
+			$out['name'] = $l[0];
+			$out['passwd'] = $l[1];
+			$out['uid'] = $l[2];
+			$out['gid'] = $l[3];
+			$out['gecos'] = $l[4];
+			$out['dir'] = $l[5];
+			$out['shell'] = $l[6];
 			return $out;
 		}
 	}
+	return FALSE;
+}
 }
 
 ?>

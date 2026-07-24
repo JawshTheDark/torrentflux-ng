@@ -145,7 +145,7 @@ switch ($cfg['auth_type']) {
 		if ($isImageSupported) {
 			$tmpl->setvar('imageSupported', 1);
 			// rand
-			mt_srand((double)microtime() * 1000000);
+			mt_srand((int)((float)microtime() * 1000000));
 			$rnd = mt_rand(0, 1000000);
 			$tmpl->setvar('rnd', $rnd);
 		} else {
