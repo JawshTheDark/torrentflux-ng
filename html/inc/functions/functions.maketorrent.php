@@ -21,7 +21,67 @@
 *******************************************************************************/
 
 /**
- * create torrent with BitTornado
+ * build a mktorrent command line (modern replacement for the Python 2
+ * btmakemetafile.py / maketorrent-console.py tools).
+ *
+ * @param $source path to the file/dir to make a torrent of
+ * @param $target output .torrent path
+ * @param $announce primary tracker announce URL
+ * @param $extraTrackers comma-separated backup trackers ("" if none)
+ * @param $comment optional comment
+ * @param $piecePow piece length as power of two (0 = auto)
+ * @param $private make the torrent private
+ * @return string shell command
+ */
+function tfMakeTorrentCmd($source, $target, $announce, $extraTrackers, $comment, $piecePow, $private) {
+	global $cfg;
+	$bin = (!empty($cfg['bin_mktorrent'])) ? $cfg['bin_mktorrent'] : 'mktorrent';
+	$cmd = tfb_shellencode($bin)." -o ".tfb_shellencode($target);
+	if (!empty($announce) && $announce != 'http://')
+		$cmd .= " -a ".tfb_shellencode($announce);
+	if (!empty($extraTrackers)) {
+		foreach (explode(',', $extraTrackers) as $t) {
+			$t = trim($t);
+			if ($t != '' && $t != $announce)
+				$cmd .= " -a ".tfb_shellencode($t);
+		}
+	}
+	if (!empty($comment))
+		$cmd .= " -c ".tfb_shellencode($comment);
+	if (!empty($piecePow) && (int)$piecePow >= 15 && (int)$piecePow <= 28)
+		$cmd .= " -l ".(int)$piecePow;
+	if ($private)
+		$cmd .= " -p";
+	$cmd .= " ".tfb_shellencode($source)." 2>&1";
+	return $cmd;
+}
+
+/**
+ * run mktorrent and return the standard completed()/failed() JS callback.
+ */
+function tfRunMakeTorrent($cmd, $tfile, $alert) {
+	global $cfg;
+	@set_time_limit(0);
+	$time_start = microtime(true);
+	exec($cmd);
+	$success = false;
+	$raw = @file_get_contents($cfg["transfer_file_path"].$tfile);
+	if ($raw !== false && preg_match("/6:pieces([^:]+):/i", $raw)) {
+		$success = true;
+		AuditAction($cfg["constants"]["file_upload"], $tfile);
+	} else {
+		if (@file_exists($cfg["transfer_file_path"].$tfile))
+			@unlink($cfg["transfer_file_path"].$tfile);
+	}
+	$diff = duration(microtime(true) - $time_start);
+	$downpath = urlencode($tfile);
+	return ($success)
+		? "completed('".$downpath."',".$alert.",'".$diff."');"
+		: "failed('".$downpath."',".$alert.");";
+}
+
+/**
+ * create torrent (mktorrent), "tornado"-style form fields
  *
  * @return string $onLoad
  */
@@ -30,151 +90,25 @@ function createTorrentTornado() {
 	// sanity-check
 	if ((empty($announce)) || ($announce == "http://"))
 		return;
-	$onLoad = "";
-	// Clean up old files
 	if (@file_exists($cfg["transfer_file_path"].$tfile))
-		@unlink($cfg["transfer_file_path"].$tfile );
-	// This is the command to execute
-	$command = "nohup ".$cfg["pythonCmd"]." -OO";
-	$command .= " ".tfb_shellencode($cfg["docroot"]."bin/clients/tornado/btmakemetafile.py");
-	$command .= " ".tfb_shellencode($announce);
-	$command .= " ".tfb_shellencode($cfg["path"].$path);
-	// Is there comments to add?
-	if (!empty($comment))
-		$command .= " --comment ".tfb_shellencode($comment);
-	// Set the piece size
-	if (!empty($piece))
-		$command .= " --piece_size_pow2 ".tfb_shellencode($piece);
-	if (!empty($ancelist)) {
-		$check = "/".str_replace("/", "\/", quotemeta($announce)) . "/i";
-		// if they didn't add the primary tracker in, we will add it for them
-		if (preg_match( $check, $ancelist, $result))
-			$command .= " --announce_list ".tfb_shellencode($ancelist);
-		else
-			$command .= " --announce_list ".tfb_shellencode($announce.",".$ancelist);
-	}
-	// Set the target torrent field
-	$command .= " --target ".tfb_shellencode($cfg["transfer_file_path"].$tfile);
-	// Set to never timeout for large torrents
-	@set_time_limit(0);
-	// Let's see how long this takes...
-	$time_start = microtime(true);
-	// Execute the command
-	exec($command);
-	// We want to check to make sure the file was successful
-	$success = false;
-	$raw = @file_get_contents($cfg["transfer_file_path"].$tfile );
-	if (preg_match( "/6:pieces([^:]+):/i", $raw, $results)) {
-		// This means it is a valid torrent
-		$success = true;
-		// Make an entry for the owner
-		AuditAction($cfg["constants"]["file_upload"], $tfile);
-		// Check to see if one of the flags were set
-		if ($private || $dht) {
-			// Add private/dht Flags
-			// e7:privatei1e
-			// e17:dht_backup_enablei1e
-			// e20:dht_backup_requestedi1e
-			if(preg_match( "/6:pieces([^:]+):/i", $raw, $results)) {
-				$pos = strpos( $raw, "6:pieces" ) + 9 + strlen( $results[1] ) + $results[1];
-				$fp = @fopen( $cfg["transfer_file_path"] . $tfile, "r+" );
-				@fseek( $fp, $pos, SEEK_SET );
-				if ($private)
-					@fwrite($fp,"7:privatei1eee");
-				else
-					@fwrite($fp,"e7:privatei0e17:dht_backup_enablei1e20:dht_backup_requestedi1eee");
-				@fclose( $fp );
-			}
-		}
-	} else {
-		// Something went wrong, clean up
-		if (@file_exists($cfg["transfer_file_path"].$tfile))
-			@unlink($cfg["transfer_file_path"].$tfile);
-	}
-	// We are done! how long did we take?
-	$time_end = microtime(true);
-	$diff = duration($time_end - $time_start);
-	// make path URL friendly to support non-standard characters
-	$downpath = urlencode($tfile);
-	// Depending if we were successful, display the required information
-	$onLoad = ($success)
-		? "completed('".$downpath."',".$alert.",'".$diff."');"
-		: "failed('".$downpath."',".$alert.");";
-	return $onLoad;
+		@unlink($cfg["transfer_file_path"].$tfile);
+	$cmd = tfMakeTorrentCmd($cfg["path"].$path, $cfg["transfer_file_path"].$tfile,
+		$announce, $ancelist, $comment, $piece, $private);
+	return tfRunMakeTorrent($cmd, $tfile, $alert);
 }
 
 /**
- * create torrent with Mainline
+ * create torrent (mktorrent), "mainline"-style form fields
  *
  * @return string $onLoad
  */
 function createTorrentMainline() {
 	global $cfg, $path, $tfile, $comment, $piece, $use_tracker, $tracker_name, $alert;
-	$onLoad = "";
-	// Clean up old files
 	if (@file_exists($cfg["transfer_file_path"].$tfile))
-		@unlink($cfg["transfer_file_path"].$tfile );
-	// build command-string
-	$command = "cd ".tfb_shellencode($cfg["transfer_file_path"]).";";
-	$command .= " HOME=".tfb_shellencode($cfg["path"]);
-	$command .= "; export HOME;";
-	$command .= "nohup ".$cfg["pythonCmd"]." -OO ";
-	$command .= tfb_shellencode($cfg["docroot"]."bin/clients/mainline/maketorrent-console.py");
-	$command .= " --no_verbose";
-	$command .= " --no_debug";
-	// $command .= " --language en";
-	// Is there comments to add?
-	if (!empty($comment))
-		$command .= " --comment ".tfb_shellencode($comment);
-	// Set the piece size
-	if (!empty($piece))
-		$command .= " --piece_size_pow2 ".tfb_shellencode($piece);
-	// trackerless / tracker
-	/*
-	if ((isset($use_tracker)) && ($use_tracker == 1))
-		$command .= " --use_tracker";
-	else
-		$command .= " --no_use_tracker";
-	*/
-	$command .= " --use_tracker";
-	// tracker-name
-	//if ((!empty($tracker_name)) && ($tracker_name != "http://"))
-	$command .= " --tracker_name ".tfb_shellencode($tracker_name);
-	// Set the target torrent field
-	$command .= " --target ".tfb_shellencode($cfg["transfer_file_path"].$tfile);
-	// tracker (i don't know...)
-	$command .= " ".tfb_shellencode($tracker_name);
-	// input
-	$command .= " ".tfb_shellencode($cfg["path"].$path);
-	// Set to never timeout for large torrents
-	@set_time_limit(0);
-	// Let's see how long this takes...
-	$time_start = microtime(true);
-	// Execute the command
-	exec($command);
-	// We want to check to make sure the file was successful
-	$success = false;
-	$raw = @file_get_contents($cfg["transfer_file_path"].$tfile );
-	if (preg_match( "/6:pieces([^:]+):/i", $raw, $results)) {
-		// This means it is a valid torrent
-		$success = true;
-		// Make an entry for the owner
-		AuditAction($cfg["constants"]["file_upload"], $tfile);
-	} else {
-		// Something went wrong, clean up
-		if (@file_exists($cfg["transfer_file_path"].$tfile))
-			@unlink($cfg["transfer_file_path"].$tfile);
-	}
-	// We are done! how long did we take?
-	$time_end = microtime(true);
-	$diff = duration($time_end - $time_start);
-	// make path URL friendly to support non-standard characters
-	$downpath = urlencode($tfile);
-	// Depending if we were successful, display the required information
-	$onLoad = ($success)
-		? "completed('".$downpath."',".$alert.",'".$diff."');"
-		: "failed('".$downpath."',".$alert.");";
-	return $onLoad;
+		@unlink($cfg["transfer_file_path"].$tfile);
+	$cmd = tfMakeTorrentCmd($cfg["path"].$path, $cfg["transfer_file_path"].$tfile,
+		$tracker_name, "", $comment, $piece, false);
+	return tfRunMakeTorrent($cmd, $tfile, $alert);
 }
 
 /**

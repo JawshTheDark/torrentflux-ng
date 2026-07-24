@@ -44,20 +44,8 @@ if ($cfg["enable_maketorrent"] != 1) {
 	@error("maketorrent is disabled", "index.php?iid=index", "");
 }
 
-// check the needed bins
-// python
-if (@file_exists($cfg['pythonCmd']) !== true) {
-	@error("Required binary could not be found", "", "",
-		(
-			($cfg['isAdmin'])
-			? array(
-				'python is required for maketorrent',
-				'Specified python-binary does not exist: '.$cfg['pythonCmd'],
-				'Check Settings on Admin-Server-Settings Page')
-			: array('Please contact an Admin')
-		)
-	);
-}
+// maketorrent uses mktorrent (see functions.maketorrent.php); no Python needed.
+// A missing binary is reported per-attempt via the completed()/failed() callback.
 
 /*******************************************************************************
  * create + page

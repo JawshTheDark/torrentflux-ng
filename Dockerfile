@@ -9,7 +9,7 @@ FROM php:8.5-apache
 # gd is built against libpng-dev; keep the libpng runtime so gd loads at run time.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        net-tools procps wget unzip cksfv libpng-dev \
+        net-tools procps wget unzip cksfv mktorrent libpng-dev \
     && docker-php-ext-configure gd \
     && docker-php-ext-install -j"$(nproc)" mysqli gd \
     && apt-get install -y --no-install-recommends libpng16-16 \

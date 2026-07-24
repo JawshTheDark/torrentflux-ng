@@ -4,11 +4,21 @@
 	<label for="searchterm"><tmpl_var name="_SEARCH"> :</label><br />
 	<input type="hidden" name="iid" value="torrentSearch" />
 	<input type="text" name="searchterm" id="searchterm" size="40" maxlength="50" />
-	<select id="searchEngine" name="searchEngine" width="200px">
-		<tmpl_loop name="Engine_List">
-			<option <tmpl_if name="selected">selected="selected"</tmpl_if>><tmpl_var name="Engine"></option>
-		</tmpl_loop>
-	</select>
+	<tmpl_if name="has_indexers">
+		<!-- Prowlarr: pick a specific indexer or search all (live-synced) -->
+		<input type="hidden" name="searchEngine" value="Prowlarr" />
+		<select id="indexer" name="indexer" title="Search a specific indexer or all of them">
+			<tmpl_loop name="Indexer_List">
+				<option value="<tmpl_var name="indexerId">" <tmpl_if name="selected">selected="selected"</tmpl_if>><tmpl_var name="indexerName"></option>
+			</tmpl_loop>
+		</select>
+	<tmpl_else>
+		<select id="searchEngine" name="searchEngine" width="200px">
+			<tmpl_loop name="Engine_List">
+				<option <tmpl_if name="selected">selected="selected"</tmpl_if>><tmpl_var name="Engine"></option>
+			</tmpl_loop>
+		</select>
+	</tmpl_if>
 	<input style="padding: 0 5px" type="submit" value="<tmpl_var name="_SEARCH">" />
 </fieldset>
 </form>
