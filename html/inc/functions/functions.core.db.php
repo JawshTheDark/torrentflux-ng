@@ -49,8 +49,9 @@ function dbInitialize() {
  */
 function dbDispose() {
 	global $db;
-	// close connection
-	@ $db->Close();
+	// close connection (guard: connect may have failed or already closed)
+	if (isset($db) && is_object($db) && $db->IsConnected())
+		@ $db->Close();
 }
 
 /**

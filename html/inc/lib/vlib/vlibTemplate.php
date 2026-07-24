@@ -1163,15 +1163,26 @@ if (!defined('vlibTemplateClassLoaded'))
 		 * @access private
 		 * @return string used for eval'ing
 		 */
+		/**
+		 * count() with PHP 4 semantics, used by compiled templates:
+		 * null => 0, array => count, anything else => 1.
+		 */
+		public function vlibCount ($value) {
+			if (is_array($value) || $value instanceof Countable) return count($value);
+			return is_null($value) ? 0 : 1;
+		}
+
 		function _parseLoop ($varname) {
 			array_push($this->_namespace, $varname);
 			$tempvar = count($this->_namespace) - 1;
-			$retstr = '$row_count_'.$tempvar.'=count($this->_arrvars';
+			// vlibCount: PHP 7.2+ fatals on count() of non-countables, which
+			// legacy templates rely on (count(null)==0, count(scalar)==1)
+			$retstr = '$row_count_'.$tempvar.'=$this->vlibCount($this->_arrvars';
 			for ($i=0; $i < count($this->_namespace); $i++) {
 				$retstr .= "['".$this->_namespace[$i]."']";
 				if ($this->_namespace[$i] != $varname) $retstr .= "[\$_".$i."]";
 			}
-			$retstr.= '); for ($_'.$tempvar.'=0 ; $_'.$tempvar.'<$row_count_'.$tempvar.'; $_'.$tempvar.'++) {';
+			$retstr.= ' ?? null); for ($_'.$tempvar.'=0 ; $_'.$tempvar.'<$row_count_'.$tempvar.'; $_'.$tempvar.'++) {';
 			return $retstr;
 		}
 

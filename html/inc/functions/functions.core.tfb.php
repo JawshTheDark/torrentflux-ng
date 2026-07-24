@@ -227,7 +227,7 @@ function tfb_shellencode($str) {
 // By default escapeshellarg will strip any unicode characters.
 // The code below is translated from the C source of PHP.
 function mb_escapeshellarg($arg) {
-	if (isWinOS()) {
+	if (stripos(PHP_OS, 'WIN') === 0) {
 		return '"' . str_replace(array('"', '%'), array('', ''), $arg) . '"';
 	} else {
 		return "'" . str_replace("'", "'\\''", $arg) . "'";
