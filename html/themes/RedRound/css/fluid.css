@@ -78,3 +78,13 @@ table#transfer_table th {
 
 /* top stats bar (storage / upload / download) */
 #indexStatsBar td { font-size: 14px; }
+
+/* search-engine / indexer dropdowns: give them a real width so the native
+   option list doesn't collapse to the selected-text width and wrap every
+   long indexer name onto several lines */
+#indexer, #searchEngine, select[name="searchEngine"], select[name="indexer"] {
+	min-width: 190px;
+	max-width: 280px;
+	white-space: nowrap;
+}
+#indexer option, #searchEngine option { white-space: nowrap; }

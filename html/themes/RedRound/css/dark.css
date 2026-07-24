@@ -74,6 +74,12 @@ html.dark select, html.dark textarea {
 	border-radius: 4px;
 	padding: 2px 4px;
 }
+/* the native option popup renders see-through unless the options carry a
+   solid background of their own */
+html.dark select option, html.dark select optgroup {
+	background-color: #26262d;
+	color: #e8e8ec;
+}
 html.dark input[type="submit"], html.dark input[type="Submit"],
 html.dark input[type="button"], html.dark button {
 	background-color: #8e1b2d;
