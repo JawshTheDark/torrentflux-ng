@@ -105,6 +105,13 @@ html.dark .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, html.dark .ui-state-activ
 html.dark #transferList td, html.dark #transferList th { border-color: #2e2e35; }
 html.dark #transferList th { background-color: #26262d !important; }
 
+/* alternating transfer ROWS default to #ccc / #fff — the light rectangles */
+html.dark tr.gray, html.dark table#transfer_table tr.gray { background-color: #1e1e23 !important; }
+html.dark tr.white, html.dark table#transfer_table tr.white { background-color: #24242b !important; }
+html.dark tr.gray td, html.dark tr.white td { color: #e2e2e6 !important; }
+/* light upload/URL input fields at the top of the page */
+html.dark .upload_file, html.dark input.upload_file { background-color: #26262d !important; color: #e8e8ec !important; }
+
 /* transfer-name links + cells read #222 (near-black) by default */
 html.dark table#transfer_table a,
 html.dark a.transferName,
