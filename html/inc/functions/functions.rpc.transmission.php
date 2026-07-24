@@ -494,6 +494,84 @@ function getTransmissionSpeedLimitDownload($usecache=false) {
 }
 
 /**
+ * trmBuildPlaceholderMeta — build a minimal, valid bencoded .torrent metafile
+ * for an adopted Transmission torrent. Transmission's RPC does not expose the
+ * original .torrent contents, so we cannot reproduce the real metainfo (piece
+ * hashes are unavailable). This placeholder carries the name and length so the
+ * file-driven transfer list has an entry; live details come from the daemon.
+ */
+function trmBuildPlaceholderMeta($name, $size, $hash) {
+	$name = (string)$name;
+	if ($name === '') $name = $hash;
+	$size = (int)$size;
+	$comment = "FluxTorrent adopted Transmission transfer";
+	// bencode: d 7:comment <c> 4:info d 6:length i<size>e 4:name <name> e e
+	return 'd7:comment'.strlen($comment).':'.$comment
+		.'4:infod6:lengthi'.$size.'e4:name'.strlen($name).':'.$name.'ee';
+}
+
+/**
+ * trmAdoptForeignTransfers — import Transmission daemon torrents that are not
+ * yet tracked by FluxTorrent (e.g. magnet adds, or torrents added directly in
+ * Transmission) so they appear in the transfer list and can be controlled.
+ * Mirrors qbtAdoptForeignTransfers().
+ */
+function trmAdoptForeignTransfers($uid, $maxAdopt = 25) {
+	global $cfg, $db;
+	$all = getUserTransmissionTransfers(); // all daemon torrents, keyed by hashString
+	if (!is_array($all) || empty($all))
+		return;
+	// hashes already known to tf_transfers
+	$known = array();
+	$recordset = $db->Execute("SELECT hash FROM tf_transfers WHERE hash != ''");
+	while (($row = $recordset->FetchRow()) !== false)
+		$known[] = strtolower($row[0]);
+	$adopted = 0;
+	foreach ($all as $hash => $t) {
+		$hash = strtolower($hash);
+		if (in_array($hash, $known))
+			continue;
+		if ($adopted >= $maxAdopt)
+			break;
+		// skip torrents still fetching metadata (no size yet)
+		if (!isset($t['totalSize']) || $t['totalSize'] <= 0)
+			continue;
+		$name = isset($t['name']) ? $t['name'] : $hash;
+		// build a unique transfer file name from the torrent name
+		$base = preg_replace("/[^0-9a-zA-Z\.\-]+/", '_', function_exists('tfb_clean_accents') ? tfb_clean_accents($name) : $name);
+		$base = trim($base, '_');
+		if ($base == "")
+			$base = $hash;
+		$transfer = $base.".torrent";
+		$num = 1;
+		while (is_file($cfg['transfer_file_path'].$transfer))
+			$transfer = $base.'-'.(++$num).".torrent";
+		$meta = trmBuildPlaceholderMeta($name, $t['totalSize'], $hash);
+		if (@file_put_contents($cfg['transfer_file_path'].$transfer, $meta) === false)
+			continue;
+		$running = ($t['status'] == 4 || $t['status'] == 8 || $t['status'] == 9) ? 1 : 0;
+		$savepath = ($cfg["enable_home_dirs"] != 0)
+			? $cfg['path'].$cfg['user']."/"
+			: $cfg['path'].$cfg["path_incoming"]."/";
+		$db->Execute("INSERT INTO tf_transfers (transfer,type,client,hash,savepath,running) VALUES ("
+			.$db->qstr($transfer).",'torrent','transmissionrpc',".$db->qstr($hash).","
+			.$db->qstr($savepath).",".($running ? "'1'" : "'0'").")");
+		// claim ownership for the adopting user
+		addTransmissionTransferToDB($uid, $hash);
+		// seed the stat file so the list shows something sensible
+		$sf = new StatFile($transfer, $cfg['user']);
+		$sf->size = $t['totalSize'];
+		$sf->running = $running;
+		$sf->percent_done = round($t['percentDone'] * 100, 2);
+		if ($t['status'] == 8 || $t['status'] == 9)
+			$sf->time_left = 'Seeding';
+		$sf->write();
+		AuditAction($cfg["constants"]["fm_download"], "transmissionrpc-adopt : ".$transfer." (".$hash.")");
+		$adopted++;
+	}
+}
+
+/**
  * trmRefreshAll — sync live state from the Transmission daemon into the
  * FluxTorrent stat-files (and enforce sharekill). Mirrors qbtRefreshAll().
  * Throttled to once every 5s per session.
@@ -511,6 +589,7 @@ function trmRefreshAll() {
 		return;
 	require_once('inc/classes/ClientHandler.php');
 	$ch = ClientHandler::getInstance('transmissionrpc');
+	trmAdoptForeignTransfers($cfg['uid']);
 	$ch->updateStatFiles();
 }
 
