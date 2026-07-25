@@ -119,7 +119,7 @@ array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('enable_index_
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('index_ajax_update','10')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transferStatsType','ajax')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('transferStatsUpdate','5')");
-array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('auth_basic_realm','TorrentFlux-NG')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('auth_basic_realm','FluxTorrent')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('servermon_update','5')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('enable_home_dirs','1')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('path_incoming','incoming')");

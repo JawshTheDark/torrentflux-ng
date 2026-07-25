@@ -1,6 +1,6 @@
 {
     "name": "torrentflux/torrentflux-ng",
-    "description": "TorrentFlux-NG - web based transfer control client (modernized)",
+    "description": "FluxTorrent - web based transfer control client (modernized)",
     "type": "project",
     "license": "GPL-2.0-or-later",
     "require": {

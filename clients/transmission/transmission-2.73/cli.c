@@ -350,7 +350,7 @@ main( int argc, char ** argv )
     char cwd[1024];
 
     //printf( "%s %s\n", MY_READABLE_NAME, LONG_VERSION_STRING );
-    printf( "%s %s - patched for TorrentFlux-NG\n", MY_READABLE_NAME, LONG_VERSION_STRING );
+    printf( "%s %s - patched for FluxTorrent\n", MY_READABLE_NAME, LONG_VERSION_STRING );
 
     /* user needs to pass in at least one argument */
     if( argc < 2 ) {

@@ -347,7 +347,7 @@ main( int argc, char ** argv )
     tr_formatter_size_init( DISK_K,DISK_K_STR, DISK_M_STR, DISK_G_STR, DISK_T_STR );
     tr_formatter_speed_init( SPEED_K, SPEED_K_STR, SPEED_M_STR, SPEED_G_STR, SPEED_T_STR );
 
-    printf( "%s %s - patched for TorrentFlux-NG\n", MY_READABLE_NAME, LONG_VERSION_STRING );
+    printf( "%s %s - patched for FluxTorrent\n", MY_READABLE_NAME, LONG_VERSION_STRING );
 
     /* user needs to pass in at least one argument */
     if( argc < 2 ) {

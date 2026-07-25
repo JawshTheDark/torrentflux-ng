@@ -330,7 +330,7 @@ $queries[$cqt][$cdb] = array();
 foreach ($queries['data']['common'] as $dataQuery)
 	array_push($queries[$cqt][$cdb], $dataQuery);
 // tf_links
-array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://www.torrentflux-ng.org/','TorrentFlux-NG','0')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://www.torrentflux-ng.org/','FluxTorrent','0')");
 
 // -----------------------------------------------------------------------------
 // SQL : postgres

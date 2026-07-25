@@ -30,7 +30,7 @@ $queries[$cqt][$cdb] = array();
 // updates + deletes
 array_push($queries[$cqt][$cdb], "UPDATE tf_users SET theme = 'RedRound'");
 array_push($queries[$cqt][$cdb], "DELETE FROM tf_settings_user");
-array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://www.torrentflux-ng.org/','TorrentFlux-NG','0')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://www.torrentflux-ng.org/','FluxTorrent','0')");
 // tf_settings
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('max_upload_rate','10')");
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('max_download_rate','0')");

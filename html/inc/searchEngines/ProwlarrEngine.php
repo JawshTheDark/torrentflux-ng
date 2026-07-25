@@ -1,7 +1,7 @@
 <?php
 
 /*************************************************************
- *  TorrentFlux-NG - Prowlarr meta-search engine
+ *  FluxTorrent - Prowlarr meta-search engine
  *
  *  Replaces the legacy site-scraper engines with a single
  *  engine backed by a local Prowlarr instance
@@ -30,7 +30,7 @@ class SearchEngine extends SearchEngineBase
 {
 	var $engineName = 'Prowlarr';
 	var $mainTitle = 'Prowlarr';
-	var $author = 'TorrentFlux-NG';
+	var $author = 'FluxTorrent';
 	var $version = '1.0';
 
 	var $baseURL = '';

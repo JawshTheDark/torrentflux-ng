@@ -6,7 +6,7 @@ diff -crB transmission-2.73-patched/cli/cli.c transmission-2.73/cli/cli.c
       char cwd[1024];
   
       //printf( "%s %s\n", MY_READABLE_NAME, LONG_VERSION_STRING );
-!     printf( "%s %s - patched for TorrentFlux-NG\n", MY_READABLE_NAME, LONG_VERSION_STRING );
+!     printf( "%s %s - patched for FluxTorrent\n", MY_READABLE_NAME, LONG_VERSION_STRING );
   
       /* user needs to pass in at least one argument */
       if( argc < 2 ) {
@@ -14,7 +14,7 @@ diff -crB transmission-2.73-patched/cli/cli.c transmission-2.73/cli/cli.c
       char cwd[1024];
   
       //printf( "%s %s\n", MY_READABLE_NAME, LONG_VERSION_STRING );
-!     printf( "%s %s - patched for TorrentFlux-NG (spoofed from %s)\n", MY_READABLE_NAME, LONG_VERSION_STRING, SPOOF_VERSION_STRING );
+!     printf( "%s %s - patched for FluxTorrent (spoofed from %s)\n", MY_READABLE_NAME, LONG_VERSION_STRING, SPOOF_VERSION_STRING );
   
       /* user needs to pass in at least one argument */
       if( argc < 2 ) {

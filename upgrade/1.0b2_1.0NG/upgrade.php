@@ -33,7 +33,7 @@ else
 	die("Fatal Error. inc/install/functions.install.php is missing.");
 
 // defines
-define('_NAME', 'TorrentFlux-NG');
+define('_NAME', 'FluxTorrent');
 define('_UPGRADE_FROM', 'v1.0beta2');
 define('_UPGRADE_TO', 'v1.0-NG');
 define('_DEFAULT_PATH', '/usr/local/torrent/');

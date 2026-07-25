@@ -13,7 +13,7 @@ var ajax_fieldIds = new Array(
 );
 var ajax_idCount = ajax_fieldIds.length;
 //
-var pageTitle = "TorrentFlux-NG";
+var pageTitle = "FluxTorrent";
 
 /**
  * ajax_initialize

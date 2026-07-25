@@ -2,7 +2,7 @@
 -- $Id$
 -- -----------------------------------------------------------------------------
 --
--- MySQL-File for 'TorrentFlux-NG-1.0'.
+-- MySQL-File for 'FluxTorrent-1.0'.
 --
 -- This Stuff is provided 'as-is'. In no way will the authors be held
 -- liable for any damages to your soft- or hardware from this.
@@ -30,7 +30,7 @@ CREATE TABLE tf_links (
   PRIMARY KEY  (lid)
 ) TYPE=MyISAM;
 
-INSERT INTO tf_links VALUES (NULL,'http://epsylon3.github.com/torrentflux','TorrentFlux-NG','0');
+INSERT INTO tf_links VALUES (NULL,'http://epsylon3.github.com/torrentflux','FluxTorrent','0');
 
 --
 -- tf_log
@@ -273,7 +273,7 @@ INSERT INTO tf_settings VALUES ('enable_index_ajax_update','0');
 INSERT INTO tf_settings VALUES ('index_ajax_update','10');
 INSERT INTO tf_settings VALUES ('transferStatsType','ajax');
 INSERT INTO tf_settings VALUES ('transferStatsUpdate','5');
-INSERT INTO tf_settings VALUES ('auth_basic_realm','TorrentFlux-NG');
+INSERT INTO tf_settings VALUES ('auth_basic_realm','FluxTorrent');
 INSERT INTO tf_settings VALUES ('servermon_update','5');
 INSERT INTO tf_settings VALUES ('enable_home_dirs','1');
 INSERT INTO tf_settings VALUES ('path_incoming','incoming');
@@ -289,7 +289,7 @@ INSERT INTO tf_settings VALUES ('enable_btclient_chooser','1');
 INSERT INTO tf_settings VALUES ('transfer_profiles','3');
 INSERT INTO tf_settings VALUES ('transfer_customize_settings','2');
 INSERT INTO tf_settings VALUES ('transferHosts','0');
-INSERT INTO tf_settings VALUES ('pagetitle','TorrentFlux-NG');
+INSERT INTO tf_settings VALUES ('pagetitle','FluxTorrent');
 INSERT INTO tf_settings VALUES ('enable_sharekill','1');
 INSERT INTO tf_settings VALUES ('transfer_window_default','transferStats');
 INSERT INTO tf_settings VALUES ('index_show_seeding','1');

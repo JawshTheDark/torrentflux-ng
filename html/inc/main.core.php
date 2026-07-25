@@ -110,7 +110,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
 // user-agent
 $cfg['user_agent'] = (isset($_SERVER['HTTP_USER_AGENT']))
 	? htmlentities($_SERVER['HTTP_USER_AGENT'], ENT_QUOTES)
-	: "TorrentFlux-NG/".$cfg["version"];
+	: "FluxTorrent/".$cfg["version"];
 
 // get os
 $osString = @php_uname('s');

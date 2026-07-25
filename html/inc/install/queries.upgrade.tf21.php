@@ -342,7 +342,7 @@ $queries[$cqt][$cdb] = array();
 foreach ($queries['data']['common'] as $dataQuery)
 	array_push($queries[$cqt][$cdb], $dataQuery);
 // tf_links
-array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://www.torrentflux-ng.org/','TorrentFlux-NG','0')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES (NULL,'http://www.torrentflux-ng.org/','FluxTorrent','0')");
 
 // -----------------------------------------------------------------------------
 // SQL : postgres
@@ -474,7 +474,7 @@ $queries[$cqt][$cdb] = array();
 foreach ($queries['data']['common'] as $dataQuery)
 	array_push($queries[$cqt][$cdb], $dataQuery);
 // tf_links
-array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES ('0','http://www.torrentflux-ng.org/','TorrentFlux-NG','0')");
+array_push($queries[$cqt][$cdb], "INSERT INTO tf_links VALUES ('0','http://www.torrentflux-ng.org/','FluxTorrent','0')");
 // sequences
 array_push($queries[$cqt][$cdb], "SELECT SETVAL('tf_links_lid_seq',(select case when max(lid)>0 then max(lid)+1 else 1 end from tf_links))");
 array_push($queries[$cqt][$cdb], "SELECT SETVAL('tf_trprofiles_id_seq',(select case when max(id)>0 then max(id)+1 else 1 end from tf_trprofiles))");

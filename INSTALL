@@ -2,7 +2,7 @@
 $Id$
 =================================================================
 
-TorrentFlux-NG installation
+FluxTorrent installation
 
 -----------------------------------------------------------------
 System Requirements
@@ -102,9 +102,9 @@ Manual Installation
    build the table structure and the default data. Import the
    script into your torrentflux database (from sql directory).
 
-   ./sqlscript.php.sh mysql install > mysql_TorrentFlux-NG-1.0.sql
+   ./sqlscript.php.sh mysql install > mysql_FluxTorrent-1.0.sql
 
-   mysql torrentflux < mysql_TorrentFlux-NG-1.0.sql
+   mysql torrentflux < mysql_FluxTorrent-1.0.sql
    Or load the script with PHPMyAdmin (web interface)
 
 3. rename the file "config.db.php.dist" in the dir "inc/config/"

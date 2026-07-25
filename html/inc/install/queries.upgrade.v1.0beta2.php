@@ -50,8 +50,8 @@ array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('nzbperl_ssl',
 array_push($queries[$cqt][$cdb], "INSERT INTO tf_settings VALUES ('nzbperl_port','119')");
 
 // updates + deletes
-array_push($queries[$cqt][$cdb], "UPDATE tf_settings SET tf_value = 'TorrentFlux-NG' WHERE tf_key = 'auth_basic_realm'");
-array_push($queries[$cqt][$cdb], "UPDATE tf_settings SET tf_value = 'TorrentFlux-NG' WHERE tf_key = 'pagetitle'");
+array_push($queries[$cqt][$cdb], "UPDATE tf_settings SET tf_value = 'FluxTorrent' WHERE tf_key = 'auth_basic_realm'");
+array_push($queries[$cqt][$cdb], "UPDATE tf_settings SET tf_value = 'FluxTorrent' WHERE tf_key = 'pagetitle'");
 array_push($queries[$cqt][$cdb], "UPDATE tf_settings SET tf_value = 'RedRound' WHERE tf_key = 'default_theme'");
 array_push($queries[$cqt][$cdb], "UPDATE tf_users SET theme = 'RedRound'");
 
